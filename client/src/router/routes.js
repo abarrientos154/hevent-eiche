@@ -41,7 +41,7 @@ const routes = [
       {
         path: '/inicio_proveedor',
         component: () => import('pages/proveedor/Inicio.vue'),
-        meta: { toolbar: true, title: 'Hevent', footer: true }
+        meta: { toolbar: false, title: 'Hevent', footer: true }
       },
       {
         path: '/perfil_proveedor',

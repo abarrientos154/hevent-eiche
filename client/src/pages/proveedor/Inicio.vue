@@ -1,33 +1,42 @@
 <template>
-  <q-page>
-    <div class="col full-width">
-      <q-img
-          src="example_7.jpg"
-          style="width: 100%"
-          img-class="my-custom-image"
-        >
-          <div class="absolute-center bg-transparent text-center" style="width: 100%">
-            <div class="text-white text-h6">{{usuario ? usuario : 'Nombre del Proveedor'}}</div>
-            <q-btn outline no-caps class="text-white" color="dark" label="Editar Perfil" to="/perfil_proveedor" />
-          </div>
-        </q-img>
-        <div class="row q-py-lg q-gutter-md justify-center" style="width: 100%">
-            <div
-            class="col-5"
-            v-for="(card, index) in rutas"
-            :key="index">
-                <div class="q-py-xs q-px-sm items-center">
-                    <q-card class="q-px-md q-py-sm bg-grey-3" >
-                        <div class="text-center">
-                            <q-icon center class="text-primary" :name="card.icon" @click="$router.push(card.ruta)" style="font-size: 4.4em;" />
-                        </div>
-                        <div class="text-center text-subtitle1 text-grey-8">{{card.name}}</div>
-                    </q-card>
-                </div>
-            </div>
+<div>
+  <q-img :src="portadaImg ? portadaImg : 'portada_proveedor.png'" style="width: 100%;height:200px">
+    <div class="absolute-center bg-transparent text-center" style="width: 100%">
+      <q-avatar size="50px">
+        <div class="absolute-center" style="z-index:1">
+          <q-file borderless v-model="portada" class="button-camera" @input="perfilAndPortada()" :filter="checkFileType" @rejected="onRejected" accept=".jpg, image/*">
+            <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
+          </q-file>
         </div>
+      </q-avatar>
     </div>
-  </q-page>
+  </q-img>
+  <div class="q-ml-lg row items-center">
+    <div>
+      <q-avatar size="100px">
+        <img src="noimg.png" style="width: 70px;height:70px">
+      </q-avatar>
+    </div>
+    <div class="column">
+      <div class="text-grey-7 text-bold text-subtitle1"> {{user.name}} </div>
+    </div>
+  </div>
+  <div class="row q-gutter-lg q-mt-sm">
+    <div class="row justify-around col-5" v-for="(ruta, index) in rutas" :key="index">
+      <div @click="$router.push(ruta.ruta)">
+        <div class="column items-center">
+          <q-avatar square>
+            <q-img :src="ruta.icon" />
+          </q-avatar>
+          <div>{{ruta.name}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-center q-mt-xl q-mb-lg">
+    <q-btn color="primary" label="editar anuncio" style="width:200px;border-radius:12px;height:50px" push />
+  </div>
+</div>
 </template>
 <script>
 export default {
@@ -35,11 +44,14 @@ export default {
     return {
       usuario: '',
       rutas: [
-        { name: 'Calendario', icon: 'today', ruta: '/calendario_eventos' },
-        { name: 'Mensajes', icon: 'mail_outline', ruta: '/chats_proveedor' },
-        { name: 'Opiniones', icon: 'psychology', ruta: '' },
-        { name: 'Estadísticas', icon: 'insert_chart_outlined', ruta: '' }
-      ]
+        { name: 'Calendario', icon: 'icons/calendario.png', ruta: '/calendario_eventos' },
+        { name: 'Mensajes', icon: 'icons/mensajes.png', ruta: '/chats_proveedor' },
+        { name: 'Cotizaciones', icon: 'icons/cotizar_add.png', ruta: '' },
+        { name: 'Estadísticas', icon: 'icons/estadisticas.png', ruta: '' }
+      ],
+      portadaImg: '',
+      portada: '',
+      user: {}
     }
   },
   validations: {
@@ -47,6 +59,7 @@ export default {
   computed: {},
   mounted () {
     this.getRecord()
+    this.getUser()
   },
   methods: {
     async getRecord () {
@@ -56,7 +69,43 @@ export default {
           console.log(this.usuario)
         }
       })
+    },
+    perfilAndPortada () {
+      if (this.portada) { this.portadaImg = URL.createObjectURL(this.portada) }
+    },
+    checkFileType (files) {
+      return files.filter(file => file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg')
+    },
+    onRejected (rejectedEntries) {
+      this.$q.notify({
+        type: 'negative',
+        message: 'Las Imagenes deben ser de tipo png, jpg, jpeg'
+      })
+    },
+    getUser () {
+      this.$api.get('users_perfil').then(res => {
+        if (res) {
+          this.user = res
+          console.log(this.user, 'this user')
+        }
+      })
     }
   }
 }
 </script>
+
+<style>
+.button-camera {
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 540;
+  font-size: 0px;
+  color: #0016b0;
+  background-color: #ffffff;
+  border-radius: 30px;
+  border: 1px solid #7e7e7e;
+  height:40px;
+  width:40px
+}
+
+</style>
