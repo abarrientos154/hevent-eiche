@@ -46,7 +46,7 @@ export default {
       rutas: [
         { name: 'Calendario', icon: 'icons/calendario.png', ruta: '/calendario_eventos' },
         { name: 'Mensajes', icon: 'icons/mensajes.png', ruta: '/chats_proveedor' },
-        { name: 'Cotizaciones', icon: 'icons/cotizar_add.png', ruta: '' },
+        { name: 'Cotizaciones', icon: 'icons/cotizar_add.png', ruta: '/aprobacion_cotizacion' },
         { name: 'Estadísticas', icon: 'icons/estadisticas.png', ruta: '' }
       ],
       portadaImg: '',

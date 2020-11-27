@@ -14,7 +14,7 @@
             <q-item-label caption> {{item.status}} </q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="info" flat color="secondary" round @click="showDialogInfo = true, indexSelect = index, cotisacion_id = item._id"/>
+            <q-btn icon="info" flat color="secondary" round @click="showDialogInfo = true, indexSelect = index, cotisacion_id = item._id, esCliente = item.rolAuth === 2 ? true : false"/>
           </q-item-section>
         </q-item>
         <q-separator inset />
@@ -22,7 +22,7 @@
       <div v-if="data.length === 0" class="text-h6 text-center q-mt-xl" style="font-size:30px">Actualmente sin cotizaciones pendientes...</div>
     </div>
     <q-dialog v-model="showDialogInfo" position="bottom" transition-show="slide-up" transition-hide="slide-down" >
-      <aprobar-cotizacion :cotisacion_id="cotisacion_id" @aprobar="aprobar" @negar="negar" />
+      <aprobar-cotizacion :cotisacion_id="cotisacion_id" @aprobar="aprobar" @negar="negar" :esCliente="esCliente" />
     </q-dialog>
   </div>
 </template>
@@ -38,7 +38,8 @@ export default {
       data: [],
       showDialogInfo: false,
       indexSelect: 0,
-      cotisacion_id: ''
+      cotisacion_id: '',
+      esCliente: false
     }
   },
   async mounted () {
