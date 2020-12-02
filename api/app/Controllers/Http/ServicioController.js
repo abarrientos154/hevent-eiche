@@ -35,6 +35,18 @@ class ServicioController {
     response.send(preguntas)
   }
 
+  async preguntasPorProveedor ({ response, auth }) {
+    const idUser = ((await auth.getUser()).toJSON())._id
+    let respuestaProveedor = (await RespuestaProveedor.query().where({id_proveedor: idUser}).fetch()).toJSON()
+    for (let j of respuestaProveedor)
+    j.name = (await ItemServicio.findBy('id', j.id)).name
+
+    let preguntas = respuestaProveedor.map(v => {
+      return { id: v.id, name: v.name, pregunta: v.pyr, servicio_id: v.servicio_id, _id: v._id }
+    })
+    response.send(preguntas)
+  }
+
   async preguntasPorId ({ response, params }) {
     console.log(params.id_servicio, 'id servico')
     if (params.id_servicio === 'personas') {
@@ -126,6 +138,13 @@ class ServicioController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    let body = request.all()
+    for (let j of body.preguntas) {
+      await RespuestaProveedor.query().where({_id: j._id}).update({pyr: j.pyr})
+      console.log(j._id, 'id', j.pyr, 'pyr')
+    }
+
+    response.send(body)
   }
 
   /**

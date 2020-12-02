@@ -49,6 +49,7 @@ addPrefixToGroup(
     ///////////SERVICIOS Y PREGUNTAS////////////////
     Route.get("servicios", "ServicioController.index")
     Route.post("preguntas", "ServicioController.preguntasPorCheck")
+    Route.put("preguntas", "ServicioController.update")
 
   })
 );
@@ -66,11 +67,13 @@ addPrefixToGroup(
     Route.get('proveedores_perfil', 'ProveedorController.show')
     Route.post('proveedores', 'ProveedorController.store')
     Route.get('proveedores_servicios/:id_servicio', 'ServicioController.preguntasPorId')
-    Route.get('servicios_proveedor', 'ServicioController.serviciosPorProveedor')
+    Route.get('preguntas_proveedor', 'ServicioController.preguntasPorId')
+    Route.get('servicios_proveedor', 'ServicioController.preguntasPorProveedor')
     ///////////PROVEEDORES/////////////////////
 
     ///////////Usuarios/////////////////////
     Route.get('users_perfil', 'UserController.show')
+    Route.post('guardar_descripcion_proveedor', 'UserController.guardarDescripcionProveedor')
     Route.put('users_perfil', 'UserController.update')
     Route.get("show_provider_for_user/:id", "ProveedorController.showProviderForUser")
     Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado

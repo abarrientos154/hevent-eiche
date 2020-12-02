@@ -19,15 +19,14 @@ const { validate } = use("Validator")
  * Resourceful controller for interacting with users
  */
 class UserController {
-  /**
-   * Show a list of all users.
-   * GET users
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
+
+  async guardarDescripcionProveedor({request, response, auth}) {
+    const idUser = ((await auth.getUser()).toJSON())._id
+    let body = request.only(['descripcion'])
+    let user = await User.query().where({_id: idUser}).update(body)
+    response.send(user)
+  }
+
   async index({ request, response, view }) {
     let users = await User.all();
     response.send(users);

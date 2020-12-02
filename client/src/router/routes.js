@@ -82,6 +82,11 @@ const routes = [
         path: '/ver_mas_servicios',
         component: () => import('pages/TiposServicio.vue'),
         meta: { toolbar: false, title: 'Calendario', footer: true }
+      },
+      {
+        path: '/editar_anuncio',
+        component: () => import('pages/proveedor/EditarAnuncio.vue'),
+        meta: { toolbar: false, title: 'Calendario', footer: true }
       }
     ]
   },

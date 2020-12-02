@@ -34,7 +34,7 @@
     </div>
   </div>
   <div class="row justify-center q-mt-xl q-mb-lg">
-    <q-btn color="primary" label="editar anuncio" style="width:200px;border-radius:12px;height:50px" push />
+    <q-btn color="primary" label="editar anuncio" style="width:200px;border-radius:12px;height:50px" push to="/editar_anuncio" />
   </div>
 </div>
 </template>
