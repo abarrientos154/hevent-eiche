@@ -51,6 +51,12 @@ addPrefixToGroup(
     Route.post("preguntas", "ServicioController.preguntasPorCheck")
     Route.put("preguntas", "ServicioController.update")
 
+    Route.get("file_proveedor/:file", "UploadController.getFileByDirectory")
+    Route.get("file_proveedor_video/:file", "UploadController.getFileByDirectoryVideo")
+    Route.delete("eliminar_archivo_proveedor/:file", "UploadController.eliminarArchivo")
+
+    Route.delete("eliminar_archivo_proveedor_video/:file", "UploadController.eliminarArchivo")
+
   })
 );
 
@@ -105,7 +111,8 @@ addPrefixToGroup(
     Route.post("send_message/:id_cotisation", "ChatController.store") // metod para enviar un mensaje
     Route.get("show_messages/:id_cotisation", "ChatController.show") // metodo para obtener todos los mensajes de una cotisacion
 
-
+    Route.post("subir_archivo_proveedor", "UploadController.subirArchivoProveedor")
+    Route.post("subir_archivo_proveedor_video", "UploadController.subirArchivoProveedorVideo")
 
   }).middleware("auth")
 );

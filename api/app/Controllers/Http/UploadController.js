@@ -2,8 +2,9 @@
 
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
-const Shop = use('App/Models/Shop')
+const User = use('App/Models/User')
 const fs = require('fs')
+var randomize = require('randomatic');
 
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -96,99 +97,73 @@ class UploadController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({
-    request,
-    response,
-    view
-  }) {}
+  async subirArchivoProveedor ({ request, response, auth }) {
+    let codeFile = randomize('Aa0', 30)
+    let user = await auth.getUser()
+    var profilePic = request.file('files', {
+      types: ['image'],
+      size: '25mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/proveedor_images')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_images'), {
+          name: codeFile,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
 
-  /**
-   * Render a form to be used for creating a new upload.
-   * GET uploads/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create({
-    request,
-    response,
-    view
-  }) {}
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        let proveedor = await User.find(user._id)
+        if (proveedor.images) {
+          proveedor.images.push(codeFile)
+        } else {
+          proveedor.images = []
+          proveedor.images.push(codeFile)
+        }
+        await proveedor.save()
+        console.log(proveedor, 'proveedor buscar')
+        response.send(proveedor)
+      }
+    }
+  }
 
-  /**
-   * Create/save a new upload.
-   * POST uploads
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async store({
-    request,
-    response
-  }) {}
+  async subirArchivoProveedorVideo ({ request, response, auth }) {
+    let codeFile = randomize('Aa0', 30)
+    let user = await auth.getUser()
+    var profilePic = request.file('files', {
+      types: ['video'],
+      size: '250mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/proveedor_videos')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_videos'), {
+          name: codeFile,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
 
-  /**
-   * Display a single upload.
-   * GET uploads/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show({
-    params,
-    request,
-    response,
-    view
-  }) {}
-
-  /**
-   * Render a form to update an existing upload.
-   * GET uploads/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit({
-    params,
-    request,
-    response,
-    view
-  }) {}
-
-  /**
-   * Update upload details.
-   * PUT or PATCH uploads/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async update({
-    params,
-    request,
-    response
-  }) {}
-
-  /**
-   * Delete a upload with id.
-   * DELETE uploads/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({
-    params,
-    request,
-    response
-  }) {}
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        let proveedor = await User.find(user._id)
+        if (proveedor.videos) {
+          proveedor.videos.push(codeFile)
+        } else {
+          proveedor.videos = []
+          proveedor.videos.push(codeFile)
+        }
+        await proveedor.save()
+        console.log(proveedor, 'proveedor buscar')
+        response.send(proveedor)
+      }
+    }
+  }
 
   async uploadShopImage ({ auth, request }) {
     let user = await auth.getUser()
@@ -221,11 +196,44 @@ class UploadController {
     return shop.fileName
   }
 
-  async getFileByDirectory ({ params, response, request }) {
+  /* async getFileByDirectory ({ params, response, request }) {
     const dir = params.dir.split('-').join('/')
     response.download(Helpers.appRoot('storage/uploads') + `/${dir}`)
+  } */
+
+  async getFileByDirectory({ params, response, request }) {
+    const dir = params.file
+    console.log(dir,'here')
+    response.download(Helpers.appRoot('storage/uploads/proveedor_images') + `/${dir}`)
   }
 
+  async getFileByDirectoryVideo({ params, response, request }) {
+    const dir = params.file
+    console.log(dir,'here')
+    response.download(Helpers.appRoot('storage/uploads/proveedor_videos') + `/${dir}`)
+  }
+
+  async eliminarArchivo ({ params, response, auth }) {
+    const dir = params.file
+    await fs.unlinkSync(Helpers.appRoot(`storage/uploads/proveedor_images/${dir}`))
+    let user = await auth.getUser()
+    let provider = await User.find(user._id)
+    let i = provider.images.indexOf(dir)
+    provider.images.splice(i, 1)
+    await provider.save()
+    response.send(provider)
+  }
+
+  async eliminarArchivoVideo ({ params, response, auth }) {
+    const dir = params.file
+    await fs.unlinkSync(Helpers.appRoot(`storage/uploads/proveedor_videos/${dir}`))
+    let user = await auth.getUser()
+    let provider = await User.find(user._id)
+    let i = provider.videos.indexOf(dir)
+    provider.videos.splice(i, 1)
+    await provider.save()
+    response.send(provider)
+  }
 
 }
 

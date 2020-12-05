@@ -35,8 +35,21 @@
         </q-tab-panel>
 
         <q-tab-panel name="Mapas">
-          <div class="text-h6">Movies</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
+          <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
+          <div class="row justify-center">
+            <q-btn label="Contactame" push style="border-radius:12px; width:300px; height:50px" color="primary" />
+          </div>
+        </q-tab-panel>
+
+        <q-tab-panel name="Imagenes">
+          <div class="text-h6 text-grey-9">Imagenes</div>
+          <imagenes />
+        </q-tab-panel>
+
+        <q-tab-panel name="Videos">
+          <div class="text-h6 text-grey-9">Videos</div>
+          <videos />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -45,15 +58,15 @@
 
 <script>
 import PreguntasFrecuentes from '../../components/Proveedor/EditarAnuncio/Preguntas'
+import Imagenes from '../../components/Proveedor/EditarAnuncio/Imagenes'
+import Videos from '../../components/Proveedor/EditarAnuncio/Videos'
 export default {
-  components: {
-    PreguntasFrecuentes
-  },
+  components: { PreguntasFrecuentes, Imagenes, Videos },
   data () {
     return {
       panel: 'Descripcion',
       form: {
-        descripcion: 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore maxime, explicabo nihil vel nemo veniam mollitia possimus tempore qui repellat rem accusamus, quae atque ea, consequatur porro delectus facilis quas.'
+        descripcion: ''
       },
       slide: 1,
       user: {},
@@ -77,7 +90,7 @@ export default {
       ],
       chips: [
         { name: 'Descripcion', select: true }, { name: 'Preguntas', select: false }, { name: 'Mapas', select: false }, { name: 'Imagenes', select: false },
-        { name: 'Opiniones', select: false }
+        { name: 'Videos', select: false }, { name: 'Opiniones', select: false }
       ]
     }
   },
