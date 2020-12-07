@@ -2,7 +2,7 @@
   <div>
     <div v-if="imagenes.length > 0" style="height:100px;border-radius:12px;width:100%" class="row justify-between">
       <q-card class="q-ml-sm q-mr-sm q-mt-sm" v-for="(item, index) in imagenes" :key="index" style="height:100px;border-radius:12px;width:140px">
-        <q-img :src="baseu + '/file_proveedor/' + item" style="height:100px;border-radius:12px;width:140px" >
+        <q-img :src="baseu + 'file_proveedor/' + item" style="height:100px;border-radius:12px;width:140px" >
           <q-btn @click="confirmEliminar(item)" flat class="absolute all-pointer-events" size="15px" dense icon="delete" color="negative" style="top: 0px; left: 0px" rounded />
         </q-img>
       </q-card>

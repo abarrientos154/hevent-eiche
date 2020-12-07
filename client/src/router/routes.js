@@ -87,6 +87,11 @@ const routes = [
         path: '/editar_anuncio',
         component: () => import('pages/proveedor/EditarAnuncio.vue'),
         meta: { toolbar: false, title: 'Calendario', footer: true }
+      },
+      {
+        path: '/prueba',
+        component: () => import('pages/PruebaVideos.vue'),
+        meta: { toolbar: false, title: 'Calendario', footer: false }
       }
     ]
   },

@@ -56,6 +56,8 @@ addPrefixToGroup(
     Route.delete("eliminar_archivo_proveedor/:file", "UploadController.eliminarArchivo")
 
     Route.delete("eliminar_archivo_proveedor_video/:file", "UploadController.eliminarArchivo")
+    Route.get("test_file/:file", "UploadController.testFile")
+    Route.get("file_proveedor/:carpeta/:id", "UploadController.traerImagenPortadaPerfilProveedor")
 
   })
 );
@@ -113,6 +115,7 @@ addPrefixToGroup(
 
     Route.post("subir_archivo_proveedor", "UploadController.subirArchivoProveedor")
     Route.post("subir_archivo_proveedor_video", "UploadController.subirArchivoProveedorVideo")
+    Route.post("actualizar_file_proveedor/:carpeta", "UploadController.actualizarPortadaPerfilProveedor")
 
   }).middleware("auth")
 );

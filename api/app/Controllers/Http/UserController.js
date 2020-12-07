@@ -113,7 +113,7 @@ class UserController {
       })
       if (Helpers.appRoot('storage/uploads/register')) {
         await profilePic.move(Helpers.appRoot('storage/uploads/register'), {
-          name: 'perfil' + user._id.toString() + '.' + profilePic.extname,
+          name: 'perfil' + user._id.toString(),
           overwrite: true
         })
       } else {
@@ -128,7 +128,7 @@ class UserController {
       })
       if (Helpers.appRoot('storage/uploads/register')) {
         await profilePic2.move(Helpers.appRoot('storage/uploads/register'), {
-          name: 'portada' + user._id.toString() + '.' + profilePic2.extname,
+          name: 'portada' + user._id.toString(),
           overwrite: true
         })
       } else {

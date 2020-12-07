@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-carousel animated v-model="slide" navigation infinite style="height:200px" swipeable >
-      <q-carousel-slide :name="item.name" :img-src="item.img" v-for="(item, index) in imagenes" :key="index" >
+      <q-carousel-slide :name="index" :img-src="baseu + 'file_proveedor/' + item" v-for="(item, index) in user.images" :key="index" >
         <div style="position:absolute;top:0px;left:0px;font-size:20px" class="text-white" >
           <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
         </div>
@@ -60,6 +60,7 @@
 import PreguntasFrecuentes from '../../components/Proveedor/EditarAnuncio/Preguntas'
 import Imagenes from '../../components/Proveedor/EditarAnuncio/Imagenes'
 import Videos from '../../components/Proveedor/EditarAnuncio/Videos'
+import env from '../../env'
 export default {
   components: { PreguntasFrecuentes, Imagenes, Videos },
   data () {
@@ -70,24 +71,6 @@ export default {
       },
       slide: 1,
       user: {},
-      imagenes: [
-        {
-          name: 1,
-          img: 'example_4.jpg'
-        },
-        {
-          name: 2,
-          img: 'example_1.jpg'
-        },
-        {
-          name: 3,
-          img: 'example_2.jpg'
-        },
-        {
-          name: 4,
-          img: 'example_3.jpg'
-        }
-      ],
       chips: [
         { name: 'Descripcion', select: true }, { name: 'Preguntas', select: false }, { name: 'Mapas', select: false }, { name: 'Imagenes', select: false },
         { name: 'Videos', select: false }, { name: 'Opiniones', select: false }
@@ -96,6 +79,7 @@ export default {
   },
   mounted () {
     this.getUser()
+    this.baseu = env.apiUrl
   },
   methods: {
     getUser () {

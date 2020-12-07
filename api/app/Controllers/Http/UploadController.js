@@ -28,7 +28,7 @@ class UploadController {
     if (profilePic) {
       if (Helpers.appRoot('storage/uploads')) {
         await profilePic.move(Helpers.appRoot('storage/uploads'), {
-          name: dat.identification + '-' + dat.name + '.' + profilePic.extname,
+          name: dat.identification + '-' + dat.name,
           overwrite: true
         })
       } else {
@@ -48,7 +48,7 @@ class UploadController {
     if (profilePic) {
       if (Helpers.appRoot('storage/uploads')) {
         await profilePic.move(Helpers.appRoot('storage/uploads'), {
-          name: dat.identification + '- license -' + dat.name + '.' + profilePic.extname,
+          name: dat.identification + '- license -' + dat.name,
           overwrite: true
         })
       } else {
@@ -135,7 +135,6 @@ class UploadController {
     let codeFile = randomize('Aa0', 30)
     let user = await auth.getUser()
     var profilePic = request.file('files', {
-      types: ['video'],
       size: '250mb'
     })
     if (profilePic) {
@@ -213,6 +212,10 @@ class UploadController {
     response.download(Helpers.appRoot('storage/uploads/proveedor_videos') + `/${dir}`)
   }
 
+  async testFile({ params, response, request }) {
+    response.download(Helpers.appRoot('storage/uploads/proveedor_videos/' + params.file))
+  }
+
   async eliminarArchivo ({ params, response, auth }) {
     const dir = params.file
     await fs.unlinkSync(Helpers.appRoot(`storage/uploads/proveedor_images/${dir}`))
@@ -233,6 +236,32 @@ class UploadController {
     provider.videos.splice(i, 1)
     await provider.save()
     response.send(provider)
+  }
+
+  async traerImagenPortadaPerfilProveedor ({response, params}) {
+    response.download(Helpers.appRoot(`storage/uploads/register/${params.carpeta}${params.id}`))
+  }
+
+  async actualizarPortadaPerfilProveedor ({response, params, auth, request}) {
+    let user = await auth.getUser()
+    var profilePic = request.file('files', {
+      size: '250mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/register')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/register'), {
+          name: `${params.carpeta}${user._id}`,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      }
+    }
+    response.send(profilePic)
   }
 
 }

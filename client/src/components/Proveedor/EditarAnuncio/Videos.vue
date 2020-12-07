@@ -2,7 +2,7 @@
   <div>
     <div v-if="videos.length > 0" style="height:100px;border-radius:12px;width:100%" class="row justify-between">
       <q-card class="q-ml-sm q-mr-sm q-mt-sm" v-for="(item, index) in videos" :key="index" style="height:100px;border-radius:12px;width:140px">
-        <!-- <q-video :src="baseu + '/file_proveedor_video/' + item" style="height:100px;border-radius:12px;width:140px" /> -->
+        <!-- <q-video :src="baseu + 'file_proveedor_video/' + item" style="height:100px;border-radius:12px;width:140px" /> -->
       </q-card>
       <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-grey-5" style="height:100px;border-radius:12px;width:140px">
         <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Video</div>
@@ -55,7 +55,7 @@ export default {
       })
     },
     async addVid () {
-      console.log('add img', this.video)
+      console.log('add video', this.video)
       if (this.video) {
         var formData = new FormData()
         var files = []

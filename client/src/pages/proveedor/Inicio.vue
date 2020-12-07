@@ -1,10 +1,10 @@
 <template>
 <div>
-  <q-img :src="portadaImg ? portadaImg : 'portada_proveedor.png'" style="width: 100%;height:200px">
+  <q-img :src="portadaImg" style="width: 100%;height:200px">
     <div class="absolute-center bg-transparent text-center" style="width: 100%">
       <q-avatar size="50px">
         <div class="absolute-center" style="z-index:1">
-          <q-file borderless v-model="portada" class="button-camera" @input="perfilAndPortada()" :filter="checkFileType" @rejected="onRejected" accept=".jpg, image/*">
+          <q-file borderless v-model="portada" class="button-camera" @input="changePortada()" accept=".jpg, image/*">
             <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
           </q-file>
         </div>
@@ -13,8 +13,8 @@
   </q-img>
   <div class="q-ml-lg row items-center">
     <div>
-      <q-avatar size="100px">
-        <img src="noimg.png" style="width: 70px;height:70px">
+      <q-avatar size="120px">
+        <img :src="perfilImg" style="width: 70px;height:70px">
       </q-avatar>
     </div>
     <div class="column">
@@ -39,6 +39,7 @@
 </div>
 </template>
 <script>
+import env from '../../env'
 export default {
   data () {
     return {
@@ -50,16 +51,22 @@ export default {
         { name: 'Estadísticas', icon: 'icons/estadisticas.png', ruta: '' }
       ],
       portadaImg: '',
+      perfilImg: '',
       portada: '',
-      user: {}
+      user: {},
+      baseu: ''
     }
   },
   validations: {
   },
   computed: {},
-  mounted () {
+  async mounted () {
     this.getRecord()
-    this.getUser()
+    await this.getUser()
+    this.baseu = env.apiUrl
+    this.portadaImg = this.baseu + 'file_proveedor/portada/' + this.user._id
+    this.perfilImg = this.baseu + 'file_proveedor/perfil/' + this.user._id
+    console.log(this.portadaImg, 'portada img mounted')
   },
   methods: {
     async getRecord () {
@@ -70,7 +77,7 @@ export default {
         }
       })
     },
-    perfilAndPortada () {
+    changePerfil () {
       if (this.portada) { this.portadaImg = URL.createObjectURL(this.portada) }
     },
     checkFileType (files) {
@@ -82,13 +89,31 @@ export default {
         message: 'Las Imagenes deben ser de tipo png, jpg, jpeg'
       })
     },
-    getUser () {
-      this.$api.get('users_perfil').then(res => {
+    async getUser () {
+      await this.$api.get('users_perfil').then(res => {
         if (res) {
           this.user = res
           console.log(this.user, 'this user')
         }
       })
+    },
+    async changePortada () {
+      if (this.portada) {
+        var formData = new FormData()
+        var files = []
+        files[0] = this.portada
+        formData.append('files', files[0])
+        await this.$api.post('actualizar_file_proveedor/portada', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log(res, 'respuesta')
+          this.portadaImg = this.baseu + 'file_proveedor/portada/' + this.user._id
+          console.log(this.portadaImg, 'portada img funcion')
+          this.$router.go(this.$router.currentRoute)
+        })
+      }
     }
   }
 }
