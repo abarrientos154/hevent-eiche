@@ -46,7 +46,7 @@ const routes = [
       {
         path: '/perfil_proveedor',
         component: () => import('pages/proveedor/Perfil.vue'),
-        meta: { toolbar: true, title: 'Mi Perfil', footer: true }
+        meta: { toolbar: false, title: 'Mi Perfil', footer: true }
       },
       {
         path: '/chats_proveedor',
@@ -91,6 +91,11 @@ const routes = [
       {
         path: '/prueba',
         component: () => import('pages/PruebaVideos.vue'),
+        meta: { toolbar: false, title: 'Calendario', footer: false }
+      },
+      {
+        path: '/prueba_pay',
+        component: () => import('pages/PruebaPayU.vue'),
         meta: { toolbar: false, title: 'Calendario', footer: false }
       }
     ]
