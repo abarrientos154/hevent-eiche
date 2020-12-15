@@ -25,6 +25,15 @@ class ServicioController {
     response.send(serv)
   }
 
+  async obtenerCheckServiciosPerfil ({ request, response, params }) {
+    let checks = (await ServicioProveedor.query().where({id_proveedor: params.id_proveedor}).fetch()).toJSON()
+    let format = []
+    for (let j of checks) {
+      format.push(j.id)
+    }
+    response.send(format)
+  }
+
   async preguntasPorCheck ({ request, response, view }) {
     let body = request.only(['checks'])
     let preguntas = []

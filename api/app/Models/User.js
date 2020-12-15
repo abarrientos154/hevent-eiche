@@ -26,29 +26,29 @@ class User extends Model {
   }
 
   static get fillableProveedor () {
-    return ['banco', 'celCode', 'celular', 'ciudad', 'descripcion', 'direccion', 'email', 'name', 'numCuenta', 'password', 'personaContacto',
-    'plan_id', 'telCode', 'telefono', 'tipoCuenta', 'username']
+    return ['banco', 'celCode', 'celular', 'ciudad', 'descripcion', 'direccion', 'email', 'name', 'numCuenta', 'password',
+    'personaContacto', 'plan_id', 'telCode', 'telefono', 'tipoCuenta', 'username']
   }
   static fieldValidationRulesProveedor () {
     const rulesUser = {
-      banco: 'string|required',
-      celCode: 'string|required',
-      celular: 'string|required',
-      checks: 'array|required',
-      ciudad: 'string|required',
-      descripcion: 'string|required',
-      direccion: 'string|required',
-      email: 'email|required',
-      name: 'string|required',
-      numCuenta: 'string|required',
-      password: 'string|required|max:256',
-      personaContacto: 'string|required',
-      plan_id: 'string|required',
-      respuestas: 'array|required',
-      telCode: 'string|required',
-      telefono: 'string|required',
-      tipoCuenta: 'string|required',
-      username: 'string|required'
+      banco: 'string',
+      celCode: 'string',
+      celular: 'string',
+      checks: 'array',
+      ciudad: 'string',
+      descripcion: 'string',
+      direccion: 'string',
+      email: 'email',
+      name: 'string',
+      numCuenta: 'string',
+      password: 'string|max:256|required',
+      personaContacto: 'string',
+      plan_id: 'string',
+      respuestas: 'array',
+      telCode: 'string',
+      telefono: 'string',
+      tipoCuenta: 'string',
+      username: 'string'
     }
     return rulesUser
   }

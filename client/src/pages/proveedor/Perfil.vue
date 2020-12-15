@@ -1,291 +1,155 @@
 <template>
-  <q-page>
-    <div class="col full-width">
-      <q-carousel
-      animated
-      v-model="slide"
-      arrows
-      infinite
-      style="width: 100%, height: 80px"
-    >
-        <q-carousel-slide
-        v-for="(sl, index) in carrousel"
-        :key="index"
-        :name="sl.id"
-        :img-src="sl.img"
-        style="width: 100%">
-                <q-btn outline no-caps class="text-white text-subtitle2 absolute-center" color="dark">
-                    Cambiar Fotos <br> max de 20
-                </q-btn>
-        </q-carousel-slide>
-      </q-carousel>
-      <div class="text-grey text-h6 text-center">{{usuario}}</div>
-      <div class="text-grey text-subtitle2 text-center">{{ciudad}}</div>
-      <div class="row" style="width: 100%">
-      <q-btn outline no-caps label="Descripción" class="col text-caption" />
-      <q-btn outline no-caps label="Detalles" class="col text-caption" />
-      <q-btn outline no-caps label="Servicios" class="col text-caption" />
-      <q-btn outline no-caps label="Mapa" class="col text-caption" />
-      <q-btn outline no-caps label="Puntuación" class="col text-caption" />
-      <q-btn outline no-caps label="Opiniones" class="col text-caption" />
-    </div>
-    <div class="q-pa-md q-gutter-md">
-        <q-card class="my-card shadow-13" style="height: 300px">
-            <q-card-section class="text-primary text-h6">
-                Descripción
-            </q-card-section>
-            <q-card-section class="absolute-center" style="width: 100%">
-                <q-input borderless class="text-subtitle1" v-model="form.description" :placeholder="form.description ? form.description : 'Descripción en 250 carácteres'" />
-            </q-card-section>
-            <q-card-section class="absolute-bottom text-primary text-subtitle1 text-right">
-                Leer más
-            </q-card-section>
-        </q-card>
-
-        <q-card class="my-card shadow-13">
-            <q-card-section class="text-primary text-h6">
-                Detalles
-            </q-card-section>
-            <q-card-section class="q-pt-xs">
-              <q-input class="text-subtitle1" v-model="form.menu_costo" label="¿Cuál es el costo del Menú?" />
-              <q-input class="text-subtitle1" v-model="form.invitados" label="¿Número de Invitados?" />
-              <q-input class="text-subtitle1" v-model="form.espacios_disp" label="¿Espacios Disponibles?" />
-              <q-input class="text-subtitle1" v-model="form.alojamiento" label="¿Dispone alojamiento para invitados?" />
-              <q-input class="text-subtitle1" v-model="form.more_event" label="¿Celebra más de un evento al día?" />
-              <q-input class="text-subtitle1" v-model="form.menu_conten" label="¿Qué incluye el menú?" />
-              <q-input class="text-subtitle1" v-model="form.solo_lugar" label="¿Es posible alquilar solo el espacio, sin el servicio de comida?" />
-              <q-input class="text-subtitle1" v-model="form.banquete_o_cocina" label="¿Cuentas con Banquete o cocina propia?" />
-              <q-input class="text-subtitle1" v-model="form.banquete_cocina" label="¿Dispone de banquete / cocina propia?" />
-              <q-input class="text-subtitle1" v-model="form.tipo_cocina" label="¿Que tipo de cocina prepara?" />
-              <q-input class="text-subtitle1" v-model="form.adaptar_menu" label="¿Es posible adaptar o modificar los menús?" />
-              <q-input class="text-subtitle1" v-model="form.menu_especial" label="¿Dispone de menús especiales?" />
-              <q-input class="text-subtitle1" v-model="form.ponque_matrimonio" label="¿Sirve tambien el ponqué de matrimonio?" />
-              <q-input class="text-subtitle1" v-model="form.ponque_propio" label="¿Puedo llevar mi propio ponqué de matrimonio?" />
-              <q-input class="text-subtitle1" v-model="form.recargo" label="¿Tiene algún recargo?" />
-              <q-input class="text-subtitle1" v-model="form.bebida_servicio" label="¿Cómo funciona el servicio de bebidas?" />
-              <q-input class="text-subtitle1" v-model="form.time_limit" label="¿Tiene límite de hora en los eventos?" />
-              <q-input class="text-subtitle1" v-model="form.fotografo_exclusivo" label="¿Tiene exclisividad con algún fotógrafo?" />
-              <q-input class="text-subtitle1" v-model="form.musica_exclusivo" label="¿Tiene exclisividad con algún grupo musical?" />
-              <q-input class="text-subtitle1" v-model="form.banquete_exclusivo" label="¿Tiene exclisividad con algún banquete?" />
-              <q-input class="text-subtitle1" v-model="form.pago_lugar" label="¿Existe algún pago fijo por solo el alquiler del lugar?" />
-              <q-input class="text-subtitle1" v-model="form.recargo_no_minimo" label="¿Cuál es el recargo en caso de no llegar al mínimo?" />
-              <q-input class="text-subtitle1" v-model="form.pago_transaccion" label="¿Cómo se efectua el pago?" />
-              <q-input class="text-subtitle1" v-model="form.discapacitados" label="¿Dispone de acceso para discapacitados?" />
-            </q-card-section>
-            <q-card-section class="text-primary text-subtitle1 text-right">
-                Leer más
-            </q-card-section>
-        </q-card>
-
-        <q-card class="my-card shadow-13" style="height: 420px">
-            <q-card-section class="text-primary text-h6">
-                Servicios
-            </q-card-section>
-            <q-card-section class="row q-gutter-xs q-px-xs q-pt-xl absolute-center justify-around" style="width: 100%">
-                <q-btn
-                class="col-3"
-                v-for="(server, index) in showServicios"
-                :key="index"
-                stack
-                flat
-                no-caps
-                @click="server.enable = !server.enable, serviciosEnables(server.id, server.enable)">
-                    <q-icon v-if="server.enable" center class="text-primary" :name="server.icon" style="font-size: 3em;" />
-                    <div v-if="server.enable" class="text-center text-caption text-primary">{{ server.title }}</div>
-                    <q-icon v-if="!server.enable" center class="text-grey" :name="server.icon" style="font-size: 3em;" />
-                    <div v-if="!server.enable" class="text-center text-strike text-caption text-grey">{{ server.title }}</div>
-                </q-btn>
-            </q-card-section>
-        </q-card>
-
-        <q-card class="my-card shadow-13" style="height: 400px">
-            <q-card-section class="row">
-                <div class="col-3 text-primary text-h6" style="height: 30px" >Mapa</div>
-                <q-input borderless  class="col-9 text-subtitle2" style="height: 30px"  v-model="perfil.direction" placeholder="Escribir Dirección" />
-            </q-card-section>
-            <q-card-section>
-                <q-date
-                style="width: 100%"
-                v-model="date "
-                minimal
-                />
-            </q-card-section>
-        </q-card>
-
-        <q-card class="my-card shadow-13" style="height: 310px">
-            <q-card-section>
-                <div class="text-primary text-h6" >Puntuación</div>
-            </q-card-section>
-            <q-card-section class="row q-py-xs">
-                <q-rating
-                    name="quality"
-                    v-model="pointTotal"
-                    max="5"
-                    size="3.5em"
-                    color="yellow"
-                    icon="star_border"
-                    icon-selected="star"
-                    no-dimming
-                />
-                <div class="q-pl-lg text-h3 text-grey">{{ pointTotal }}</div>
-            </q-card-section>
-            <q-card-section>
-              <div
-                class="row justify-between"
-                v-for="(point, index) in perfil.rating"
-                :key="index">
-                <div class="text-subtitle1 text-grey">{{ point.name }}</div>
-                <q-rating
-                    name="quality"
-                    v-model="point.point"
-                    max="5"
-                    size="2em"
-                    color="primary"
-                    icon="star_border"
-                    icon-selected="star"
-                    no-dimming
-                />
-                </div>
-            </q-card-section>
-        </q-card>
-
-        <q-card class="my-card shadow-13">
-            <q-card-section class="text-primary text-h6">
-                Opiniones
-            </q-card-section>
-            <q-card-section class="q-py-xs">
-              <div
-                v-for="(opinion, index) in perfil.opiniones"
-                :key="index">
-                  <div class="row">
-                    <div class="col-3">
-                        <q-icon class="text-dark" name="account_circle" style="font-size: 5em;" />
-                    </div>
-                    <div class="text-grey-8 col">
-                      <div class="q-pb-xs text-subtitle1">{{ opinion.name }}</div>
-                      <div class="text-caption">Realiza el evento el {{ opinion.eventDate }}</div>
-                    </div>
-                  </div>
-                  <div class="text-subtitle1">{{ opinion.coment }}</div>
-                  <div class="text-primary text-subtitle1 text-right">Leer más</div>
+  <div>
+    <div class="nube row justify-center items-center">
+      <q-btn icon="menu" flat style="position:absolute; top:5px;left:5px" color="white" round />
+      <div class="q-mb-md">
+        <q-img :src="perfilImg" class="estilo-img">
+          <div class="absolute-center bg-transparent text-center" style="width: 100%">
+            <q-avatar size="50px">
+              <div class="absolute-center" style="z-index:1">
+                <q-file borderless v-model="perfil" class="button-camera" @input="changePerfil()" accept=".jpg, image/*">
+                  <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
+                </q-file>
               </div>
-            </q-card-section>
-            <q-card-section class="q-pt-xs text-primary text-subtitle1 text-left">
-                Más Comentarios
-            </q-card-section>
-        </q-card>
+            </q-avatar>
+          </div>
+        </q-img>
+        <div class="text-center q-mt-sm text-white text-bold">Cambiar Foto</div>
+      </div>
     </div>
-
-    <div class="q-px-md q-pb-sm">
-      <q-btn class="text-subtitle1" style="width: 100%" glossy color="primary" label="Guardar" @click="guardar()" />
+    <div class="text-center text-primary text-h5 text-bold"> * Perfil * </div>
+    <div class="column items-center justify-start q-mb-lg">
+      <div v-for="(item, index) in opciones" :key="index" class="cursor-pointer q-mt-md column" style="font-size:18px" @click="ejecutar(index)">
+        <div class="text-grey-8">{{item.titulo}}</div>
+        <q-separator />
+      </div>
     </div>
-    <div class="q-px-md q-pb-sm">
-      <q-btn class="text-subtitle1" style="width: 100%" outline no-caps color="primary" icon="expand_less" label="Subir" />
-    </div>
-    </div>
-  </q-page>
+    <q-dialog v-model="dialogos.editarDatos" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+      <editar-datos class="q-mt-xl" />
+    </q-dialog>
+    <q-dialog v-model="dialogos.editarPerfil" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+      <editar-perfil class="q-mt-xl" />
+    </q-dialog>
+    <q-dialog v-model="dialogos.editarPreguntas" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+      <editar-preguntas class="q-mt-xl" />
+    </q-dialog>
+  </div>
 </template>
+
 <script>
+import env from '../../env'
+import EditarDatos from '../../components/Proveedor/Perfil/EditarDatos'
+import EditarPerfil from '../../components/Proveedor/Perfil/PerfilEmpresa'
+import EditarPreguntas from '../../components/Proveedor/Perfil/PreguntasFrecuentes'
 export default {
+  components: {
+    EditarDatos, EditarPerfil, EditarPreguntas
+  },
   data () {
     return {
-      slide: 1,
-      pointTotal: 4,
-      date: '2019/02/01',
-      usuario: 'Nombre Proveedor',
-      ciudad: 'Ciudad',
-      perfil: {
-        direction: '',
-        rating: [
-          { name: 'Calidad del Servicio', point: 4 },
-          { name: 'Relación Costo / Beneficio', point: 4 },
-          { name: 'Profesionalidad', point: 4 },
-          { name: 'Respuesta', point: 3 },
-          { name: 'Flexibilidad', point: 3 }
-        ],
-        opiniones: [
-          { name: 'Nombre de Usuario', eventDate: '08/10/2020', coment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-          { name: 'Nombre de Usuario', eventDate: '08/10/2020', coment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' }
-        ]
-      },
-      servicios: [],
       form: {},
-      showServicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'home', enable: false },
-        { title: 'Alimentos', id: 'alimentos', icon: 'fastfood', enable: false },
-        { title: 'Bebidas', id: 'bebidas', icon: 'local_bar', enable: false },
-        { title: 'Fotógrafo', id: 'fotografo', icon: 'camera_alt', enable: false },
-        { title: 'Vídeo', id: 'video', icon: 'videocam', enable: false },
-        { title: 'Audio', id: 'audio', icon: 'mic', enable: false },
-        { title: 'Música', id: 'musica', icon: 'audiotrack', enable: false },
-        { title: 'Iluminación', id: 'iluminacion', icon: 'emoji_objects', enable: false },
-        { title: 'Invitaciones', id: 'invitaciones', icon: 'drafts', enable: false },
-        { title: 'Recordatorios', id: 'recordatorios', icon: 'card_giftcard', enable: false },
-        { title: 'Decoración', id: 'decoracion', icon: 'local_florist', enable: false },
-        { title: 'Mobiliario', id: 'mobiliario', icon: 'deck', enable: false },
-        { title: 'Parqueadero', id: 'parqueadero', icon: 'drive_eta', enable: false },
-        { title: 'Personal', id: 'personal', icon: 'person', enable: false },
-        { title: 'Wifi', id: 'wifi', icon: 'wifi', enable: false }
-      ],
-      carrousel: [
-        { id: 1, img: 'example_1.jpg' },
-        { id: 2, img: 'example_2.jpg' },
-        { id: 3, img: 'example_3.jpg' },
-        { id: 4, img: 'example_4.jpg' },
-        { id: 5, img: 'example_5.jpg' }
+      baseu: '',
+      dialogos: {
+        editarDatos: false,
+        editarPerfil: false,
+        editarPreguntas: false
+      },
+      perfilImg: '',
+      user: {},
+      perfil: null,
+      opciones: [
+        { titulo: 'Editar Datos', dialog: true },
+        { titulo: 'Perfil de tu Empresa', dialog: true },
+        { titulo: 'Preguntas Frecuentes', dialog: true },
+        { titulo: 'Renovar Pago', url: '', dialog: false },
+        { titulo: 'Notificaciones', dialog: true },
+        { titulo: 'Cerrar Sesión', accion: 'logout', dialog: false }
       ]
     }
   },
-  validations: {
-  },
-  computed: {
-
-  },
-  mounted () {
-    this.getRecord()
+  async mounted () {
+    await this.getUser()
+    this.baseu = env.apiUrl
+    this.perfilImg = this.baseu + 'file_proveedor/perfil/' + this.user._id
   },
   methods: {
-    async guardar () {
-      this.form.servicios = this.servicios
-      this.$q.loading.show()
-      await this.$api.post('proveedores', this.form).then(res => {
-        if (res) {
-          this.$q.notify({
-            message: 'Guardado Con Exito',
-            color: 'positive'
-          })
-        }
-      })
-      this.$q.loading.hide()
-      this.$router.push('/inicio_proveedor')
-    },
-    serviciosEnables (serv, bool) {
-      if (bool) {
-        this.servicios.push(serv)
-      } else {
-        this.servicios = this.servicios.filter((v) => v !== serv)
+    async changePerfil () {
+      if (this.perfil) {
+        var formData = new FormData()
+        var files = []
+        files[0] = this.perfil
+        formData.append('files', files[0])
+        await this.$api.post('actualizar_file_proveedor/perfil', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log(res, 'respuesta')
+          this.perfilImg = this.baseu + 'file_proveedor/perfil/' + this.user._id
+          console.log(this.perfilImg, 'portada img funcion')
+          this.$router.go(this.$router.currentRoute)
+        })
       }
     },
-    async getRecord () {
-      await this.$api.get('proveedores_perfil').then(res => {
+    async getUser () {
+      await this.$api.get('users_perfil').then(res => {
         if (res) {
-          this.form = res.form
-          console.log('form ', this.form)
-          if (this.form.user_data) {
-            this.usuario = this.form.user_data.full_name
-            this.ciudad = this.form.user_data.city
-          }
-          if (this.form.servicios) {
-            this.servicios = this.form.servicios
-            this.showServicios.map(v => {
-              if (this.servicios.find(vv => vv === v.id)) {
-                v.enable = true
-              }
-            })
-          }
+          this.user = res
+          console.log(this.user, 'this user')
         }
       })
+    },
+    ejecutar (index) {
+      console.log(this.opciones[index], 'ssss')
+      if (this.opciones[index].dialog) {
+        if (index === 0) {
+          this.dialogos.editarDatos = true
+        } else if (index === 1) {
+          this.dialogos.editarPerfil = true
+        } else if (index === 2) {
+          this.dialogos.editarPreguntas = true
+        }
+      } else if (this.opciones[index].url) {
+        this.$router.push(this.opciones[index].url)
+      } else if (this.opciones[index].accion === 'logout') {
+        this.logout()
+      }
+    },
+    logout () {
+      this.$router.push('/login')
     }
   }
 }
 </script>
+
+<style>
+.nube {
+  background-image: url('../../../public/nubeazul2.png');
+  width:100%;
+  height: 300px;
+  background-size: 100% 300px;
+}
+
+.button-camera {
+  text-decoration: none;
+  padding: 10px;
+  font-weight: 540;
+  font-size: 0px;
+  color: #0016b0;
+  background-color: #ffffff;
+  border-radius: 30px;
+  border: 1px solid #7e7e7e;
+  height:40px;
+  width:40px
+}
+
+.estilo-img {
+  width:120px;
+  height:120px;
+  border-radius:100px
+}
+
+.estilo-opciones {
+  text-decoration: underline black;
+}
+</style>

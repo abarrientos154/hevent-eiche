@@ -77,10 +77,12 @@ addPrefixToGroup(
     Route.get('proveedores_servicios/:id_servicio', 'ServicioController.preguntasPorId')
     Route.get('preguntas_proveedor', 'ServicioController.preguntasPorId')
     Route.get('servicios_proveedor', 'ServicioController.preguntasPorProveedor')
+    Route.get('obtener_check_servicios_perfil/:id_proveedor', 'ServicioController.obtenerCheckServiciosPerfil')
     ///////////PROVEEDORES/////////////////////
 
     ///////////Usuarios/////////////////////
     Route.get('users_perfil', 'UserController.show')
+    Route.put('editar_datos_proveedor', 'UserController.editarDatosProveedor')
     Route.post('guardar_descripcion_proveedor', 'UserController.guardarDescripcionProveedor')
     Route.put('users_perfil', 'UserController.update')
     Route.get("show_provider_for_user/:id", "ProveedorController.showProviderForUser")

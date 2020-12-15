@@ -32,6 +32,26 @@ class UserController {
     response.send(users);
   }
 
+  async editarDatosProveedor({ request, response, auth }) {
+    const idUser = ((await auth.getUser()).toJSON())._id
+    let requestAll = request.all()
+    const validation = await validate(request.all(), User.fieldValidationRulesProveedor())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else {
+      let body = request.only(User.fillableProveedor)
+      let user = await User.find(idUser)
+      console.log(body, 'body', requestAll, 'requestall')
+      user.password = body.password
+      await user.save()
+      delete body.password
+      await User.query().where({_id: idUser}).update(body)
+      response.send(user)
+    }
+
+    //crear la funcion para editar
+  }
+
   async show({ request, response, auth }) {
     let data = (await auth.getUser()).toJSON()
     response.send(data)
