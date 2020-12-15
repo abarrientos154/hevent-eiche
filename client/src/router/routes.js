@@ -1,6 +1,7 @@
 
 const routes = [
   { path: '/registro', component: () => import('pages/Registro.vue') },
+  { path: '/registro_cliente', component: () => import('pages/client/RegistroCliente.vue') },
   { path: '/registro_proveedor', component: () => import('pages/RegistroProveedor.vue') },
   { path: '/test', component: () => import('pages/Test.vue') },
   {
@@ -107,6 +108,10 @@ const routes = [
   {
     path: '/slider',
     component: () => import('pages/Inicio/Slider.vue')
+  },
+  {
+    path: '/slider_proveedor',
+    component: () => import('pages/proveedor/Slider.vue')
   },
   {
     path: '/',

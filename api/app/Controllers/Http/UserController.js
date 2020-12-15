@@ -161,6 +161,25 @@ class UserController {
     }
   }
 
+  async registrarCliente ({ request, response }) {
+    let recibir = request.all()
+    console.log(recibir)
+    const validation = await validate(recibir, User.fieldValidationRulesCliente())
+    if (validation.fails()) {
+      response.unprocessableEntity(validation.messages())
+    } else if (((await User.where({email: recibir.email}).fetch()).toJSON()).length) {
+      response.unprocessableEntity([{
+        message: 'Correo ya registrado en el sistema!',
+        error: true
+      }])
+    } else {
+      let body = request.only(User.fillableCliente)
+      body.roles=[2]
+      let guardar = await User.create(body)
+      response.send(guardar)
+    }
+  }
+
   async validateEmail({ request, response, params }) {
     if (((await User.where({email: params.email}).fetch()).toJSON()).length) {
       response.unprocessableEntity([{
