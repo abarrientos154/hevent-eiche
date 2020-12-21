@@ -12,18 +12,23 @@
       </q-tab-panel>
 
       <q-tab-panel name="preguntas">
-        <div class="text-h6">Alarms</div>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        <preguntas :form="form" :servicios="servicios" :user="user"  />
       </q-tab-panel>
     </q-tab-panels>
+
+    <div class="row justify-center q-mb-lg q-mt-sm">
+      <q-btn v-if="panel === 'servicios'" label="Siguiente" @click="next" color="primary" style="width:120px;height:50px" />
+    </div>
+
   </q-card>
 </template>
 
 <script>
 import Servicios from '../Perfil/PreguntasFrecuentes/Servicios'
+import Preguntas from '../Perfil/PreguntasFrecuentes/Preguntas'
 export default {
   components: {
-    Servicios
+    Servicios, Preguntas
   },
   data () {
     return {
@@ -41,6 +46,9 @@ export default {
     this.getChecks()
   },
   methods: {
+    next () {
+      this.panel = 'preguntas'
+    },
     test () {
       console.log(this.form, 'this form')
     },

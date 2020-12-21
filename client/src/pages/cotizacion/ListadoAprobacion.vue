@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="fondo-toolbar"></div>
+  <div v-if="data.length > 0">
+    <div  class="fondo-toolbar"></div>
     <div class="row justify-center q-ma-sm">
       <div class="col-xs-11 col-sm-6 col-md-6 col-lg-6 q-pr-sm" v-for="(item, index) in data" :key="index" style="border-radius:8px;margin-top:8px;margin-bottom:8px">
         <q-item class="q-mt-xs q-mb-xs q-ma-sm">
@@ -19,11 +19,16 @@
         </q-item>
         <q-separator inset />
       </div>
-      <div v-if="data.length === 0" class="text-h6 text-center q-mt-xl" style="font-size:30px">Actualmente sin cotizaciones pendientes...</div>
     </div>
     <q-dialog v-model="showDialogInfo" position="bottom" transition-show="slide-up" transition-hide="slide-down" >
       <aprobar-cotizacion :cotisacion_id="cotisacion_id" @aprobar="aprobar" @negar="negar" :esCliente="esCliente" />
     </q-dialog>
+  </div>
+  <div v-else>
+   <q-img src="error.png">
+      <p class="text-subtitle2 text-center row justify-center text-grey-9" style="position:absolute;bottom:12%;width:100%">Codigo Equivocado</p>
+      <p class="text-subtitle2 text-center text-grey-9 row justify-center" style="position:absolute;bottom:8%;width:100%">Intentelo de nuevo por favor</p>
+   </q-img>
   </div>
 </template>
 
@@ -120,4 +125,5 @@ export default {
    height: 150px;
    background-size: 100% 250px;
  }
+
 </style>

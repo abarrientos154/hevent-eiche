@@ -1,12 +1,17 @@
 <template>
   <div>
-    <q-carousel animated v-model="slide" navigation infinite style="height:200px" swipeable >
+    <q-carousel animated v-model="slide" navigation infinite style="height:200px" swipeable v-if="user.images && user.images.length > 1">
       <q-carousel-slide :name="index" :img-src="baseu + 'file_proveedor/' + item" v-for="(item, index) in user.images" :key="index" >
         <div style="position:absolute;top:0px;left:0px;font-size:20px" class="text-white" >
           <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
         </div>
       </q-carousel-slide>
     </q-carousel>
+    <q-img v-if="user.images" :src="user.images.length === 1 ? baseu + 'file_proveedor/' + user.images[0] : 'portada_proveedor.png'" style="height:200px">
+      <div style="position:absolute;top:0px;left:0px;font-size:20px" class="text-white" >
+        <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
+      </div>
+    </q-img>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}
     </div>
@@ -23,7 +28,7 @@
             <div>
               <q-input borderless v-model="user.descripcion" class="full-widht full-height" style="height:500px" oulined type="textarea" />
             </div>
-            <div class="row justify-center">
+            <div class="row justify-center absolute-bottom q-mb-sm">
               <q-btn label="guardar" push style="border-radius:12px; width:300px; height:50px" color="primary" @click="guardarDescripcion()" />
             </div>
           </div>
@@ -37,8 +42,8 @@
         <q-tab-panel name="Mapas">
           <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
           <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
-          <div class="row justify-center">
-            <q-btn label="Contactame" push style="border-radius:12px; width:300px; height:50px" color="primary" />
+          <div class="row justify-center absolute-bottom q-mb-sm">
+            <q-btn label="Contactame" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" />
           </div>
         </q-tab-panel>
 
