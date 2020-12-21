@@ -156,6 +156,26 @@ class ServicioController {
     response.send(body)
   }
 
+  async modificarServiciosPreguntas ({request, response, auth}) {
+    let preguntas = request.only(['preguntas'])
+    let servicios = request.only(['servicios'])
+    console.log(preguntas, 'pre', servicios, 'serv')
+    const idUser = ((await auth.getUser()).toJSON())._id
+    await ServicioProveedor.query().where({id_proveedor: idUser}).delete()
+    let serviciosArrayOfObj = []
+    for (let j of servicios.servicios) {
+      await ServicioProveedor.create({id_proveedor: idUser, id: j})
+    }
+
+
+    await RespuestaProveedor.query().where({id_proveedor: idUser}).delete()
+    for (let j of preguntas.preguntas) {
+      j.id_proveedor = idUser
+      await RespuestaProveedor.create(j)
+    }
+    response.send({message: 'todo bien'})
+  }
+
   /**
    * Delete a servicio with id.
    * DELETE servicios/:id

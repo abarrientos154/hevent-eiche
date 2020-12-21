@@ -34,3 +34,8 @@
 .button-border {
   border-radius: 10px;
 }
+
+.gradiente-buttom {
+  background: linear-gradient(to right, $primary, $secondary);
+  color: white
+}

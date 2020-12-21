@@ -569,7 +569,7 @@ const data = [
       },
       {
         pregunta: '¿Qué tipo de Bebidas Alcohólicas tiene?',
-        checks: [ 'Champagne', 'Cerveza', 'Whisky', 'Vodka', 'Tequila', 'Ron', 'Ginebra', 'Brandy', 'Vino', 'Amaratto', 'Aguardiente', 'Pisco', 'Brandy' ]
+        checks: [ 'Champagne', 'Cerveza', 'Whisky', 'Vodka', 'Tequila', 'Ron', 'Ginebra', 'Brandy', 'Vino', 'Amaratto', 'Aguardiente', 'Pisco' ]
       },
       {
         pregunta: '¿Que tipo de Bebidas Calientes tiene?',
