@@ -140,7 +140,7 @@ class UploadController {
     if (profilePic) {
       if (Helpers.appRoot('storage/uploads/proveedor_videos')) {
         await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_videos'), {
-          name: codeFile,
+          name: codeFile + '.' + profilePic.extname,
           overwrite: true
         })
       } else {
@@ -152,10 +152,10 @@ class UploadController {
       } else {
         let proveedor = await User.find(user._id)
         if (proveedor.videos) {
-          proveedor.videos.push(codeFile)
+          proveedor.videos.push(codeFile + '.' + profilePic.extname)
         } else {
           proveedor.videos = []
-          proveedor.videos.push(codeFile)
+          proveedor.videos.push(codeFile + '.' + profilePic.extname)
         }
         await proveedor.save()
         console.log(proveedor, 'proveedor buscar')
@@ -213,6 +213,7 @@ class UploadController {
   }
 
   async testFile({ params, response, request }) {
+    console.log(params.file, 'params file')
     response.download(Helpers.appRoot('storage/uploads/proveedor_videos/' + params.file))
   }
 

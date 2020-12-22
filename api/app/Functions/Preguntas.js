@@ -30,7 +30,7 @@ exports.preguntas = async (servicio_id) => {
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {

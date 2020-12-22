@@ -1,8 +1,12 @@
 <template>
   <div>
     <div v-if="videos.length > 0" style="height:100px;border-radius:12px;width:100%" class="row justify-between">
-      <q-card class="q-ml-sm q-mr-sm q-mt-sm" v-for="(item, index) in videos" :key="index" style="height:100px;border-radius:12px;width:140px">
-        <!-- <q-video :src="baseu + 'file_proveedor_video/' + item" style="height:100px;border-radius:12px;width:140px" /> -->
+      <q-card class="q-ml-sm q-mr-sm q-mt-sm fondo-video-default bg-primary" v-for="(item, index) in videos" :key="index" style="height:100px;border-radius:24px;width:140px">
+        <!-- <q-video :src="baseu + 'file_proveedor_video/' + item" style="height:100px;border-radius:12px;width:140px" />
+        <div class="text-center text-primary q-mb-sm q-mt-sm" style="text-decoration: underline">Reproducir</div>
+        <q-icon class="absolute-center q-mt-sm" v-ripple name="play_circle_outline" color="primary" style="z-index:0" size="lg" />-->
+        <q-btn @click="dialog = true, fileName = item" flat class="absolute-center all-pointer-events gradiente-buttom" size="20px" dense icon="play_arrow" rounded />
+        <q-btn @click="confirmEliminar(item)"  flat class="absolute all-pointer-events" size="15px" dense icon="delete" color="negative" style="top: 2px; left: 5px" rounded />
       </q-card>
       <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-grey-5" style="height:100px;border-radius:12px;width:140px">
         <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Video</div>
@@ -25,18 +29,27 @@
         </div>
       </q-avatar>
     </div>
+    <q-dialog v-model="dialog" persistent :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+      <ver-video :filename="fileName" />
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import env from '../../../env'
+import VerVideo from '../../../components/VerVideo'
 export default {
+  components: {
+    VerVideo
+  },
   data () {
     return {
       videos: [
       ],
       video: null,
-      baseu: ''
+      baseu: '',
+      dialog: false,
+      fileName: ''
     }
   },
   mounted () {
@@ -108,5 +121,10 @@ export default {
   border: 1px solid #7e7e7e;
   height:40px;
   width:40px
+}
+.fondo-video-default {
+  background-image: url('../../../../public/proveedor-video-default.png');
+  background-size: 100% 100%;
+  background-color: $primary;
 }
 </style>

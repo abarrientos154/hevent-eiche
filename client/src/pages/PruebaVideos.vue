@@ -6,11 +6,8 @@
       <!-- <q-img :src="baseu + 'test_file'" /> -->
     </div>
       <div class="column">
-        <div class="container q-ml-md q-mt-xl" style="width:190px; height:120px">
+        <div class="container q-ml-md q-mt-xl" style="width:490px; height:120px">
           <my-video :sources="video.sources" :options="video.options"></my-video>
-        </div>
-        <div class="container q-ml-md" style="width:190px; height:120px">
-          <my-video :sources="videoT.sources" :options="videoT.options"></my-video>
         </div>
       </div>
   </div>
@@ -35,8 +32,8 @@ export default {
         ],
         options: {
           autoplay: false,
-          volume: 0.1,
-          poster: 'http://slimedeal.eichechile.com/app-logo-128x128.png'
+          volume: 1,
+          poster: ''
         }
       },
       videoT: {
@@ -48,18 +45,21 @@ export default {
         ],
         options: {
           autoplay: false,
-          volume: 0.1,
-          poster: 'http://slimedeal.eichechile.com/app-logo-128x128.png'
+          volume: 1,
+          poster: ''
         }
       }
     }
   },
   mounted () {
     this.baseu = env.apiUrl
-    this.video.sources[0].src = this.baseu + 'test_file/mivideo'
-    this.videoT.sources[0].src = this.baseu + 'test_file/CXdfhdoJ3ctsgte3L2D1w6qAQbpJSV'
+    this.video.sources[0].src = this.baseu + 'test_file/prueba.mp4'
+    this.videoT.sources[0].src = this.baseu + 'test_file/video'
   },
   methods: {
+    test () {
+      console.log('esto es un test')
+    }
   }
 }
 </script>

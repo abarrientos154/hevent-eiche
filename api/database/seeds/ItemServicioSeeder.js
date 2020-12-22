@@ -187,7 +187,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -240,7 +240,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -293,7 +293,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -346,7 +346,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -399,7 +399,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -452,7 +452,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -505,7 +505,7 @@ const data = [
       {
         pregunta: '¿Con que personal dispone?',
         checks: [
-          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador', 'Otro'
+          'Mesero', 'Acomodador', 'Aseo', 'Seguridad', 'Traductor', 'Animador'
         ]
       },
       {
@@ -577,7 +577,7 @@ const data = [
       },
       {
         pregunta: '¿Que tipo de jugos o Smoothie tiene?',
-        checks: [ 'Fresa', 'Melon', 'Naranja', 'Limon', 'Papaya', 'Mango', 'Guayaba', 'Mora', 'Otro' ]
+        checks: [ 'Fresa', 'Melon', 'Naranja', 'Limon', 'Papaya', 'Mango', 'Guayaba', 'Mora' ]
       },
       {
         pregunta: '¿Hay algún costo extra por desplazamiento?',
@@ -701,7 +701,7 @@ const data = [
       },
       {
         pregunta: '¿Que otros servicios ofrece?',
-        checks: [ 'Servicio de impresion', 'tarjetas de agradecimiento', 'Diseños Personalizados', 'Recuerdos para eventos', 'Otro' ]
+        checks: [ 'Servicio de impresion', 'tarjetas de agradecimiento', 'Diseños Personalizados', 'Recuerdos para eventos' ]
       },
       {
         pregunta: '¿Que tipo de impresiones hace?',

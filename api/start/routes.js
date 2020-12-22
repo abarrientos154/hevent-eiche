@@ -56,7 +56,7 @@ addPrefixToGroup(
     Route.get("file_proveedor_video/:file", "UploadController.getFileByDirectoryVideo")
     Route.delete("eliminar_archivo_proveedor/:file", "UploadController.eliminarArchivo")
 
-    Route.delete("eliminar_archivo_proveedor_video/:file", "UploadController.eliminarArchivo")
+    Route.delete("eliminar_archivo_proveedor_video/:file", "UploadController.eliminarArchivoVideo")
     Route.get("test_file/:file", "UploadController.testFile")
     Route.get("file_proveedor/:carpeta/:id", "UploadController.traerImagenPortadaPerfilProveedor")
 

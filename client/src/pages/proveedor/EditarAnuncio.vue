@@ -7,7 +7,14 @@
         </div>
       </q-carousel-slide>
     </q-carousel>
-    <q-img v-if="user.images" :src="user.images.length === 1 ? baseu + 'file_proveedor/' + user.images[0] : 'portada_proveedor.png'" style="height:200px">
+    <q-img v-if="user.images" :src="user.images.length === 1
+      ? baseu + 'file_proveedor/' + user.images[0]
+      : user.images.length === 0
+      ? 'portada_proveedor.png'
+      : 'portada_proveedor.png' " style="height:200px">
+      <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" style="position:absolute;top:0px;left:0px;font-size:20px" />
+    </q-img>
+    <q-img v-else :src="'portada_proveedor.png' " style="height:200px">
       <div style="position:absolute;top:0px;left:0px;font-size:20px" class="text-white" >
         <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
       </div>
@@ -29,7 +36,7 @@
               <q-input borderless v-model="user.descripcion" class="full-widht full-height" style="height:500px" oulined type="textarea" />
             </div>
             <div class="row justify-center absolute-bottom q-mb-sm">
-              <q-btn label="guardar" push style="border-radius:12px; width:300px; height:50px" color="primary" @click="guardarDescripcion()" />
+              <q-btn label="guardar" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" @click="guardarDescripcion()" />
             </div>
           </div>
         </q-tab-panel>
@@ -56,6 +63,11 @@
           <div class="text-h6 text-grey-9">Videos</div>
           <videos />
         </q-tab-panel>
+
+        <q-tab-panel name="Opiniones">
+          <div class="text-h6 text-grey-9">Opiniones</div>
+          <opiniones />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -66,8 +78,9 @@ import PreguntasFrecuentes from '../../components/Proveedor/EditarAnuncio/Pregun
 import Imagenes from '../../components/Proveedor/EditarAnuncio/Imagenes'
 import Videos from '../../components/Proveedor/EditarAnuncio/Videos'
 import env from '../../env'
+import Opiniones from '../../components/Proveedor/EditarAnuncio/Opiniones.vue'
 export default {
-  components: { PreguntasFrecuentes, Imagenes, Videos },
+  components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones },
   data () {
     return {
       panel: 'Descripcion',
