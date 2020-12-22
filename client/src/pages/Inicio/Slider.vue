@@ -7,7 +7,7 @@
           <label>Bienvenido a HEVENT</label>
           <label>tu app de eventos Conoce más...</label>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -18,7 +18,7 @@
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>¿No sabes por donde empezar para organizar tu EVENTO?</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -29,7 +29,7 @@
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>Organiza tu EVENTO de manera fácil y sencilla.</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -40,7 +40,7 @@
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>Tu EVENTO se realiza y sale correctamente.</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>

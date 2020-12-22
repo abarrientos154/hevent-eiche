@@ -51,8 +51,8 @@
         <q-separator class="q-mt-md" size="3px" inset />
         <div class="row justify-center text-grey-8" style="font-size:20px">¿No Tienes Cuenta?</div>
         <div class="row justify-center q-mr-sm q-gutter-sm q-mt-sm">
-          <q-btn color="secondary" class="q-mt-sm button-border" style="height:45px" :loading="loading" label="Registrarte" @click="$router.push('/registro')" />
-          <q-btn color="secondary" round class="q-mt-sm" :loading="loading" icon="business" @click="$router.push('/registro_proveedor')" />
+          <q-btn color="secondary" class="q-mt-sm button-border" style="height:45px" :loading="loading" label="Registrarte" @click="$router.push('/registro_cliente')" />
+          <q-btn color="secondary" round class="q-mt-sm" :loading="loading" icon="business" @click="$router.push('/slider_proveedor')" />
         </div>
       </div>
     </animation-transition>

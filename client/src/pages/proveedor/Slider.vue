@@ -7,7 +7,7 @@
           <label>Bienvenido a HEVENT</label>
           <label>tu mejor aliado Conoce más...</label>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -18,7 +18,7 @@
         <div class="column items-center justify-center vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>Nosotros te llevamos tus Clientes y te lo mostramos con Estadísticas</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -29,7 +29,7 @@
         <div class="column items-center justify-center vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>Recibe Solicitudes y Cotiza</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -40,7 +40,7 @@
         <div class="column items-center justify-center vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>Realiza un evento más</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
@@ -51,7 +51,7 @@
         <div class="column items-center justify-center vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <p>Inscribete de Manera anual y has Crecer tu negocio</p>
           <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro" />
+            <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
             <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
           </div>
