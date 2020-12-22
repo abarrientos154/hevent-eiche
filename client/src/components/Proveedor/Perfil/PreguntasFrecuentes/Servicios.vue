@@ -6,7 +6,7 @@
         Seleccionar todos los servicios que ofreces para poderlos cotizar.
       </div>
     </div>
-    <div class="row q-ml-md q-mr-md">
+    <div class="row q-ml-sm q-mr-sm">
       <div class="column" v-for="(item, index) in servicios" :key="index">
         <div class="text-bold text-subtitle1 q-ma-sm">{{item.name}}</div>
         <div class="column q-ml-md q-mr-md" v-for="(subitem, index) in item.items" :key="index">

@@ -1,61 +1,95 @@
 {
-  "language": "es",
-  "command": "SUBMIT_TRANSACTION",
+  "language": "{{lng_es}}",
+  "command": "{{comm_submit}}",
   "merchant": {
-     "apiLogin": "pRRXKOl8ikMmt9u",
-     "apiKey": "4Vj8eK4rloUd272L48hsrarnUA"
+      "apiKey": "{{key}}",
+      "apiLogin": "{{login}}"
   },
   "transaction": {
-     "order": {
-        "accountId": "512326",
-        "referenceCode": "testPanama1",
-        "description": "Test order Panama",
-        "language": "en",
-        "notifyUrl": "http://pruebaslap.xtrweb.com/lap/pruebconf.php",
-        "signature": "a2de78b35599986d28e9cd8d9048c45d",
-        "shippingAddress": {
-           "country": "PA"
-        },
-        "buyer": {
-           "fullName": "APPROVED",
-           "emailAddress": "test@payulatam.com",
-           "dniNumber": "1155255887",
-           "shippingAddress": {
-              "street1": "Calle 93 B 17 – 25",
-              "city": "Panama",
-              "state": "Panama",
-              "country": "PA",
+      "order": {
+          "accountId": "{{account_co}}",
+          "referenceCode": "{{reference}}",
+          "description": "Pruebas PayU: {{ref_mth_v}} {{ref_type_auth_capt}}",
+          "language": "{{lng_es}}",
+          "signature": "{{signature}}",
+          "notifyUrl": "https://hookb.in/qBkPobk7NrIzVVJyW9oB",
+          "additionalValues": {
+              "TX_VALUE": {
+                  "value": "{{value_co}}",
+                  "currency": "{{currency_co}}"
+              },
+              "TX_TAX": {
+                  "value": "{{tax_co}}",
+                  "currency": "{{currency_co}}"
+              },
+              "TX_TAX_RETURN_BASE": {
+                  "value": "{{return_tax_base_co}}",
+                  "currency": "{{currency_co}}"
+              }
+          },
+          "buyer": {
+              "merchantBuyerId": "1",
+              "fullName": "{{payer_name}}",
+              "emailAddress": "{{payer_email}}",
+              "contactPhone": "{{phone}}",
+              "dniNumber": "1234567891",
+              "dniType": "CC",
+              "shippingAddress": {
+                  "street1": "calle 100 # 9 - 8",
+                  "street2": "5555487",
+                  "city": "Medellin",
+                  "state": "Antioquia",
+                  "country": "CO",
+                  "postalCode": "000000",
+                  "phone": "7563126"
+              }
+          },
+          "shippingAddress": {
+              "street1": "calle 100 # 9 - 8",
+              "street2": "5555487",
+              "city": "Medellin",
+              "state": "Antioquia",
+              "country": "CO",
+              "postalCode": "0000000",
+              "phone": "7563126"
+          }
+      },
+      "payer": {
+          "merchantPayerId": "1",
+          "fullName": "{{payer_name}}",
+          "emailAddress": "{{payer_email}}",
+          "contactPhone": "{{phone}}",
+          "dniNumber": "1234567891",
+          "dniType": "CC",
+          "billingAddress": {
+              "street1": "calle 100 # 9 - 8",
+              "street2": "125544",
+              "city": "Bogota",
+              "state": "Bogota DC",
+              "country": "CO",
               "postalCode": "000000",
-              "phone": "5582254"
-           }
-        },
-        "additionalValues": {
-           "TX_VALUE": {
-              "value": 5,
-              "currency": "USD"
-           }
-        }
-     },
-     "creditCard": {
-        "number": "4111111111111111",
-        "securityCode": "123",
-        "expirationDate": "2018/08",
-        "name": "test"
-     },
-     "type": "AUTHORIZATION_AND_CAPTURE",
-     "paymentMethod": "VISA",
-     "paymentCountry": "PA",
-     "payer": {
-        "fullName": "APPROVED",
-        "emailAddress": "test@payulatam.com"
-     },
-     "ipAddress": "127.0.0.1",
-     "cookie": "cookie_52278879710130",
-     "userAgent": "Firefox",
-     "extraParameters": {
-        "INSTALLMENTS_NUMBER": 1,
-        "RESPONSE_URL": "http://www.misitioweb.com/respuesta.php"
-     }
+              "phone": "7563126"
+          }
+      },
+      "creditCard": {
+          "number": "4097440000000004",
+          "securityCode": "777",
+          "expirationDate": "2021/04",
+          "name": "APPROVED"
+      },
+      "extraParameters": {
+          "INSTALLMENTS_NUMBER": 1,
+          "EXTRA1": "Prueba extra 1",
+          "EXTRA2": "Prueba extra 2",
+          "EXTRA3": "Prueba extra 3"
+      },
+      "type": "{{type_a_c}}",
+      "paymentMethod": "{{method_v}}",
+      "paymentCountry": "{{country_co}}",
+      "deviceSessionId": "vghs6tvkcle931686k1900o6e1",
+      "ipAddress": "127.0.0.1",
+      "cookie": "pt1t38347bs6jc9ruv2ecpv7o2",
+      "userAgent": "Mozilla/5.0 (Windows NT 5.1; rv:18.0) Gecko/20100101 Firefox/18.0"
   },
-  "test": true
+  "test": "false"
 }

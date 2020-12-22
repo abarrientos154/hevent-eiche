@@ -1,6 +1,6 @@
 <template>
 <div>
-  <q-img :src="portadaImg" style="width: 100%;height:200px">
+  <q-img :src="portadaImg" style="width: 100%;height:200px;border-bottom-left-radius:20px;border-bottom-right-radius:20px;">
     <div class="absolute-center bg-transparent text-center" style="width: 100%">
       <q-avatar size="50px">
         <div class="absolute-center" style="z-index:1">
@@ -12,11 +12,16 @@
     </div>
   </q-img>
   <div class="q-ml-lg row items-center">
-    <div>
-      <q-avatar size="120px">
-        <img :src="perfilImg" style="width: 70px;height:70px">
-      </q-avatar>
-    </div>
+      <div class="column items-center">
+        <q-avatar size="90px">
+          <div class="absolute-center" style="z-index:1">
+            <q-file borderless v-model="perfil" class="button-camera" @input="changePerfil()" accept=".jpg, image/*" >
+              <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
+            </q-file>
+          </div>
+          <q-img :src="perfilImg ? perfilImg : 'noimg.png'" />
+        </q-avatar>
+      </div>
     <div class="column">
       <div class="text-grey-7 text-bold text-subtitle1"> {{user.name}} </div>
     </div>
@@ -52,14 +57,13 @@ export default {
       ],
       portadaImg: '',
       perfilImg: '',
+      perfil: '',
       portada: '',
+      perfil: '',
       user: {},
       baseu: ''
     }
   },
-  validations: {
-  },
-  computed: {},
   async mounted () {
     this.getRecord()
     await this.getUser()
@@ -77,8 +81,9 @@ export default {
         }
       })
     },
-    changePerfil () {
+    changePerfilAndPortada () {
       if (this.portada) { this.portadaImg = URL.createObjectURL(this.portada) }
+      if (this.perfil) { this.perfilImg = URL.createObjectURL(this.perfil) }
     },
     checkFileType (files) {
       return files.filter(file => file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg')
@@ -114,6 +119,24 @@ export default {
           this.$router.go(this.$router.currentRoute)
         })
       }
+    },
+    async changePerfil () {
+      if (this.perfil) {
+        var formData = new FormData()
+        var files = []
+        files[0] = this.perfil
+        formData.append('files', files[0])
+        await this.$api.post('actualizar_file_proveedor/perfil', formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          console.log(res, 'respuesta')
+          this.perfilImg = this.baseu + 'file_proveedor/perfil/' + this.user._id
+          console.log(this.perfilImg, 'perfil img funcion')
+          this.$router.go(this.$router.currentRoute)
+        })
+      }
     }
   }
 }
@@ -132,5 +155,4 @@ export default {
   height:40px;
   width:40px
 }
-
 </style>
