@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="background-uno"></div>
+    <div class="row justify-center">
+      <img src="RegistroCliente/Mesa de trabajo 2.png" style="width: 100%;height:260px"/>
+    </div>
     <div style="position:absolute; top:10px; left:5px" >
       <q-btn color="white" icon="arrow_back" flat dense @click="$router.go(-1)" />
     </div>
@@ -204,8 +206,8 @@ export default {
 }
 </script>
 <style>
-.background-uno {
-  background: url('../../../../public/nube5.png');
+.background-unot {
+  background: url('../../../../public/RegistroCliente/Mesa de trabajo 2.png');
   height: 250px;
   background-size: 100% 100%;
 }

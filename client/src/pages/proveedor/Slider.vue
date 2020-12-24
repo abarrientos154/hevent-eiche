@@ -78,7 +78,7 @@ export default {
       if (this.tab === 'two') { this.tab = 'tree' } else
       if (this.tab === 'tree') { this.tab = 'four' } else
       if (this.tab === 'four') { this.tab = 'five' } else {
-        this.$router.push('/login')
+        this.$router.push('/registro_proveedor')
       }
     }
   }

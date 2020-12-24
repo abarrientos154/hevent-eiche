@@ -106,6 +106,10 @@ const routes = [
     component: () => import('layouts/Login.vue')
   },
   {
+    path: '/login_cliente',
+    component: () => import('pages/client/Login.vue')
+  },
+  {
     path: '/slider',
     component: () => import('pages/Inicio/Slider.vue')
   },
