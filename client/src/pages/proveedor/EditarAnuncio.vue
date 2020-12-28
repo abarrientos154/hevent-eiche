@@ -7,7 +7,7 @@
         </div>
       </q-carousel-slide>
     </q-carousel>
-    <q-img v-if="user.images" :src="user.images.length === 1
+    <q-img v-else-if="user.images && user.images.length === 1" :src="user.images.length === 1
       ? baseu + 'file_proveedor/' + user.images[0]
       : user.images.length === 0
       ? 'portada_proveedor.png'
@@ -19,6 +19,9 @@
         <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
       </div>
     </q-img>
+    <div class="q-mt-sm q-ma-sm row justify-end">
+      <q-btn label="ver anuncio" dense class="gradiente-buttom q-pa-xs" push />
+    </div>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}
     </div>

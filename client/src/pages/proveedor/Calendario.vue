@@ -1,36 +1,63 @@
 <template>
-  <div style="max-width: 800px; width: 100%;">
-    <q-toolbar class="text-primary row justify-between">
-      <q-btn color="primary" flat icon="arrow_left" label="Anterior" @click="$refs.calendar.prev()" />
-      <q-btn color="primary" flat icon-right="arrow_right" label="Siguiente" @click="$refs.calendar.next()" />
-    </q-toolbar>
-    <q-calendar
-      v-model="selectedDate"
-      view="month"
-      locale="es-us"
-      :day-height="100"
-      ref="calendar"
-      @click:day="test"
-    >
-      <template #day="{ timestamp }">
-        <template v-for="(event, index) in getEvents(timestamp.date)">
-          <q-badge
-            :key="index"
-            style="width: 100%; cursor: pointer; height: 16px; max-height: 16px"
-            class="q-event"
-            :class="badgeClasses(event, 'day')"
-            :style="badgeStyles(event, 'day')"
+  <div class="column items-center justify-center q-ma-sm">
+    <div class="row">
+      <q-btn label="atras" @click="$refs.calendar.prev()" />
+      <q-spaced />
+      <q-btn label="adelante" @click="$refs.calendar.next()" />
+    </div>
+    <div style="max-width: 1000px; width: 100%" class="q-mt-md">
+      <q-splitter
+        v-model="splitterModel"
+        :limits="[30, 100]"
+        emit-immediately
+      >
+        <template v-slot:before>
+          <q-calendar
+            ref="calendar"
+            v-model="selectedDate"
+            view="month"
+            @input="onModelChanged"
+            locale="es-es"
+            :mini-mode="miniMode"
+            :short-weekday-label="shortWeekdayLabel"
           >
-            <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon><span class="ellipsis">{{ event.title }}</span>
-          </q-badge>
+            <template #day="{ timestamp, miniMode }" style="height:400px">
+              <template v-for="(event, index) in getEvents(timestamp.date)">
+                <template v-if="miniMode" >
+                  <q-badge
+                    :key="index"
+                    style="width: 5px!important; max-width: 5px; height: 5px; max-height: 5px"
+                    :class="badgeClasses(event, 'day', index)"
+                    :style="badgeStyles(event, 'day')"
+                    @click="test(event)"
+                  ></q-badge>
+                </template>
+                <template v-else>
+                  <q-badge
+                    @click="test(event)"
+                    :key="index"
+                    style="width: 100%; cursor: pointer; height: 16px; max-height: 16px"
+                    class="q-mb-xs"
+                    :class="badgeClasses(event, 'day', index)"
+                    :style="badgeStyles(event, 'day')"
+                  >
+                    <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon>
+                    <span class="ellipsis">{{ event.title }}</span>
+                  </q-badge>
+                </template>
+              </template>
+            </template>
+          </q-calendar>
         </template>
-      </template>
-    </q-calendar>
-    <q-dialog v-model="dialog">
-      <q-card>
-        <div class="text-h6"> {{selectedDate}} AQUI </div>
-      </q-card>
-    </q-dialog>
+        <!--<template v-slot:separator>
+          <q-avatar color="secondary" text-color="white" size="40px" icon="drag_indicator" />
+        </template> -->
+        <template v-slot:after>
+          <div style="min-width: 20px"></div>
+        </template>
+      </q-splitter>
+    </div>
+    {{selectedDate}}
   </div>
 </template>
 <script>
@@ -42,6 +69,9 @@ const CURRENT_DAY = new Date()
 function getCurrentDay (day) {
   const newDay = new Date(CURRENT_DAY)
   newDay.setDate(day)
+  console.log(
+    newDay.setDate(day), 'asd'
+  )
   const tm = QCalendar.parseDate(newDay)
   return tm.date
 }
@@ -107,26 +137,21 @@ function luminosity (color) {
 export default {
   data () {
     return {
+      splitterModel: 100, // start at 90%
       selectedDate: '',
-      dialog: false,
+      miniMode: false,
+      shortWeekdayLabel: false,
       events: [
         {
           title: '1st of the Month',
           details: 'Everything is funny as long as it is happening to someone else',
-          date: getCurrentDay(1),
+          date: '12-12-2020',
           bgcolor: 'orange'
         },
         {
           title: 'Sisters Birthday',
           details: 'Buy a nice present',
           date: getCurrentDay(4),
-          bgcolor: 'orange',
-          icon: 'fas fa-birthday-cake'
-        },
-        {
-          title: 'Sisters Birthday',
-          details: 'Buy a nice present',
-          date: getCurrentDay(1),
           bgcolor: 'green',
           icon: 'fas fa-birthday-cake'
         },
@@ -140,31 +165,42 @@ export default {
         {
           title: 'Sisters Birthday',
           details: 'Buy a nice present',
-          date: getCurrentDay(30),
-          bgcolor: 'orange',
+          date: getCurrentDay(4),
+          bgcolor: 'green',
           icon: 'fas fa-birthday-cake'
         }
       ]
     }
   },
+  watch: {
+    splitterModel (val) {
+      const rect = this.$refs.calendar.$el.getBoundingClientRect()
+      this.miniMode = rect.width < 500
+      this.shortWeekdayLabel = rect.width < 300
+    }
+  },
   methods: {
-    test () {
-      console.log(this.selectedDate, 'selected date')
-      this.dialog = true
+    onModelChanged (date) {
+      this.events.unshift(`Model changed: ${date}`)
+    },
+    test (event) {
+      console.log(event, 'se a ejecutado el test')
     },
     isCssColor (color) {
       return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
     },
 
-    badgeClasses (event, type) {
+    badgeClasses (event, type, index) {
       const cssColor = this.isCssColor(event.bgcolor)
       const isHeader = type === 'header'
-      return {
-        [`text-white bg-${event.bgcolor}`]: !cssColor,
+      const add = index === 0 ? 'q-mt-lg' : 'q-mt-xs'
+      const margen = {
+        [`${add} text-white bg-${event.bgcolor}`]: !cssColor,
         'full-width': !isHeader && (!event.side || event.side === 'full'),
         'left-side': !isHeader && event.side === 'left',
         'right-side': !isHeader && event.side === 'right'
       }
+      return margen
     },
 
     badgeStyles (event, type, timeStartPos, timeDurationHeight) {

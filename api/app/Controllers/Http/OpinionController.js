@@ -4,6 +4,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 const Opinion = use("App/Models/Opinion")
+const moment = require('moment')
 /**
  * Resourceful controller for interacting with opinions
  */
@@ -19,8 +20,14 @@ class OpinionController {
    */
   async index ({ request, response, auth }) {
     const idUser = ((await auth.getUser()).toJSON())._id
-    let data = (await Opinion.query().where('proveedor_id', idUser).fetch()).toJSON()
-    response.send(data)
+    let data = (await Opinion.query().where('proveedor_id', idUser).with('usuario').fetch()).toJSON()
+    let formatData = data.map(v => {
+      return {
+        ...v,
+        created_at: moment(v.created_at).lang('es').calendar()
+      }
+    })
+    response.send(formatData)
   }
 
   /**

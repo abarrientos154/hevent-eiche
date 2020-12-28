@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="row justify-center q-mb-md">
-      <q-btn label="Guardar" @click="save" color="primary" class="shadow-3" style="width:150px; height:50px" push />
+      <q-btn label="Guardar" @click="save" class="shadow-3 gradiente-buttom" style="width:150px; height:50px" push />
     </div>
   </q-card>
 </template>

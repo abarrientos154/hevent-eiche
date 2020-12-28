@@ -112,7 +112,7 @@
       <div :class="cuenta === 'Corriente' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()" >Corriente</div>
     </div>
     <div class="row justify-center q-pa-sm">
-      <q-btn class="button-border" style="height:45px; width:150px" color="primary" label="Guardar" @click="save()" />
+      <q-btn class="gradiente-buttom" style="height:45px; width:150px" push label="Guardar" @click="save()" />
     </div>
   </q-card>
 </template>

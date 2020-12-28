@@ -17,7 +17,7 @@
     </q-tab-panels>
 
     <div class="row justify-center q-mb-lg q-mt-sm">
-      <q-btn v-if="panel === 'servicios'" label="Siguiente" @click="next" color="primary" style="width:120px;height:50px" />
+      <q-btn v-if="panel === 'servicios'" label="Siguiente" @click="next" class="gradiente-buttom" push style="width:120px;height:50px" />
     </div>
 
   </q-card>

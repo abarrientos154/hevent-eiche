@@ -22,7 +22,7 @@
           <q-img :src="perfilImg ? perfilImg : 'noimg.png'" />
         </q-avatar>
       </div>
-    <div class="column">
+    <div class="column q-ml-md">
       <div class="text-grey-7 text-bold text-subtitle1"> {{user.name}} </div>
     </div>
   </div>
@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="row justify-center q-mt-xl q-mb-lg">
-    <q-btn color="primary" label="editar anuncio" style="width:200px;border-radius:12px;height:50px" push to="/editar_anuncio" />
+    <q-btn class="gradiente-buttom" label="editar anuncio" style="width:200px;border-radius:12px;height:50px" push to="/editar_anuncio" />
   </div>
 </div>
 </template>
@@ -147,7 +147,7 @@ export default {
   padding: 10px;
   font-weight: 540;
   font-size: 0px;
-  color: #0016b0;
+  color: #ffffff;
   background-color: #ffffff;
   border-radius: 30px;
   border: 1px solid #7e7e7e;

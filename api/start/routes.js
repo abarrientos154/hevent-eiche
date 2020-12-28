@@ -121,5 +121,8 @@ addPrefixToGroup(
     Route.post("subir_archivo_proveedor_video", "UploadController.subirArchivoProveedorVideo")
     Route.post("actualizar_file_proveedor/:carpeta", "UploadController.actualizarPortadaPerfilProveedor")
 
+    ///////////////////////////OPINIONES///////////////////////////////
+    Route.get("opiniones", "OpinionController.index")
+
   }).middleware("auth")
 );
