@@ -13,6 +13,9 @@ class Cotisation extends Model {
   datos_cliente () {
     return this.hasOne('App/Models/User', 'cliente_id', '_id')
   }
+  evento () {
+    return this.hasOne('App/Models/Event', 'event_id', '_id')
+  }
   //static get objectIDs() { return ['_id', 'event_id'] } //default return ['_id']
 }
 

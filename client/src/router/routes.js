@@ -72,7 +72,7 @@ const routes = [
       {
         path: '/calendario_eventos',
         component: () => import('pages/proveedor/Calendario.vue'),
-        meta: { toolbar: true, title: 'Calendario', footer: true }
+        meta: { toolbar: false, title: 'Calendario', footer: true }
       },
       {
         path: '/pagar/:id_event',

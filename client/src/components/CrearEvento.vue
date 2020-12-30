@@ -16,7 +16,7 @@
       <div class="row justify-end">
         <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
       </div>
-      <div class="text-h6 text-grey-8 text-bold">Información de evento</div>
+      <div class="text-h6 text-grey-8 text-bold q-mt-lg">Información de evento</div>
       <div style="width:250px" class="row justify-start">
         <q-input v-model="form.name" label="Nombre del evento" style="width:250px" class="q-mt-md input-border" dense borderless label-color="grey-14" outlined />
         <div class="row q-mt-sm">
@@ -50,6 +50,9 @@
         <div class="row items-center">
           <q-input v-model.number="form.invitados" type="number" style="width:100px" class="q-mt-sm input-border" dense borderless label-color="grey-14" outlined />
           <div class="q-ml-md text-subtitle2 text-grey"># de invitados</div>
+        </div>
+        <div class="row justify-center">
+          <q-input v-model="form.direccion" label="Direccion" style="width:250px" class="q-mt-md input-border" dense borderless label-color="grey-14" outlined />
         </div>
       </div>
     </q-card-section>

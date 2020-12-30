@@ -111,6 +111,7 @@ addPrefixToGroup(
     Route.post("event", "EventController.store")
     Route.get("event/:id", "EventController.show")
     Route.get("events_by_user", "EventController.index")
+    Route.get("eventos_pagados_por_proveedor", "EventController.eventosPagadosPorProveedor")
     ///////////// EVENTOS ///////////
 
     /////////////MENSAJES//////////////////////////

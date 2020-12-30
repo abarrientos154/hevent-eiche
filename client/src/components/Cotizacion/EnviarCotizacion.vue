@@ -169,6 +169,7 @@ export default {
       if (this.carrito.length > 0) {
         this.$api.post(`enviar_cotizacion/${this.$route.params.id}`, { carrito: this.carrito }).then(res => {
           if (res) {
+            this.$router.go(-1)
             this.$q.notify({
               message: 'Cotizacion Enviada con Exito',
               color: 'positive'

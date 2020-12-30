@@ -4,6 +4,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 const Event = use("App/Models/Event")
+const Cotisation = use("App/Models/Cotisation")
 const moment = require('moment')
 /**
  * Resourceful controller for interacting with events
@@ -22,6 +23,12 @@ class EventController {
     const id_user = ((await auth.getUser()).toJSON())._id
     let events = (await Event.query().where({user_id: id_user}).fetch()).toJSON()
     response.send(events)
+  }
+
+  async eventosPagadosPorProveedor ({response, auth}) {
+    const id_user = ((await auth.getUser()).toJSON())._id
+    const cotisations = (await Cotisation.query().where({status: 4, proveedor_id: id_user}).with('evento').with('datos_cliente').fetch()).toJSON()
+    response.send(cotisations)
   }
 
   async eventosNoPagados ({ request, response, auth }) {

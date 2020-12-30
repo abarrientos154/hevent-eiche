@@ -5,7 +5,7 @@ const Model = use('Model')
 
 class Event extends Model {
   static get fillable() {
-    return ['invitados', 'time', 'date', 'name', 'tipoEvento']
+    return ['invitados', 'time', 'date', 'name', 'tipoEvento', 'direccion']
   }
   static fieldValidationRules() {
     const rules = {
