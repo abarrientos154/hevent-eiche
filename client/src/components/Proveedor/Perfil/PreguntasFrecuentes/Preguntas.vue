@@ -42,7 +42,7 @@
     </div>
     <q-separator inset class="q-mt-md" />
     <div class="row justify-center q-mt-lg">
-      <q-btn label="Guardar" @click="save" color="primary" push style="width:140px;height:45px"  />
+      <q-btn label="Guardar" @click="save" class="gradiente-buttom" push style="width:140px;height:45px"  />
     </div>
   </div>
 </template>

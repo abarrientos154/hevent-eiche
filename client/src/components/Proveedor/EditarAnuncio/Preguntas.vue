@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="row justify-center q-mb-md">
-      <q-btn label="guardar" push style="border-radius:12px; width:300px; height:50px" color="primary" @click="modificarPreguntas()" />
+      <q-btn label="guardar" class="gradiente-buttom q-mb-md" push style="border-radius:12px; width:300px; height:50px" @click="modificarPreguntas()" />
     </div>
   </div>
 </template>
