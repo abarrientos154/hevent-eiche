@@ -26,8 +26,8 @@
   </div>
   <div v-else>
    <q-img src="error.png">
-      <p class="text-subtitle2 text-center row justify-center text-grey-9" style="position:absolute;bottom:12%;width:100%">Codigo Equivocado</p>
-      <p class="text-subtitle2 text-center text-grey-9 row justify-center" style="position:absolute;bottom:8%;width:100%">Intentelo de nuevo por favor</p>
+      <p class="text-subtitle1 text-center row justify-center text-grey-9" style="position:absolute;bottom:12%;width:100%">Aun no tienes cotizaciones,</p>
+      <p class="text-subtitle1 text-center text-grey-9 row justify-center" style="position:absolute;bottom:8%;width:100%">pero pronto un usuario te contactara</p>
    </q-img>
   </div>
 </template>

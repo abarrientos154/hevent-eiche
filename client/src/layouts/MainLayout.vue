@@ -4,11 +4,15 @@
       <tool-bar :title="title" v-if="toolbar" />
     </q-header>
     <q-footer v-if="footer" elevated>
-      <q-tabs dense v-model="tab" stretch align="left" class="bg-white text-primary shadow-2 full-width" >
-        <template  v-for="(item, index) in buttons_footer" v-bin:key="index">
-          <q-tab v-if="can(item.permission)" v-bind:key="index" :name="item.to" :icon="item.icon" :label="item.title" @click="$router.push(item.to)"/>
+      <div class="bg-white text-primary shadow-2 full-width row justify-between" >
+        <template v-for="(item, index) in buttons_footer" v-bin:key="index">
+          <div v-if="can(item.permission)" v-bind:key="index">
+            <q-btn :name="item.to" :label="item.title" flat round style="width: 60px; height: 60px" @click="$router.push(item.to)">
+              <img :src="item.icon" style="width: 30px; height: 30px"/>
+            </q-btn>
+          </div>
         </template>
-      </q-tabs>
+      </div>
     </q-footer>
     <q-page-container>
       <router-view />
@@ -47,10 +51,11 @@ export default {
         { title: 'Mensajes', icon: 'question_answer', to: '/mensajes/mensajes', permission: 1 /* CLIENTE */ },
         { title: 'Cerrar Sesion', icon: 'logout', to: '/login', permission: 1 },
         // TODOS LOS ITEM EN MENU PARA LOS PROVEEDORES
-        { title: 'Home', icon: 'home', to: '/inicio_proveedor', permission: 2 /* PROVEEDOR */ },
-        { title: 'Perfil', icon: 'portrait', to: '/perfil_proveedor', permission: 2 /* PROVEEDOR */ },
-        { title: 'Pendientes', icon: 'assignment_turned_in', to: '/aprobacion_cotizacion', permission: 2 }, // PROVEEDOR
-        { title: 'Cerrar Sesion', icon: 'logout', to: '/login', permission: 2 }
+        { icon: 'icons/Iconos_Menu_5.png', to: '/inicio_proveedor', permission: 2 /* PROVEEDOR */ },
+        { icon: 'icons/Iconos_Menu_1.png', to: '/perfil_proveedor', permission: 2 /* PROVEEDOR */ },
+        { icon: 'icons/Iconos_Menu_2.png', to: '/calendario_eventos', permission: 2 }, // PROVEEDOR
+        { icon: 'icons/Iconos_Menu_3.png', to: '/chats_proveedor', permission: 2 },
+        { icon: 'icons/Iconos_Menu_4.png', to: '/perfil_proveedor', permission: 2 }
       ]
     }
   }

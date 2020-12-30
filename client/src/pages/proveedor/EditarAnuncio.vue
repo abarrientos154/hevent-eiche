@@ -19,6 +19,9 @@
         <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
       </div>
     </q-img>
+    <div class="row justify-end q-mr-sm q-mt-xs">
+      <q-btn rounded size="10px" color="primary" label="Ver anuncio" />
+    </div>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}
     </div>
