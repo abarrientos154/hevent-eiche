@@ -19,13 +19,8 @@
         <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
       </div>
     </q-img>
-<<<<<<< HEAD
-    <div class="row justify-end q-mr-sm q-mt-xs">
-      <q-btn rounded size="10px" color="primary" label="Ver anuncio" />
-=======
     <div class="q-mt-sm q-ma-sm row justify-end">
       <q-btn label="ver anuncio" dense class="gradiente-buttom q-pa-xs" push />
->>>>>>> 8d94825017ee0869d673b47ba4af07b69e153043
     </div>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}

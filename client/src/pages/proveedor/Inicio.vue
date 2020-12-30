@@ -30,14 +30,8 @@
           <q-img :src="perfilImg ? perfilImg : 'noimg.png'" />
         </q-avatar>
       </div>
-<<<<<<< HEAD
-    <div class="column">
-      <div class="text-grey-7 text-bold text-subtitle1 q-ml-sm">Hola</div>
-      <div class="text-grey-7 text-bold text-subtitle1 q-ml-sm"> {{user.name}} </div>
-=======
     <div class="column q-ml-md">
       <div class="text-grey-7 text-bold text-subtitle1"> {{user.name}} </div>
->>>>>>> 8d94825017ee0869d673b47ba4af07b69e153043
     </div>
   </div>
   <div class="row q-gutter-lg q-mt-sm">
