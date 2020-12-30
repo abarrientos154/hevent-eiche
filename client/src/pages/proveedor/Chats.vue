@@ -1,30 +1,5 @@
 <template>
-  <!--<q-page>
-    <div class="col full-width">
-      <div header class="row">
-        <div class="col-3 q-pl-md">
-            <q-btn flat class="text-grey" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
-        </div>
-        <div class="col-5 q-pt-xs text-h5 text-primary text-bold text-center">Mensajes</div>
-      </div>
-      <q-separator/>
-      <div class="q-pr-md q-pt-sm text-subtitle2 text-right text-grey-8"><u>Tienes {{ chats.length ? chats.length : '#'}} Mensajes</u></div>
-    <div class="q-pa-md q-gutter-md">
-        <q-card class="my-card shadow-13 row" @click="entrar(chat._id)" v-for="(chat, index) in chats" :key="index">
-            <div class="col-3">
-              <div class="text-center text-primary text-bold text-subtitle1 q-pt-sm">{{chat.visto ? 'Leido' : 'Pendiente'}}</div>
-              <q-icon size="60px" class="text-black q-px-md q-pb-xs" name="account_circle" />
-            </div>
-            <div class="col-9">
-              <div class="text-primary text-bold text-center text-subtitle1 q-pt-sm">{{chat.full_name}}</div>
-              <div class="text-center text-caption">{{chat.last_message}}</div>
-              <div class="absolute-bottom text-primary text-subtitle1 text-right q-pr-sm">{{chat.created_at_message}}</div>
-            </div>
-        </q-card>
-    </div>
-    </div>
-  </q-page>-->
-  <div>
+  <div v-if="chats.length > 0">
     <div class="fondo-toolbar">
       <div class="row justify-between items-center">
         <q-btn flat color="white" icon="menu" round class="q-mt-md q-ml-sm" />
@@ -53,6 +28,12 @@
         </div>
       </q-list>
     </div>
+  </div>
+  <div v-else>
+   <q-img src="error.png">
+      <p class="text-subtitle1 text-center row justify-center text-grey-9" style="position:absolute;bottom:12%;width:100%">Aun no tienes mensajes,</p>
+      <p class="text-subtitle1 text-center text-grey-9 row justify-center" style="position:absolute;bottom:8%;width:100%">pero pronto un usuario te contactara</p>
+   </q-img>
   </div>
 </template>
 <script>

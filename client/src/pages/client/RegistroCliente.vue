@@ -4,15 +4,15 @@
       <img src="RegistroCliente/Mesa de trabajo 2.png" style="width: 100%;height:260px"/>
     </div>
     <div class="row justify-center text-h6 text-primary">Registro</div>
-    <div class="q-ma-lg q-gutter-sm">
+    <div class="q-ma-lg">
       <div>
-        <q-input class="input-border-new q-pa-sm" label-color="grey-14" v-model="form.full_name" dense label="Nombre completo" borderless
+        <q-input class="input-border-new q-pa-xs" label-color="grey-14" v-model="form.full_name" dense label="Nombre completo" borderless
           error-message="ingrese el nombre" :error="$v.form.full_name.$error" @blur="$v.form.full_name.$touch()"
         />
       </div>
       <div>
         <div class="row">
-          <q-select borderless class="input-border-new q-pa-sm q-pt-sm" v-model="form.telCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
+          <q-select borderless class="input-border-new q-pa-xs q-pt-sm" v-model="form.telCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
             emit-value map-options option-value="name" option-label="name"
           >
             <template v-slot:no-option>
@@ -59,6 +59,19 @@
           <q-spinner-hourglass class="on-left" />
             Cargando...
         </template>
+      </q-btn>
+    </div>
+    <q-separator class="q-mt-xs" size="2px" inset/>
+    <div class="text-center text-subtitle2 q-mt-sm">Registrarse con</div>
+    <div class="row justify-between q-ma-xs">
+      <q-btn class="q-ma-sm" round color="with" style="width: 40px; height: 40px">
+        <img src="icons/Iconos_Redes.png" style="width: 20px; height: 20px"/>
+      </q-btn>
+      <q-btn class="q-ma-sm" round color="indigo-10" style="width: 40px; height: 40px">
+        <img src="icons/Iconos_Redes_1.png" style="width: 30px; height: 30px"/>
+      </q-btn>
+      <q-btn class="q-ma-sm" round color="grey" style="width: 30px; height: 30px">
+        <img src="icons/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
       </q-btn>
     </div>
   </div>

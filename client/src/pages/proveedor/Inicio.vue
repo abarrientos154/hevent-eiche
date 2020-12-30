@@ -11,6 +11,14 @@
       </q-avatar>
     </div>
   </q-img>
+  <div class="row justify-end q-mr-xl">
+    <label class="q-mr-lg">MODO</label>
+  </div>
+  <div class="row justify-end q-mr-sm">
+    <div style="border-radius: 20px; width: 120px; height: 30px" class="bg-grey-3">
+      <q-toggle size="xs" class="q-ml-md q-mb-md text-deep-orange-9" v-model="value" color="deep-orange-9" label="Proveedor" left-label/>
+    </div>
+  </div>
   <div class="q-ml-lg row items-center">
       <div class="column items-center">
         <q-avatar size="90px">
