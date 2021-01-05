@@ -1,13 +1,13 @@
 <template>
   <div class="column q-ma-sm">
     <div class="row items-center">
-      <q-btn color="primary" flat round size="md" icon="keyboard_arrow_left" />
+      <q-btn color="primary" flat round size="md" @click="$router.go(-1)" icon="keyboard_arrow_left" />
       <div class="text-primary text-bold text-h6">Calendario</div>
     </div>
     <div class="row q-gutter-xs q-mt-md items-center">
-      <q-btn icon="navigate_before" @click="$refs.calendar.prev()" color="primary" flat round/>
+      <q-btn icon="navigate_before" @click="$refs.calendar.prev(), abrirDialogo(true)" color="primary" flat round/>
       <div class="text-center text-capitalize text-subtitle1" style="min-width: 100px;"> {{mesActual}} </div>
-      <q-btn icon="navigate_next" @click="$refs.calendar.next()" color="primary" flat round/>
+      <q-btn icon="navigate_next" @click="$refs.calendar.next(), abrirDialogo(true)" color="primary" flat round/>
     </div>
     <div style="max-width: 1000px; width: 100%" class="q-mt-md">
       <q-splitter
@@ -19,43 +19,38 @@
           <q-calendar
             ref="calendar"
             v-model="selectedDate"
-            view="month"
             @input="onModelChanged"
+            @click:date2="onClickDate2"
+            view="month"
             locale="es-es"
-            :mini-mode="true"
+            :mini-mode="miniMode"
             :short-weekday-label="shortWeekdayLabel"
           >
-            <template #day="{ timestamp, miniMode }" style="height:400px">
+            <template #day="{ timestamp, miniMode }">
               <template v-for="(event, index) in getEvents(timestamp.date)">
-                <template v-if="miniMode" >
+                <template v-if="miniMode">
                   <q-badge
                     :key="index"
-                    style="width: 10px!important; max-width: 10px; height: 10px; max-height: 10px;z-index:-1"
-                    :class="badgeClasses(event, 'day', index)"
+                    style="width: 5px!important; max-width: 5px; height: 5px; max-height: 5px"
+                    :class="badgeClasses(event, 'day')"
                     :style="badgeStyles(event, 'day')"
-                    @click="test(event)"
                   ></q-badge>
                 </template>
                 <template v-else>
                   <q-badge
-                    @click="test(event)"
                     :key="index"
                     style="width: 100%; cursor: pointer; height: 16px; max-height: 16px"
                     class="q-mb-xs"
-                    :class="badgeClasses(event, 'day', index)"
+                    :class="badgeClasses(event, 'day')"
                     :style="badgeStyles(event, 'day')"
                   >
-                    <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon>
-                    <span class="ellipsis">{{ event.title }}</span>
+                    <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon><span class="ellipsis">{{ event.title }}</span>
                   </q-badge>
                 </template>
               </template>
             </template>
           </q-calendar>
         </template>
-        <!--<template v-slot:separator>
-          <q-avatar color="secondary" text-color="white" size="40px" icon="drag_indicator" />
-        </template> -->
         <template v-slot:after>
           <div style="min-width: 20px"></div>
         </template>
@@ -65,7 +60,7 @@
       <q-scroll-area horizontal style="height: 300px; width: 100%;" :thumb-style="thumbStyle"
         :content-style="contentStyle">
         <div class="row no-wrap">
-          <q-card style="width:300px; height:280px" class="no-shadow" v-for="(item, index) in events" :key="index">
+          <q-card style="width:300px; height:280px" class="no-shadow" v-for="(item, index) in filtrarMes" :key="index">
             <q-card-section>
               <div class="column">
                 <div class="row justify-between">
@@ -86,8 +81,39 @@
         </div>
       </q-scroll-area>
     </div>
+    <q-dialog v-model="dialogo" persistent :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+      <q-card class="nube-dialog q-mt-xl q-pb-xl" style="margin-top:100px">
+        <q-card-section>
+          <div class="row justify-end">
+            <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+          </div>
+          <div class="text-bold text-h6 text-grey-8 q-mt-xl q-ml-md">Eventos</div>
+          <div class="column q-mb-xl">
+            <q-card style="width:300px; height:280px; border-radius:12px" class="q-pa-lg q-ma-xs" v-for="(item, index) in filtradoEvents" :key="index">
+              <q-card-section>
+                <div class="column">
+                  <div class="row justify-between">
+                    <div class="text-bold">Nombre del Evento:</div>
+                    <div v-if="item.evento">{{item.evento.name}}</div>
+                  </div>
+                  <div class="row justify-between">
+                    <div class="text-bold">Direccion:</div>
+                    <div v-if="item.evento">{{item.evento.direccion}}</div>
+                  </div>
+                  <div class="q-mt-sm row">
+                    <q-img src="example_5.jpg" style="border-radius:12px" />
+                    <div class="q-mt-sm text-bold" v-if="item.datos_cliente">{{item.datos_cliente.full_name}}</div>
+                  </div>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
+
 <script>
 // normally you would not import "all" of QCalendar, but is needed for this example to work with UMD (codepen)
 import QCalendar from '@quasar/quasar-ui-qcalendar' // ui is aliased from '@quasar/quasar-ui-qcalendar'
@@ -165,9 +191,13 @@ export default {
     return {
       splitterModel: 100, // start at 90%
       selectedDate: '',
-      miniMode: false,
+      miniMode: true,
       shortWeekdayLabel: false,
-      locale: 'es-es',
+      filtradoEvents: [],
+      eventos: [],
+      dialogo: false,
+      events: [
+      ],
       contentStyle: {
         backgroundColor: 'rgba(0,0,0,0.02)',
         color: '#555'
@@ -184,88 +214,116 @@ export default {
         backgroundColor: '#027be3',
         width: '5px',
         opacity: 0
-      },
-      events: [
-        {
-          title: '1st of the Month',
-          details: 'Everything is funny as long as it is happening to someone else',
-          date: getCurrentDay(4),
-          bgcolor: 'red'
-        }
-      ]
+      }
     }
   },
   watch: {
     splitterModel (val) {
       const rect = this.$refs.calendar.$el.getBoundingClientRect()
-      this.miniMode = rect.width < 500
+      this.miniMode = rect.width < 1024
       this.shortWeekdayLabel = rect.width < 300
     }
   },
   computed: {
     mesActual () {
       return moment(this.selectedDate).locale('es').format('MMMM YYYY')
+    },
+    filtrarMes () {
+      const data = this.events
+      const mesActual = moment(this.selectedDate).format('YYYY/MM')
+      const filtrar = data.filter(v => v.mesAnnio === mesActual)
+      return filtrar
     }
   },
   mounted () {
-    // var aaa = moment().format('DD')
-    // var aa = parseInt(aaa)
     this.obtenerEventos()
     this.onToday()
   },
   methods: {
+    filtrarDiaMesAnnio () {
+      this.$api.get('eventos_pagados_por_proveedor').then(res => {
+        const data = res.map(v => {
+          return {
+            ...v,
+            date: moment(v.evento.date).format('YYYY/MM/DD')
+          }
+        })
+        console.log(data, 'data')
+        const mesActual = moment(this.selectedDate).format('YYYY/MM/DD')
+        const filtrar = data.filter(v => v.date === mesActual)
+        console.log(filtrar, 'filtrar', mesActual, 'mesactual')
+        this.filtradoEvents = filtrar
+        if (filtrar.length > 0) { this.dialogo = true } else {
+          this.dialogo = false
+          this.$q.notify({
+            message: 'Sin Eventos para Este Dia',
+            color: 'warning'
+          })
+        }
+      })
+    },
+    abrirDialogo (cambioMes) {
+      console.log(cambioMes, 'cambio mes')
+      if (!cambioMes) {
+        this.dialogo = true
+        this.filtrarDiaMesAnnio()
+        console.log(this.filtradoEvents, 'filtrado eventes por mes')
+      } else {
+        this.dialogo = false
+      }
+    },
+    isCssColor (color) {
+      return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
+    },
+    onClickDay2 (data) {
+      this.events.unshift(`click:day2: ${JSON.stringify(data)}`)
+      this.abrirDialogo(false)
+    },
+    onClickDate2 (data) {
+      this.events.unshift(`click:date2: ${JSON.stringify(data)}`)
+      this.abrirDialogo(false)
+    },
+    onToday () {
+      this.selectedDate = getCurrentDay(CURRENT_DAY.getDate())
+    },
     filtrarFecha (data) {
-      const mesAnnioActual = moment(this.selectedDate).format('YYYY/MM')
-      console.log(mesAnnioActual, 'actual', data, 'dataaa')
-      const filtrar = data.filter(v => v.mesAnnio === mesAnnioActual)
-      console.log(filtrar, 'filtrar')
+      data = this.events
+      const annioActual = moment(this.selectedDate).format('YYYY')
+      const filtrar = data.filter(v => v.annio === annioActual)
       this.events = filtrar
+    },
+    onModelChanged (date) {
+      this.events.unshift(`Model changed: ${date}`)
     },
     obtenerEventos () {
       this.$api.get('eventos_pagados_por_proveedor').then(res => {
         console.log(res, 'res')
         this.events = res.map(v => {
+          var format = moment(v.evento.date).format()
+          v.date = moment(format).dayOfYear()
           return {
             ...v,
             title: v.evento.name,
             bgcolor: 'green',
-            date: getCurrentDay(moment(v.evento.date).dayOfYear()),
-            mesAnnio: v.evento.date.slice(0, 7)
+            date: getCurrentDay(v.date),
+            annio: moment(v.evento.date).format('YYYY'),
+            mesAnnio: moment(v.evento.date).format('YYYY/MM')
           }
         })
-
+        this.filtrarFecha(this.events)
+        // this.filtrarMes()
         console.log(this.events, 'events')
       })
     },
-    onToday () {
-      this.selectedDate = getCurrentDay(CURRENT_DAY.getDate())
-      console.log(this.selectedDate, 'selected')
-    },
-    onModelChanged (date) {
-      this.events.unshift(`Model changed: ${date}`)
-      this.getEvents()
-      this.obtenerEventos()
-      console.log('onModelChange')
-    },
-    test (event) {
-      console.log(event, 'se a ejecutado el test')
-    },
-    isCssColor (color) {
-      return !!color && !!color.match(/^(#|(rgb|hsl)a?\()/)
-    },
-
-    badgeClasses (event, type, index) {
+    badgeClasses (event, type) {
       const cssColor = this.isCssColor(event.bgcolor)
       const isHeader = type === 'header'
-      const add = index === 0 ? 'q-mt-xs' : 'q-mt-xs'
-      console.log(add)
-      const margen = {
+      return {
         [`text-white bg-${event.bgcolor}`]: !cssColor,
         'full-width': !isHeader && (!event.side || event.side === 'full'),
         'left-side': !isHeader && event.side === 'left',
         'right-side': !isHeader && event.side === 'right'
       }
-      return margen
     },
 
     badgeStyles (event, type, timeStartPos, timeDurationHeight) {
@@ -329,3 +387,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.nube-dialog {
+  background: url('../../../public/nube9.png');
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  background-color: rgba(255, 255, 255, 0);
+}
+</style>
