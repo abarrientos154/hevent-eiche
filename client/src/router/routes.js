@@ -30,6 +30,26 @@ const routes = [
         meta: { toolbar: false, title: 'Mi Evento', footer: true }
       },
       {
+        path: '/verificacion_correo',
+        component: () => import('pages/client/VerificacionCorreo.vue'),
+        meta: { toolbar: false, title: 'Verificacion Correo', footer: true }
+      },
+      {
+        path: '/verificacion_sms',
+        component: () => import('pages/client/VerificacionSms.vue'),
+        meta: { toolbar: false, title: 'Verificacion SMS', footer: true }
+      },
+      {
+        path: '/registro_confirmado',
+        component: () => import('pages/client/RegistroConfirmado.vue'),
+        meta: { toolbar: false, title: 'Registro Confirmado', footer: true }
+      },
+      {
+        path: '/registro_denegado',
+        component: () => import('pages/client/RegistroDenegado.vue'),
+        meta: { toolbar: false, title: 'Registro Denegado', footer: true }
+      },
+      {
         path: '/mi_evento/:id',
         component: () => import('pages/client/new/Evento.vue'),
         meta: { toolbar: false, title: 'Mi Evento', footer: true }
