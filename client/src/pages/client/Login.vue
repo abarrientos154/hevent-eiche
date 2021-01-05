@@ -41,7 +41,7 @@
       <q-btn class="q-ma-sm" round color="grey" style="width: 50px; height: 50px">
         <img src="icons/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
       </q-btn>
-      <q-btn class="q-ma-sm" round color="primary" style="width: 50px; height: 50px">
+      <q-btn class="q-ma-sm" round color="primary" style="width: 50px; height: 50px" to="/verificacion_correo">
         <img src="icons/Iconos_Redes_3.png" style="width: 30px; height: 30px"/>
       </q-btn>
       <q-btn class="q-ma-sm" round color="light-blue" style="width: 50px; height: 50px">

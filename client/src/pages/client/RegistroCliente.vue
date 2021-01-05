@@ -63,14 +63,14 @@
     </div>
     <q-separator class="q-mt-xs" size="2px" inset/>
     <div class="text-center text-subtitle2 q-mt-sm">Registrarse con</div>
-    <div class="row justify-between q-ma-xs">
+    <div class="row justify-between q-mr-xl q-ml-xl">
       <q-btn class="q-ma-sm" round color="with" style="width: 40px; height: 40px">
         <img src="icons/Iconos_Redes.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <q-btn class="q-ma-sm" round color="indigo-10" style="width: 40px; height: 40px">
         <img src="icons/Iconos_Redes_1.png" style="width: 30px; height: 30px"/>
       </q-btn>
-      <q-btn class="q-ma-sm" round color="grey" style="width: 30px; height: 30px">
+      <q-btn class="q-ma-sm" round color="grey" style="width: 40px; height: 40px">
         <img src="icons/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
       </q-btn>
     </div>
