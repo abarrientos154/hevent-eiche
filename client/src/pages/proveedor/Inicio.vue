@@ -1,16 +1,20 @@
 <template>
 <div>
-  <q-img :src="portadaImg" style="width: 100%;height:200px;border-bottom-left-radius:20px;border-bottom-right-radius:20px;">
-    <div class="absolute-center bg-transparent text-center" style="width: 100%">
+  <div class="full-width">
+    <div class="fondo-para-nube" style="width:100%;height:200px">
+    </div>
+    <q-img :src="portadaImg" class="absolute-top" style="width:100%;height:200px;z-index:-1">
+    </q-img>
+    <div class="absolute-center bg-transparent text-center" style="width: 100%;position: absolute;top:100px">
       <q-avatar size="50px">
-        <div class="absolute-center" style="z-index:1">
-          <q-file borderless v-model="portada" class="button-camera" @input="changePortada()" accept=".jpg, image/*">
+        <div>
+          <q-file borderless v-model="portada" class="button-camera-inicio-proveedor" @input="changePortada()" accept=".jpg, image/*">
             <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
           </q-file>
         </div>
       </q-avatar>
     </div>
-  </q-img>
+  </div>
   <div class="row justify-end q-mr-xl">
     <label class="q-mr-lg">MODO</label>
   </div>
@@ -150,7 +154,7 @@ export default {
 </script>
 
 <style>
-.button-camera {
+.button-camera-inicio-proveedor {
   text-decoration: none;
   padding: 10px;
   font-weight: 540;
@@ -161,5 +165,20 @@ export default {
   border: 1px solid #7e7e7e;
   height:40px;
   width:40px
+}
+.img-nube-forma-style {
+  width: 100%;
+  height:200px;
+  border: 30px solid;
+  border-image: url('../../../public/prueba.png');
+  border-image-slice: 100;
+  background-image: url('../../../public/example_5.jpg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.fondo-para-nube {
+  background-image: url('../../../public/prueba.png');
+  background-size: 100% 100%;
+  z-index: 1
 }
 </style>

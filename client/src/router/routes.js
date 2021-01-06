@@ -91,7 +91,7 @@ const routes = [
       },
       {
         path: '/calendario_eventos',
-        component: () => import('pages/proveedor/Calendario.vue'),
+        component: () => import('pages/proveedor/Calendario3.vue'),
         meta: { toolbar: false, title: 'Calendario', footer: true }
       },
       {
