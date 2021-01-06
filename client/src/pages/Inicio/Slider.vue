@@ -2,21 +2,11 @@
   <div style="padding:0px;margin:0px">
     <q-tab-panels v-model="tab" animated style="padding:0px;margin:0px">
       <q-tab-panel name="one" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 2.png" @click="next" />
-        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8" style="font-size:16px">
-          <label>Bienvenido a HEVENT</label>
-          <label>tu app de eventos Conoce más...</label>
-          <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
-            <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
-          </div>
-        </div>
+        <q-img src="400x700/Mesa de trabajo 1.png" @click="next" />
       </q-tab-panel>
       <q-tab-panel name="two" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 3.png" @click="next" />
-        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
-          <p>¿No sabes por donde empezar para organizar tu EVENTO?</p>
+        <q-img src="400x700/Mesa de trabajo 2.png" @click="next" />
+        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8" style="font-size:16px">
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
@@ -25,9 +15,8 @@
         </div>
       </q-tab-panel>
       <q-tab-panel name="tree" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 4.png" @click="next" />
+        <q-img src="400x700/Mesa de trabajo 3.png" @click="next" />
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
-          <p>Organiza tu EVENTO de manera fácil y sencilla.</p>
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
@@ -35,10 +24,19 @@
           </div>
         </div>
       </q-tab-panel>
-      <q-tab-panel name="four" style="padding:0px;margin:0px" @click="next">
+      <q-tab-panel name="four" style="padding:0px;margin:0px">
+        <q-img src="400x700/Mesa de trabajo 4.png" @click="next" />
+        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
+          <div class="row justify-between q-mt-md">
+            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
+            <q-space />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+          </div>
+        </div>
+      </q-tab-panel>
+      <q-tab-panel name="five" style="padding:0px;margin:0px" @click="next">
         <q-img src="400x700/Mesa de trabajo 5.png" />
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
-          <p>Tu EVENTO se realiza y sale correctamente.</p>
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
@@ -65,7 +63,8 @@ export default {
     next () {
       if (this.tab === 'one') { this.tab = 'two' } else
       if (this.tab === 'two') { this.tab = 'tree' } else
-      if (this.tab === 'tree') { this.tab = 'four' } else {
+      if (this.tab === 'tree') { this.tab = 'four' } else
+      if (this.tab === 'four') { this.tab = 'five' } else {
         this.$router.push('/login')
       }
     }

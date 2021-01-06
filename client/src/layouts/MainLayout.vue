@@ -8,7 +8,7 @@
         <template v-for="(item, index) in buttons_footer" v-bin:key="index">
           <div v-if="can(item.permission)" v-bind:key="index">
             <q-btn :name="item.to" :label="item.title" flat round style="width: 60px; height: 60px" @click="$router.push(item.to)">
-              <img :src="item.icon" style="width: 30px; height: 30px"/>
+              <img :src="item.icon" style="width: 40px; height: 40px"/>
             </q-btn>
           </div>
         </template>
@@ -51,11 +51,11 @@ export default {
         { title: 'Mensajes', icon: 'question_answer', to: '/mensajes/mensajes', permission: 1 /* CLIENTE */ },
         { title: 'Cerrar Sesion', icon: 'logout', to: '/login', permission: 1 },
         // TODOS LOS ITEM EN MENU PARA LOS PROVEEDORES
-        { icon: 'icons/Iconos_Menu_5.png', to: '/inicio_proveedor', permission: 2 /* PROVEEDOR */ },
-        { icon: 'icons/Iconos_Menu_1.png', to: '/perfil_proveedor', permission: 2 /* PROVEEDOR */ },
-        { icon: 'icons/Iconos_Menu_2.png', to: '/calendario_eventos', permission: 2 }, // PROVEEDOR
-        { icon: 'icons/Iconos_Menu_3.png', to: '/chats_proveedor', permission: 2 },
-        { icon: 'icons/Iconos_Menu_4.png', to: '/perfil_proveedor', permission: 2 }
+        { icon: 'icons/Icono1.png', to: '/inicio_proveedor', permission: 2 /* PROVEEDOR */ },
+        { icon: 'icons/Icono2.png', to: '/perfil_proveedor', permission: 2 /* PROVEEDOR */ },
+        { icon: 'icons/Icono3.png', to: '/calendario_eventos', permission: 2 }, // PROVEEDOR
+        { icon: 'icons/Icono4.png', to: '/chats_proveedor', permission: 2 },
+        { icon: 'icons/Icono5.png', to: '/perfil_proveedor', permission: 2 }
       ]
     }
   }

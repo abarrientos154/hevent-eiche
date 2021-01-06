@@ -1,11 +1,8 @@
 <template>
   <div>
     <div class="row justify-between">
-      <img src="Pagina11/Mesa de trabajo 3.png" style="width: 100%;height:500px">
+      <img src="Pagina11/DenegadoRegistro.png" style="width: 100%;height:100%">
     </div>
-    <div class="text-center text-h6 text-red">¡Oh no!</div>
-    <div class="text-center text-subtitle1 text-grey">Código equivocado</div>
-    <div class="text-center text-subtitle1 text-grey">Inténtelo de nuevo por favor</div>
   </div>
 </template>
 <script>
