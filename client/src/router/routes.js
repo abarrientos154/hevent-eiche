@@ -10,6 +10,21 @@ const routes = [
     meta: { toolbar: false, title: 'Registro Confirmado', footer: true }
   },
   {
+    path: '/registro_denegado',
+    component: () => import('pages/client/RegistroDenegado.vue'),
+    meta: { toolbar: false, title: 'Registro Denegado', footer: true }
+  },
+  {
+    path: '/pago_confirmado',
+    component: () => import('pages/client/PagoConfirmado.vue'),
+    meta: { toolbar: false, title: 'Pago Confirmado', footer: true }
+  },
+  {
+    path: '/pago_denegado',
+    component: () => import('pages/client/PagoDenegado.vue'),
+    meta: { toolbar: false, title: 'Pago Denegado', footer: true }
+  },
+  {
     path: '/verificacion_correo',
     component: () => import('pages/client/VerificacionCorreo.vue'),
     meta: { toolbar: false, title: 'Verificacion Correo', footer: true }
@@ -18,11 +33,6 @@ const routes = [
     path: '/verificacion_sms',
     component: () => import('pages/client/VerificacionSms.vue'),
     meta: { toolbar: false, title: 'Verificacion SMS', footer: true }
-  },
-  {
-    path: '/registro_denegado',
-    component: () => import('pages/client/RegistroDenegado.vue'),
-    meta: { toolbar: false, title: 'Registro Denegado', footer: true }
   },
   {
     path: '/index',

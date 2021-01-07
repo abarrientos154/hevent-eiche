@@ -1,10 +1,9 @@
 <template>
   <div>
     <div class="row justify-center">
-      <img src="nubeazul2.png" style="width: 100%;height:400px"/>
+      <img src="Iniciar Sesion Correo.png" style="width: 100%;height:430px"/>
     </div>
-    <div class="row justify-center text-h6 text-primary q-mb-sm">Iniciar Sesión</div>
-    <div>
+    <div class="q-mt-sm">
       <div>
         <q-input class="input-border-new q-pa-sm q-ml-xl q-mr-xl" label-color="grey-14" type="email" v-model="form.email" dense label="Correo electrónico" borderless
           error-message="ingrese el email" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"
