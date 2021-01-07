@@ -103,6 +103,9 @@ export default {
         }
       }
       return total
+    },
+    tagC () {
+      return this.tags
     }
   },
   mounted () {
@@ -111,17 +114,19 @@ export default {
   methods: {
     getServiciosByProveedor () {
       this.$api.get('servicios_proveedor').then(res => {
+        console.log(res, 'serviciosss proveedor')
         this.tags = res
         this.tags[0].select = true
         this.id_servicio = this.tags[0].servicio_id
       })
     },
     seleccionarServicio (index) {
-      const tag = this.tags.find(v => v.select)
-      tag.select = false
+      console.log(this.tags, 'sdasasdasdads')
+      const indext = this.tags.findIndex(v => v.select)
+      this.tags[indext].select = false
       this.tags[index].select = true
       this.id_servicio = this.tags[index].servicio_id
-      console.log(this.id_servicio, 'id_servicios')
+      this.add = {}
     },
     addCarrito (miObjeto) {
       this.$v.$touch()
