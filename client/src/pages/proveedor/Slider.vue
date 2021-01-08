@@ -7,7 +7,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_proveedor" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -17,7 +17,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_proveedor" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -27,7 +27,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_proveedor" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -37,7 +37,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_proveedor" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -47,7 +47,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_proveedor" flat />
           </div>
         </div>
       </q-tab-panel>

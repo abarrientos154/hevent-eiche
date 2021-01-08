@@ -2,7 +2,7 @@
   <div style="padding:0px;margin:0px">
     <q-tab-panels v-model="tab" animated style="padding:0px;margin:0px">
       <q-tab-panel name="one" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 1.png" @click="next" />
+        <q-img class="fit" src="400x700/Mesa de trabajo 1.png" @click="next" />
       </q-tab-panel>
       <q-tab-panel name="two" style="padding:0px;margin:0px">
         <q-img src="400x700/Mesa de trabajo 2.png" @click="next" />
