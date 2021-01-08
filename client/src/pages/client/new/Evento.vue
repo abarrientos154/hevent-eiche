@@ -203,6 +203,7 @@ export default {
       this.$api.get(`cotisations_by_event/${this.id}`).then(res => {
         this.cotisaciones = res
         this.carrito = res.carrito
+        console.log(this.carrito, 'carritoo')
       })
     },
     irProveedor (id) {

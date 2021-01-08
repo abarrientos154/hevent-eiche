@@ -46,12 +46,12 @@ class ServicioController {
 
   async preguntasPorProveedor ({ response, auth }) {
     const idUser = ((await auth.getUser()).toJSON())._id
-    let respuestaProveedor = (await RespuestaProveedor.query().where({id_proveedor: idUser}).fetch()).toJSON()
+    let respuestaProveedor = (await RespuestaProveedor.query().where({id_proveedor: idUser}).with('servicio_info').fetch()).toJSON()
     for (let j of respuestaProveedor)
     j.name = (await ItemServicio.findBy('id', j.id)).name
-
+    console.log(respuestaProveedor, 'respuesta proveedor')
     let preguntas = respuestaProveedor.map(v => {
-      return { id: v.id, name: v.name, pregunta: v.pyr, servicio_id: v.servicio_id, _id: v._id }
+      return { id: v.id, name: v.name, pregunta: v.pyr, servicio_id: v.servicio_id, _id: v._id, servicioName: v.servicio_info.name }
     })
     response.send(preguntas)
   }
