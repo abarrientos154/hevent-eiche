@@ -6,21 +6,18 @@
     <q-img :src="portadaImg" class="absolute-top" style="width:100%;height:200px;z-index:-1">
     </q-img>
     <div class="absolute-center bg-transparent text-center" style="width: 100%;position: absolute;top:100px">
-      <q-avatar size="50px">
-        <div>
-          <q-file borderless v-model="portada" class="button-camera-inicio-proveedor" @input="changePortada()" accept=".jpg, image/*">
-            <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
-          </q-file>
-        </div>
-      </q-avatar>
+      <div class="absolute-center">
+        <q-file borderless v-model="portada" class="button-camera-inicio-proveedor" @input="changePortada()" accept=".jpg, image/*">
+        </q-file>
+      </div>
     </div>
   </div>
   <div class="q-ml-lg row items-center">
       <div class="column items-center">
         <q-avatar size="90px">
           <div class="absolute-center" style="z-index:1">
-            <q-file borderless v-model="perfil" class="button-camera" @input="changePerfil()" accept=".jpg, image/*" >
-              <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
+            <q-file borderless v-model="perfil" class="button-camera-inicio-proveedor-perfil" @input="changePerfil()" accept=".jpg, image/*" >
+
             </q-file>
           </div>
           <q-img :src="perfilImg ? perfilImg : 'noimg.png'" />
@@ -148,16 +145,30 @@ export default {
 <style>
 .button-camera-inicio-proveedor {
   text-decoration: none;
-  padding: 10px;
+  padding: 0px;
   font-weight: 540;
   font-size: 0px;
-  color: #ffffff;
-  background-color: #ffffff;
-  border-radius: 30px;
-  border: 1px solid #7e7e7e;
-  height:40px;
-  width:40px
+  background-image: url('../../../public/icons/editar_foto.png');
+  background-size: 110% 110%;
+  background-repeat: no-repeat;
+  border-radius: 200px;
+  height:80px;
+  width:80px
 }
+
+.button-camera-inicio-proveedor-perfil {
+  text-decoration: none;
+  padding: 0px;
+  font-weight: 540;
+  font-size: 0px;
+  background-image: url('../../../public/icons/editar_foto.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 200px;
+  height:60px;
+  width:60px
+}
+
 .img-nube-forma-style {
   width: 100%;
   height:200px;
