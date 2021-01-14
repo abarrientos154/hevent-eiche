@@ -1,21 +1,13 @@
 <template>
-  <div style="padding:0px;margin:0px">
+  <div style="padding:0px;margin:0px;">
     <q-tab-panels v-model="tab" animated style="padding:0px;margin:0px">
-      <q-tab-panel name="one" style="padding:0px;margin:0px">
-        <q-img class="fit" src="400x700/Mesa de trabajo 1.png" @click="next" />
-      </q-tab-panel>
-      <q-tab-panel name="two" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 2.png" @click="next" />
-        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8" style="font-size:16px">
-          <div class="row justify-between q-mt-md">
-            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
-            <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
-          </div>
+      <q-tab-panel class="window-height" name="one" style="padding:0px;margin:0px;height:100%;width:100%">
+        <div style="width:100%;height:100%" class="fondotab-uno" @click="next">
         </div>
       </q-tab-panel>
-      <q-tab-panel name="tree" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 3.png" @click="next" />
+      <q-tab-panel class="window-height" name="two" style="padding:0px;margin:0px;height:100%;width:100%">
+        <div style="width:100%;height:100%" class="fondotab-dos" @click="next">
+        </div>
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
@@ -24,8 +16,9 @@
           </div>
         </div>
       </q-tab-panel>
-      <q-tab-panel name="four" style="padding:0px;margin:0px">
-        <q-img src="400x700/Mesa de trabajo 4.png" @click="next" />
+      <q-tab-panel class="window-height" name="tree" style="padding:0px;margin:0px;height:100%;width:100%">
+        <div style="width:100%;height:100%" class="fondotab-tres" @click="next">
+        </div>
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
@@ -34,8 +27,9 @@
           </div>
         </div>
       </q-tab-panel>
-      <q-tab-panel name="five" style="padding:0px;margin:0px" @click="next">
-        <q-img src="400x700/Mesa de trabajo 5.png" />
+      <q-tab-panel class="window-height" name="four" style="padding:0px;margin:0px;height:100%;width:100%">
+        <div style="width:100%;height:100%" class="fondotab-cuatro" @click="next">
+        </div>
         <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
@@ -44,7 +38,18 @@
           </div>
         </div>
       </q-tab-panel>
-    </q-tab-panels>
+      <q-tab-panel class="window-height" name="five" style="padding:0px;margin:0px;height:100%;width:100%" @click="next">
+        <div style="width:100%;height:100%" class="fondotab-cinco" @click="next">
+        </div>
+        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
+          <div class="row justify-between q-mt-md">
+            <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
+            <q-space />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+          </div>
+        </div>
+      </q-tab-panel>
+  </q-tab-panels>
     <div v-if="showBtn" class="row justify-end items-start q-mb-md">
       <q-btn class="float-test" color="primary" label="Siguiente" flat rounded @click="next()" />
     </div>
@@ -71,7 +76,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .responsive {
   background-size: contain;
   background-repeat: no-repeat;
@@ -87,5 +92,35 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.fondotab-uno {
+  background-image: url("../../../public/Video-GIF.gif");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%,
+}
+.fondotab-dos {
+  background-image: url("../../../public/400x700/sliderinicio2.png");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%,
+}
+.fondotab-tres {
+  background-image: url("../../../public/400x700/sliderinicio3.png");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%,
+}
+.fondotab-cuatro {
+  background-image: url("../../../public/400x700/sliderinicio4.png");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%,
+}
+.fondotab-cinco {
+  background-image: url("../../../public/400x700/sliderinicio5.png");
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%,
 }
 </style>

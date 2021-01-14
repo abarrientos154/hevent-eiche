@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-center">
-      <img src="Pagina52/Mesa de trabajo 2.png" style="width: 100%;height:430px"/>
+      <img src="Pagina52/Mesa de trabajo 2.png" style="width: 100%;height:400px"/>
     </div>
     <div class="text-subtitle2 text-center text-primary">Iniciar Sesión</div>
     <div class="q-mt-sm">

@@ -26,7 +26,7 @@
         error-message="ingrese un telefono valido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"/>
       </div>
     </div>
-    <div class="text-center text-caption">Te enviaremos un mensaje para confirmar tu número. Sujeto a las tarifas para mensajes y datos</div>
+    <div class="text-center text-caption q-ml-md q-mr-md">Te enviaremos un mensaje para confirmar tu número. Sujeto a las tarifas para mensajes y datos</div>
     <div class="row justify-center">
      <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="Siguiente"/>
     </div>
