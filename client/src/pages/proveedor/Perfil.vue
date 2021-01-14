@@ -5,13 +5,10 @@
       <div class="q-mb-md">
         <q-img :src="perfilImg" class="estilo-img">
           <div class="absolute-center bg-transparent text-center" style="width: 100%">
-            <q-avatar size="50px">
-              <div class="absolute-center" style="z-index:1">
-                <q-file borderless v-model="perfil" class="button-camera" @input="changePerfil()" accept=".jpg, image/*">
-                  <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
-                </q-file>
-              </div>
-            </q-avatar>
+            <div class="absolute-center" style="z-index:1">
+              <q-file borderless v-model="perfil" class="button-camera-inicio-proveedor-perfil-perfil" @input="changePerfil()" accept=".jpg, image/*">
+              </q-file>
+            </div>
           </div>
         </q-img>
         <div class="text-center q-mt-sm text-white text-bold">Cambiar Foto</div>
@@ -151,5 +148,18 @@ export default {
 
 .estilo-opciones {
   text-decoration: underline black;
+}
+
+.button-camera-inicio-proveedor-perfil-perfil {
+  text-decoration: none;
+  padding: 0px;
+  font-weight: 540;
+  font-size: 0px;
+  background-image: url('../../../public/icons/editar_foto.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  border-radius: 200px;
+  height:60px;
+  width:60px
 }
 </style>

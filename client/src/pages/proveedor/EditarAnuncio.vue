@@ -13,7 +13,7 @@
       ? baseu + 'file_proveedor/' + user.images[0]
       : user.images.length === 0
       ? 'portada_proveedor.png'
-      : 'portada_proveedor.png' " style="height:200px;z-index:-1" class="absolute-top">
+      : 'portada_proveedor.png' " style="height:200px;z-index:-1;" class="absolute-top">
     </q-img>
     <q-img v-else :src="'portada_proveedor.png' " style="height:200px;z-index:-1" class="absolute-top">
     </q-img>
@@ -29,12 +29,14 @@
       </q-chip>
     </div>
     <div>
-      <q-tab-panels v-model="panel" animated class="bg-grey-4 q-mt-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:250px">
+      <q-tab-panels v-model="panel" animated class="q-mt-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:350px">
         <q-tab-panel name="Descripcion">
           <div class="column">
-            <div class="text-h6 text-grey-9">Descripcion</div>
-            <div>
-              <q-input borderless v-model="user.descripcion" class="full-widht full-height" style="height:500px" oulined type="textarea" />
+            <div class="bg-grey-4 q-pa-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:250px">
+              <div class="text-h6 text-grey-9">Descripcion</div>
+              <div>
+                <q-input borderless bg-color="bg-grey-4" v-model="user.descripcion" class="full-widht full-height" style="height:100%" autogrow oulined type="textarea" />
+              </div>
             </div>
             <div class="row justify-center absolute-bottom q-mb-sm">
               <q-btn label="guardar" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" @click="guardarDescripcion()" />
@@ -42,12 +44,12 @@
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="Preguntas">
+        <q-tab-panel name="Preguntas" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Preguntas Frecuentes</div>
           <preguntas-frecuentes />
         </q-tab-panel>
 
-        <q-tab-panel name="Mapas">
+        <q-tab-panel name="Mapas" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
           <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
           <div class="row justify-center absolute-bottom q-mb-sm">
@@ -55,17 +57,17 @@
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="Imagenes">
+        <q-tab-panel name="Imagenes" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Imagenes</div>
           <imagenes />
         </q-tab-panel>
 
-        <q-tab-panel name="Videos">
+        <q-tab-panel name="Videos" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Videos</div>
           <videos />
         </q-tab-panel>
 
-        <q-tab-panel name="Opiniones">
+        <q-tab-panel name="Opiniones" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Opiniones</div>
           <opiniones />
         </q-tab-panel>
@@ -136,7 +138,7 @@ export default {
 
 <style>
 .fondo-para-nube-anuncio {
-  background-image: url('../../../public/prueba.png');
+  background-image: url('../../../public/nube-carousel.png');
   background-size: 100% 100%;
 }
 </style>
