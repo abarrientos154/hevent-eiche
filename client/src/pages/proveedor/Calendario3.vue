@@ -1,5 +1,5 @@
 <template>
-  <div class="column q-ma-sm">
+  <div class="column q-ma-sm fondo-calendario-3">
     <div class="row items-center">
       <q-btn color="primary" flat round size="md" @click="$router.go(-1)" icon="keyboard_arrow_left" />
       <div class="text-primary text-bold text-h6">Calendario</div>
@@ -56,11 +56,11 @@
         </template>
       </q-splitter>
     </div>
-    <div class="q-pa-md">
-      <q-scroll-area horizontal style="height: 300px; width: 100%;" :thumb-style="thumbStyle"
+    <div class="q-pa-md bg-transparent">
+      <q-scroll-area horizontal style="height: 300px; width: 100%;" class="bg-transparent" :thumb-style="thumbStyle"
         :content-style="contentStyle">
-        <div class="row no-wrap">
-          <q-card style="width:300px; height:280px" class="no-shadow" v-for="(item, index) in filtrarMes" :key="index">
+        <div class="row no-wrap bg-transparent">
+          <q-card style="width:300px; height:280px" class="no-shadow bg-transparent" v-for="(item, index) in filtrarMes" :key="index">
             <q-card-section>
               <div class="column">
                 <div class="row justify-between">
@@ -395,5 +395,9 @@ export default {
   height: 100%;
   background-size: 100% 100%;
   background-color: rgba(255, 255, 255, 0);
+}
+.fondo-calendario-3 {
+  background: url('../../../public/fondo-calendario.png');
+  background-size: 100% 100%;
 }
 </style>
