@@ -18,11 +18,12 @@
       </div>
       <div class="column">
         <div class="text-center text-h6 text-grey-6 q-mt-md"> Escoger Proveedores </div>
-        <q-scroll-area horizontal class="bg-grey-1 full-width" style="height:100px" >
+        <q-scroll-area horizontal class="bg-grey-1 full-width" style="height:100px" :thumb-style="thumbStyle" :content-style="contentStyle"
+          :content-active-style="contentActiveStyle" >
           <div class="row no-wrap">
-            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px" class="q-mt-lg" @click="$router.push('/proveedores/' + serv.id)">
-              <div class="column items-center">
-                <q-img :src="serv.icon" style="width:35px;height:35px" />
+            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px;" class="q-mt-lg" @click="$router.push('/proveedores/' + serv.id)">
+              <div class="column items-center q-ml-sm" :style="`border:1px solid grey`">
+                <q-img :src="serv.icon" style="width:35px;height:35px;" />
                 <div class="row justify-center items-center text-grey-7"> {{serv.title}} </div>
               </div>
             </div>
@@ -47,7 +48,7 @@ export default {
       id: '',
       proveedores: [],
       servicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png', select: false },
+        { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png', select: true },
         { title: 'Alimentos', id: 'alimentos', icon: 'icon_services/alimentos.png', select: false },
         { title: 'Bebidas', id: 'bebidas', icon: 'icon_services/bebidas.png', select: false },
         { title: 'Fotógrafo', id: 'fotografia', icon: 'icon_services/fotografia.png', select: false },
@@ -61,7 +62,24 @@ export default {
         { title: 'Mobiliaria', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png', select: false },
         { title: 'Transporte', id: 'transporte', icon: 'icon_services/transporte.png', select: false },
         { title: 'Personas', id: 'personas', icon: 'icon_services/personas.png', select: false }
-      ]
+      ],
+      contentStyle: {
+        backgroundColor: 'rgba(0,0,0,0.02)',
+        color: '#555'
+      },
+
+      contentActiveStyle: {
+        backgroundColor: '#eee',
+        color: 'black'
+      },
+
+      thumbStyle: {
+        right: '2px',
+        borderRadius: '0px',
+        backgroundColor: '#027be3',
+        width: '0px',
+        opacity: 0
+      }
     }
   },
   computed: {},
