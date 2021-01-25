@@ -20,9 +20,9 @@
       </div> !-->
       <div class="row q-gutter-xs q-mt-sm justify-between">
         <q-input v-model="add.prod" placeholder="Producto" style="width:90px" dense outlined error-message="Requerido" :error="$v.add.prod.$error" @blur="$v.add.prod.$touch()"/>
-        <q-input v-model.number="add.cant" placeholder="Cantidad" style="width:50px" dense outlined error-message="Requerido" :error="$v.add.cant.$error" @blur="$v.add.cant.$touch()" />
-        <q-input v-model.number="add.prec" placeholder="Precio" style="width:70px" dense outlined error-message="Requerido" :error="$v.add.prec.$error" @blur="$v.add.prec.$touch()" />
-        <q-input v-model.number="add.tot" placeholder="Total" style="width:70px" dense outlined error-message="Requerido" :error="$v.add.tot.$error" @blur="$v.add.tot.$touch()" />
+        <q-input v-model.number="add.cant" placeholder="Cantidad" @input="sacarTotal()" type="number" style="width:50px" dense outlined error-message="Requerido" :error="$v.add.cant.$error" @blur="$v.add.cant.$touch()" />
+        <q-input v-model.number="add.prec" placeholder="Precio" @input="sacarTotal()" type="number" style="width:70px" dense outlined error-message="Requerido" :error="$v.add.prec.$error" @blur="$v.add.prec.$touch()" />
+        <q-input v-model.number="add.tot" placeholder="Total" style="width:70px" type="number" dense outlined error-message="Requerido" :error="$v.add.tot.$error" @blur="$v.add.tot.$touch()" />
       </div>
       <div class="row justify-end q-mt-md">
         <q-btn label="agregar" dense style="padding:1px; border-radius:12px;width:150px" color="primary" push glossy @click="addCarrito(add)"/>
@@ -38,17 +38,20 @@
               </q-avatar>
               <div class="text-subtitle2 text-grey-9 q-ml-sm"> * {{item.servicio_id === 2 && index2 === 0 || item.servicio_id === 3 && index2 === 0 ? item.servicioName : subitem.name  }} *</div>
             </div>
-            <div class="row justify-between q-mr-sm" v-if="item.servicio_id !== 3 && item.servicio_id !== 2 || index2 === 0">
-              <div class="title-table q-pa-xs" style="width:90px">Producto</div>
+            <div class="row justify-between q-mr-xl" v-if="item.servicio_id !== 3 && item.servicio_id !== 2 || index2 === 0">
+              <div class="title-table q-pa-xs" style="width:80px">Producto</div>
               <div class="title-table q-pa-xs q-ml-xs">Cantidad</div>
-              <div class="title-table q-pa-xs q-ml-xs" style="width:70px">Precio</div>
+              <div class="title-table q-pa-xs q-ml-xs" style="width:65px">Precio</div>
               <div class="title-table q-pa-xs q-ml-xs" style="width:70px">Total</div>
             </div>
             <div class="row justify-between q-mr-sm q-mt-sm" v-for="(prod, index3) in subitem.productos" :key="index3">
-              <div class="title-table-product q-pa-xs" style="width:90px">{{prod.prod}}</div>
-              <div class="title-table-product q-pa-xs q-ml-xs" style="width:70px">{{prod.cant}}</div>
-              <div class="title-table-product q-pa-xs q-ml-xs" style="width:70px">{{prod.prec}}</div>
-              <div class="title-table-product q-pa-xs q-ml-xs" style="width:70px">{{prod.tot}}</div>
+              <div class="title-table-product q-pa-xs" style="width:80px">{{prod.prod}}</div>
+              <div class="title-table-product q-pa-xs q-ml-xs" style="width:50px">{{prod.cant}}</div>
+              <div class="title-table-product q-pa-xs q-ml-xs" style="width:50px">{{prod.prec}}</div>
+              <div class="title-table-product q-pa-xs q-ml-xs" style="width:50px">{{prod.tot}}</div>
+              <div>
+                <q-btn color="negative" icon="close" flat size="md" @click="eliminarCarrito(index, index2, index3)" round />
+              </div>
             </div>
           </div>
           <q-separator class="q-mt-md" inset />
@@ -74,7 +77,11 @@ export default {
   data () {
     return {
       tags: [],
-      add: {},
+      add: {
+        cant: 0,
+        prec: 0,
+        tot: 0
+      },
       carrito: [
       ],
       id_servicio: null
@@ -119,6 +126,20 @@ export default {
         this.tags[0].select = true
         this.id_servicio = this.tags[0].servicio_id
       })
+    },
+    sacarTotal () {
+      this.add.tot = this.add.prec * this.add.cant
+    },
+    eliminarCarrito (ind1, ind2, ind3) {
+      console.log(this.carrito, 'carrito')
+      this.carrito[ind1].subitems[ind2].productos.splice(ind3, 1)
+      if (this.carrito[ind1].subitems[ind2].productos.length === 0) {
+        this.carrito[ind1].subitems.splice(ind2, 1)
+        if (this.carrito[ind1].subitems.length === 0) {
+          this.carrito.splice(ind1, 1)
+        }
+      }
+      console.log(this.carrito, 'carrito despues')
     },
     seleccionarServicio (index) {
       console.log(this.tags, 'sdasasdasdads')

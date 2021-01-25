@@ -61,10 +61,27 @@ export default {
   data () {
     return {
       tab: 'one',
-      showBtn: false
+      showBtn: false,
+      pasar: true,
+      timer: ''
     }
   },
+  created () {
+    this.timer = setInterval(this.test, 3000)
+  },
+  mounted () {
+  },
+  beforeDestroy () {
+    clearInterval(this.timer)
+  },
   methods: {
+    test () {
+      console.log('corriendo')
+      if (this.pasar) {
+        this.tab = 'two'
+        this.pasar = false
+      }
+    },
     next () {
       if (this.tab === 'one') { this.tab = 'two' } else
       if (this.tab === 'two') { this.tab = 'tree' } else
@@ -72,7 +89,8 @@ export default {
       if (this.tab === 'four') { this.tab = 'five' } else {
         this.$router.push('/login')
       }
-    }
+    },
+    cancelAutoUpdate () { clearInterval(this.timer) }
   }
 }
 </script>

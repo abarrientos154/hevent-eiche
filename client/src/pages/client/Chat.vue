@@ -114,12 +114,12 @@ export default {
         if (v) {
           if (v.status > 0) {
             this.deshabilitarMsg = true
-            this.$q.dialog({
+            /* this.$q.dialog({
               title: '¡Atención!',
               message: 'Este chat esta deshabilitado, la cotizacion ya ha sido enviada,aprobada,cotizada o rechazada por el cliente. Podra ver los mensajes pero no puede cotizar ni enviar mensajes en este chat'
             }).onOk(() => {
 
-            })
+            }) */
           }
           this.data = v
           var services = v.datos_proveedor.detalles.servicios

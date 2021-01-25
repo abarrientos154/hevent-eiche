@@ -1,5 +1,5 @@
 <template>
-  <div class="column q-ma-sm fondo-calendario-3">
+  <div v-if="events.length > 0" class="column q-ma-sm fondo-calendario-3">
     <div class="row items-center">
       <q-btn color="primary" flat round size="md" @click="$router.go(-1)" icon="keyboard_arrow_left" />
       <div class="text-primary text-bold text-h6">Calendario</div>
@@ -57,7 +57,7 @@
       </q-splitter>
     </div>
     <div class="q-pa-md bg-transparent">
-      <q-scroll-area horizontal style="height: 300px; width: 100%;" class="bg-transparent" :thumb-style="thumbStyle"
+      <q-scroll-area v-if="filtrarMes.length > 0" horizontal style="height: 300px; width: 100%;" class="bg-transparent" :thumb-style="thumbStyle"
         :content-style="contentStyle">
         <div class="row no-wrap bg-transparent">
           <q-card style="width:300px; height:280px" class="no-shadow bg-transparent" v-for="(item, index) in filtrarMes" :key="index">
@@ -80,6 +80,9 @@
           </q-card>
         </div>
       </q-scroll-area>
+      <div v-else>
+        <div>Ups sin eventos para este mes</div>
+      </div>
     </div>
     <q-dialog v-model="dialogo" persistent :maximized="true" transition-show="slide-up" transition-hide="slide-down">
       <q-card class="nube-dialog q-mt-xl q-pb-xl" style="margin-top:100px">
@@ -111,6 +114,13 @@
         </q-card-section>
       </q-card>
     </q-dialog>
+  </div>
+  <div class="fondo-calendario-3" style="height:90vh;width:100vw" v-else>
+    <div class="sin-eventos-proveedor">
+    </div>
+    <div class="text-h6 text-center full-width" style="position:absolute;bottom:80px;z-index:1">
+      Ups todavia no tienes eventos
+    </div>
   </div>
 </template>
 
@@ -399,5 +409,11 @@ export default {
 .fondo-calendario-3 {
   background: url('../../../public/fondo-calendario.png');
   background-size: 100% 100%;
+}
+.sin-eventos-proveedor {
+  background: url('../../../public/error.png');
+  background-size: 100% 100%;
+  width: 100%;
+  height: 80%;
 }
 </style>

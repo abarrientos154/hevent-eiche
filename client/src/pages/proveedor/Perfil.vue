@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="nube row justify-center items-center">
-      <q-btn icon="menu" flat style="position:absolute; top:5px;left:5px" color="white" round />
       <div class="q-mb-md">
         <q-img :src="perfilImg" class="estilo-img">
           <div class="absolute-center bg-transparent text-center" style="width: 100%">
@@ -11,7 +10,7 @@
             </div>
           </div>
         </q-img>
-        <div class="text-center q-mt-sm text-white text-bold">Cambiar Foto</div>
+        <div class="text-center q-mt-sm text-white text-bold"> {{user.name}} </div>
       </div>
     </div>
     <div class="text-center text-primary text-h5 text-bold"> * Perfil * </div>

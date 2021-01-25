@@ -1,57 +1,40 @@
 <template>
-  <q-page>
+  <q-page class="q-pa-sm">
     <div class="col full-width">
-      <div header class="row">
-        <div class="col-3 q-pl-md">
-            <q-btn flat class="text-grey" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
+      <div header class="column">
+        <div class="row">
+          <div class="col-3">
+              <q-btn flat color="primary" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
+          </div>
+          <q-space />
+          <q-btn flat round color="red" icon="favorite" />
         </div>
-        <div class="col-5 q-pt-xs text-h6 text-primary text-bold text-center">{{header}}</div>
-        <q-btn flat no-caps class="col-4 text-grey text-subtitle1" icon="tune" label="Filtros" />
+        <div class="row justify-center">
+          <div>
+            <q-input class="input-border q-pl-sm" label-color="grey-14" type="email" v-model="busqueda" dense label="¿Que estas Buscando?" borderless style="width:300px" />
+          </div>
+          <q-btn flat round color="black" icon="tune" />
+        </div>
       </div>
-      <q-separator/>
-      <div class="q-pl-md q-pt-sm text-subtitle2 text-grey-8"><u>{{ proveedores.length}} empresas</u></div>
-      <div
-        class="col full-width q-pa-md"
-        v-for="(data, index) in proveedores"
-        :key="index">
-          <q-card
-            class="shadow-8"
-            style="width: 100%"
-            >
-              <q-img :src="index < img.length ? img[index] : 'example_1.jpg'" style="width: 100%">
-                <q-card-actions flat vertical class="bg-transparent absolute-right">
-                  <q-btn flat round color="red" icon="favorite_border" />
-                  <q-btn flat round color="yellow" icon="star_border" />
-                  <q-badge color="grey-7" text-color="white" label="Mi Elegido" />
-                </q-card-actions>
-              </q-img>
-              <q-card-section horizontal class="row">
-                <q-card-section class="col-6 items-start q-px-sm">
-                    <div class="text-subtitle2 text-grey-8 text-start">{{ data.datos_proveedor.name ? data.datos_proveedor.name : 'Nombre Proveedor' }}</div>
-                    <q-rating v-model="rating" :max="5" size="20px" />
-                    <div class="row q-pt-xs">
-                      <div class="col-1 items-start" >
-                        <q-icon style="font-size: 16px;" class="text-primary" name="question_answer" />
-                        <div class="text-caption text-grey">Desde</div>
-                      </div>
-                      <div class="col-11 q-pl-sm text-caption text-grey-7"># Comentarios</div>
-                    </div>
-                    <div v-if="data.menu_costo" class="q-pa-xs text-h6 text-primary text-start">$ {{ data.menu_costo ? data.menu_costo : '0000' }}</div>
-                    <div class="row q-pt-xs">
-                      <div class="col-2 items-start" >
-                        <q-icon style="font-size: 20px;" class="text-primary" name="group" />
-                      </div>
-                      <div class="col-10 q-pl-sm text-caption text-grey-7" v-if="data.invitados">{{data.invitados ? data.invitados : '#'}} Invitados</div>
-                    </div>
-                </q-card-section>
-                <q-card-section class="col-6 justify-end q-px-sm">
-                    <div class="text-subtitle2 text-grey-8 text-end">{{data.datos_proveedor.city ? data.datos_proveedor.city : 'Ciudad'}}</div>
-                    <div class="q-pa-xs text-subtitle2 text-grey-7">{{data.description ? data.description : 'Descripcion'}}</div>
-                    <q-btn unelevated style="width: 100%" no-caps color="primary" label="Más Información" @click="ruta(data.datos_proveedor._id, header)" />
-                </q-card-section>
-                </q-card-section>
-          </q-card>
-        </div>
+      <div class="column">
+        <div class="text-center text-h6 text-grey-6 q-mt-md"> Escoger Proveedores </div>
+        <q-scroll-area horizontal class="bg-grey-1 full-width" style="height:100px" >
+          <div class="row no-wrap">
+            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px" class="q-mt-lg" @click="$router.push('/proveedores/' + serv.id)">
+              <div class="column items-center">
+                <q-img :src="serv.icon" style="width:35px;height:35px" />
+                <div class="row justify-center items-center text-grey-7"> {{serv.title}} </div>
+              </div>
+            </div>
+          </div>
+        </q-scroll-area>
+      </div>
+
+      <div class="col full-width q-pa-md" v-for="(data, index) in proveedores" :key="index">
+        <q-card class="shadow-8" style="width: 100%" >
+
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -59,11 +42,26 @@
 export default {
   data () {
     return {
+      busqueda: '',
       header: '',
       id: '',
-      rating: 1,
-      img: ['example_1.jpg', 'example_2.jpg', 'example_3.jpg', 'example_4.jpg', 'example_5.jpg', 'example_7.jpg', 'example_7.jpg'],
-      proveedores: []
+      proveedores: [],
+      servicios: [
+        { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png', select: false },
+        { title: 'Alimentos', id: 'alimentos', icon: 'icon_services/alimentos.png', select: false },
+        { title: 'Bebidas', id: 'bebidas', icon: 'icon_services/bebidas.png', select: false },
+        { title: 'Fotógrafo', id: 'fotografia', icon: 'icon_services/fotografia.png', select: false },
+        { title: 'Vídeo', id: 'video', icon: 'icon_services/video.png', select: false },
+        { title: 'Audio', id: 'audio', icon: 'icon_services/audio.png', select: false },
+        { title: 'Música', id: 'musica', icon: 'icon_services/musica.png', select: false },
+        { title: 'Iliminacion', id: 'iluminacion', icon: 'icon_services/iluminacion.png', select: false },
+        { title: 'Invitación', id: 'invitacion', icon: 'icon_services/invitacion.png', select: false },
+        { title: 'Recuerdos', id: 'recuerdos', icon: 'icon_services/recuerdos.png', select: false },
+        { title: 'Decoración', id: 'decoracion', icon: 'icon_services/decoracion.png', select: false },
+        { title: 'Mobiliaria', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png', select: false },
+        { title: 'Transporte', id: 'transporte', icon: 'icon_services/transporte.png', select: false },
+        { title: 'Personas', id: 'personas', icon: 'icon_services/personas.png', select: false }
+      ]
     }
   },
   computed: {},

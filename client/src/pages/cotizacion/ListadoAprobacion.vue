@@ -1,11 +1,13 @@
 <template>
   <div v-if="data.length > 0">
-    <div  class="fondo-toolbar"></div>
+    <div  class="fondo-toolbar">
+      <div class="text-center text-white text-bold text-h6 q-pt-lg">Cotizaciones</div>
+    </div>
     <div class="row justify-center q-ma-sm">
       <div class="col-xs-11 col-sm-6 col-md-6 col-lg-6 q-pr-sm" v-for="(item, index) in data" :key="index" style="border-radius:8px;margin-top:8px;margin-bottom:8px">
         <q-item class="q-mt-xs q-mb-xs q-ma-sm">
           <q-item-section avatar>
-            <q-avatar>
+            <q-avatar size="75px">
               <q-img :src="'noimg.png'" />
             </q-avatar>
           </q-item-section>
@@ -64,7 +66,7 @@ export default {
             proveedor_id: v.proveedor_id,
             rolAuth: v.rolAuth,
             statusVal: v.status,
-            status: v.status === 1 ? 'Esperando Aprobación' : v.status === 2 ? 'Aprobado' : v.status === 3 ? 'Rechazado' : v.status === 4 ? `Cotizacion pagada el ${v.fechaPagado}` : `Cotizacion pagada el ${v.fechaPaagado}`,
+            status: v.status === 1 ? 'Esperando Aprobación' : v.status === 2 ? 'Aprobado por ' + v.datos_cliente.full_name : v.status === 3 ? 'Rechazado' : v.status === 4 ? `Cotizacion pagada el ${v.fechaPagado}` : `Cotizacion pagada el ${v.fechaPaagado}`,
             _id: v._id
           }
         })

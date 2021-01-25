@@ -5,12 +5,12 @@
     </div>
     <div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
     </div>
-    <q-carousel animated v-model="slide" navigation infinite class="absolute-top" style="height:200px;z-index:-1" swipeable v-if="user.images && user.images.length > 1">
+    <!--<q-carousel animated v-model="slide" navigation infinite class="absolute-top" style="height:200px;z-index:-1" swipeable v-if="user.images && user.images.length > 1">
       <q-carousel-slide :name="index" :img-src="baseu + 'file_proveedor/' + item" v-for="(item, index) in user.images" :key="index" >
       </q-carousel-slide>
-    </q-carousel>
-    <q-img v-else-if="user.images && user.images.length === 1" :src="user.images.length === 1
-      ? baseu + 'file_proveedor/' + user.images[0]
+    </q-carousel>-->
+    <q-img v-if="user.images" :src="user.images
+      ? baseu + 'file_proveedor/' + mostrarImg
       : user.images.length === 0
       ? 'portada_proveedor.png'
       : 'portada_proveedor.png' " style="height:200px;z-index:-1;" class="absolute-top">
@@ -49,9 +49,11 @@
           <preguntas-frecuentes />
         </q-tab-panel>
 
-        <q-tab-panel name="Mapas" class="bg-grey-4">
-          <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
-          <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
+        <q-tab-panel name="Mapas">
+          <div class="bg-grey-4 q-pa-md" style="height:85%; border-radius:12px">
+            <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
+            <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
+          </div>
           <div class="row justify-center absolute-bottom q-mb-sm">
             <q-btn label="Contactame" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" />
           </div>
@@ -59,7 +61,7 @@
 
         <q-tab-panel name="Imagenes" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Imagenes</div>
-          <imagenes />
+          <imagenes @cambiarImg="cambiarImg" />
         </q-tab-panel>
 
         <q-tab-panel name="Videos" class="bg-grey-4">
@@ -87,6 +89,7 @@ export default {
   data () {
     return {
       panel: 'Descripcion',
+      mostrarImg: '',
       form: {
         descripcion: ''
       },
@@ -103,10 +106,15 @@ export default {
     this.baseu = env.apiUrl
   },
   methods: {
+    cambiarImg (img) {
+      console.log('entro', img)
+      this.mostrarImg = img
+    },
     getUser () {
       this.$api.get('users_perfil').then(res => {
         if (res) {
           this.user = res
+          this.mostrarImg = res.images[0]
           console.log(this.user, 'this user')
         }
       })

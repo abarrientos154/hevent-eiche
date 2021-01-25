@@ -1,10 +1,9 @@
 <template>
   <div v-if="chats.length > 0">
     <div class="fondo-toolbar">
-      <div class="row justify-between items-center">
-        <q-btn flat color="white" icon="menu" round class="q-mt-md q-ml-sm" />
-        <div class="text-center text-bold text-white text-h6 q-mt-sm">Mensajes</div>
-        <q-btn flat color="white" icon="search" round class="q-mr-sm" />
+      <div>
+        <div class="text-center text-bold text-white text-h6" style="position:absolute;top:10px;left:40%">Mensajes</div>
+        <q-btn flat color="white" icon="search" round class="q-mr-sm" style="position:absolute;top:10px;right:5px" />
       </div>
     </div>
     <div class="q-ma-lg">
@@ -12,7 +11,7 @@
         <div class="column" v-for="(chat, index) in chats" :key="index">
           <q-item class="q-mt-sm" v-ripple clickable @click="entrar(chat._id)">
             <q-item-section avatar>
-              <q-avatar size="60px">
+              <q-avatar size="75px">
                 <q-img :src="'noimg.png'" />
               </q-avatar>
             </q-item-section>
