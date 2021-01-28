@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="animated-body row justify-center">
-      <img src="400x400/002.png" alt="Logo HEvent" style="width: 100%;height:260px">
+      <img src="400x400/002.png" alt="Logo HEvent" style="width: 100%;height:240px">
     </div>
     <div>
       <div class="row justify-center text-h6 text-primary">Iniciar Sesión</div>

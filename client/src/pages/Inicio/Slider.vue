@@ -12,7 +12,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_cliente" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -23,7 +23,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_cliente" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -34,7 +34,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_cliente" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -45,7 +45,7 @@
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_cliente" />
             <q-space />
-            <q-btn color="primary" label="* Iniciar Sesión *" to="/login" flat />
+            <q-btn color="primary" label="* Iniciar Sesión *" to="/login_cliente" flat />
           </div>
         </div>
       </q-tab-panel>
@@ -87,7 +87,7 @@ export default {
       if (this.tab === 'two') { this.tab = 'tree' } else
       if (this.tab === 'tree') { this.tab = 'four' } else
       if (this.tab === 'four') { this.tab = 'five' } else {
-        this.$router.push('/login')
+        this.$router.push('/login_cliente')
       }
     },
     cancelAutoUpdate () { clearInterval(this.timer) }

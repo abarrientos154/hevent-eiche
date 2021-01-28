@@ -7,8 +7,8 @@
       <div class="bg-white text-primary shadow-2 full-width row justify-between" >
         <template v-for="(item, index) in buttons_footer" v-bin:key="index">
           <div v-if="can(item.permission)" v-bind:key="index">
-            <q-btn :name="item.to" :label="item.title" flat round style="width: 60px; height: 60px" @click="$router.push(item.to)">
-              <img :src="item.icon" style="width: 40px; height: 40px"/>
+            <q-btn :name="item.to" :label="item.title" flat round style="width: 60px; height: 60px" @click="$router.push(item.to), irRuta(item.to)">
+              <img :src="rutaActual === item.to ? item.iconSelect : item.icon" style="width: 40px; height: 40px"/>
             </q-btn>
           </div>
         </template>
@@ -37,11 +37,15 @@ export default {
     footer () {
       return this.$route.meta.footer
     },
+    icono () {
+      return this.$router.currentRoute.path
+    },
     ...mapGetters('generals', ['can'])
   },
   data () {
     return {
       tab: '/revista',
+      rutaActual: this.$router.currentRoute.path,
       buttons_footer: [
         // TODOS LOS ITEM EN MENU PARA LOS CLIENTES
         { title: 'Blog', icon: 'search', to: '/revista', permission: 1 /* CLIENTE */ },
@@ -51,13 +55,23 @@ export default {
         { title: 'Mensajes', icon: 'question_answer', to: '/mensajes/mensajes', permission: 1 /* CLIENTE */ },
         { title: 'Cerrar Sesion', icon: 'logout', to: '/login', permission: 1 },
         // TODOS LOS ITEM EN MENU PARA LOS PROVEEDORES
-        { icon: 'icons/Icono1.png', to: '/inicio_proveedor', permission: 2 /* PROVEEDOR */ },
-        { icon: 'icons/Icono2.png', to: '/perfil_proveedor', permission: 2 /* PROVEEDOR */ },
-        { icon: 'icons/Icono3.png', to: '/calendario_eventos', permission: 2 }, // PROVEEDOR
-        { icon: 'icons/Icono4.png', to: '/chats_proveedor', permission: 2 },
-        { icon: 'icons/Icono5.png', to: '/perfil_proveedor', permission: 2 }
+        { icon: 'iconos_menu/iinicio.png', to: '/inicio_proveedor', permission: 2, iconSelect: 'iconos_menu/iinicioa.png' /* PROVEEDOR */ },
+        { icon: 'iconos_menu/iestadisticas.png', to: '/perfil_proveedor', permission: 2, iconSelect: 'iconos_menu/iestadisticasa.png' /* PROVEEDOR */ },
+        { icon: 'iconos_menu/icalendario.png', to: '/calendario_eventos', permission: 2, iconSelect: 'iconos_menu/icalendarioa.png' }, // PROVEEDOR
+        { icon: 'iconos_menu/ichats.png', to: '/chats_proveedor', permission: 2, iconSelect: 'iconos_menu/ichatsa.png' },
+        { icon: 'iconos_menu/iperfil.png', to: '/perfil_proveedor', permission: 2, iconSelect: 'iconos_menu/iperfila.png' }
       ]
     }
+  },
+  methods: {
+    irRuta (to) {
+      console.log(this.rutaActual, 'r1')
+      this.rutaActual = to
+      console.log(this.rutaActual, 'r2')
+    }
+  },
+  mounted () {
+    console.log(this.$router.currentRoute, 'console')
   }
 }
 </script>
