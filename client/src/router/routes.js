@@ -128,6 +128,11 @@ const routes = [
         path: '/prueba_pay',
         component: () => import('pages/PruebaPayU.vue'),
         meta: { toolbar: false, title: 'Calendario', footer: false }
+      },
+      {
+        path: '/estadisticas',
+        component: () => import('pages/proveedor/Estadisticas.vue'),
+        meta: { toolbar: false, title: 'Estadisticas', footer: true }
       }
     ]
   },

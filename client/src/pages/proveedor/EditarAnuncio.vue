@@ -31,20 +31,31 @@
     <div>
       <q-tab-panels v-model="panel" animated class="q-mt-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:350px">
         <q-tab-panel name="Descripcion">
-          <div class="column">
-            <div class="bg-grey-4 q-pa-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:250px">
+          <!--<div class="column">
+            <div class="q-pa-md" style="border-radius:20px;height:250px">
               <div class="text-h6 text-grey-9">Descripcion</div>
               <div>
-                <q-input borderless bg-color="bg-grey-4" v-model="user.descripcion" class="full-widht full-height" style="height:100%" autogrow oulined type="textarea" />
+                <q-input borderless bg-color="grey-4" v-model="user.descripcion" style="height:250px" autogrow type="textarea"  />
               </div>
             </div>
-            <div class="row justify-center absolute-bottom q-mb-sm">
+            <div class="row justify-center absolute-bottom q-mb-sm" style="margin-top:100px">
+              <q-btn label="guardar" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" @click="guardarDescripcion()" />
+            </div>
+          </div> -->
+          <div class="column full-height">
+            <div>
+              <div class="text-h6 text-grey-9">Descripcion</div>
+            </div>
+            <div class="q-pa-sm bg-grey-4" style="height:70%">
+              <q-input color="grey-4" bg-color="grey-4" v-model="user.descripcion" borderless type="textarea" style="height:100%"  />
+            </div>
+            <div class="row justify-center q-mt-sm">
               <q-btn label="guardar" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" @click="guardarDescripcion()" />
             </div>
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="Preguntas" class="bg-grey-4">
+        <q-tab-panel name="Preguntas">
           <div class="text-h6 text-grey-9">Preguntas Frecuentes</div>
           <preguntas-frecuentes />
         </q-tab-panel>
@@ -148,5 +159,8 @@ export default {
 .fondo-para-nube-anuncio {
   background-image: url('../../../public/nube-carousel.png');
   background-size: 100% 100%;
+}
+.bordes-bottom-descripcion {
+  border-radius: 20px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="events.length > 0" class="column q-ma-sm fondo-calendario-3">
+  <div class="column q-ma-sm fondo-calendario-3">
     <div class="row items-center">
       <q-btn color="primary" flat round size="md" @click="$router.go(-1)" icon="keyboard_arrow_left" />
       <div class="text-primary text-bold text-h6">Calendario</div>
@@ -80,8 +80,8 @@
           </q-card>
         </div>
       </q-scroll-area>
-      <div v-else>
-        <div>Ups sin eventos para este mes</div>
+      <div v-else class="window-width" style="height:200px">
+        <div class="ups-sin-eventos"></div>
       </div>
     </div>
     <q-dialog v-model="dialogo" persistent :maximized="true" transition-show="slide-up" transition-hide="slide-down">
@@ -115,13 +115,13 @@
       </q-card>
     </q-dialog>
   </div>
-  <div class="fondo-calendario-3" style="height:90vh;width:100vw" v-else>
+  <!--<div class="fondo-calendario-3" style="height:90vh;width:100vw" v-else>
     <div class="sin-eventos-proveedor">
     </div>
     <div class="text-h6 text-center full-width" style="position:absolute;bottom:80px;z-index:1">
       Ups todavia no tienes eventos
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -415,5 +415,11 @@ export default {
   background-size: 100% 100%;
   width: 100%;
   height: 80%;
+}
+.ups-sin-eventos {
+  background: url('../../../public/mensaje_calendario.png');
+  background-size: 100% 100%;
+  width: 90%;
+  height: 100%;
 }
 </style>

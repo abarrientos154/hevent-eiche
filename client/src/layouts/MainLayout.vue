@@ -56,7 +56,7 @@ export default {
         { title: 'Cerrar Sesion', icon: 'logout', to: '/login', permission: 1 },
         // TODOS LOS ITEM EN MENU PARA LOS PROVEEDORES
         { icon: 'iconos_menu/iinicio.png', to: '/inicio_proveedor', permission: 2, iconSelect: 'iconos_menu/iinicioa.png' /* PROVEEDOR */ },
-        { icon: 'iconos_menu/iestadisticas.png', to: '/perfil_proveedor', permission: 2, iconSelect: 'iconos_menu/iestadisticasa.png' /* PROVEEDOR */ },
+        { icon: 'iconos_menu/iestadisticas.png', to: '/estadisticas', permission: 2, iconSelect: 'iconos_menu/iestadisticasa.png' /* PROVEEDOR */ },
         { icon: 'iconos_menu/icalendario.png', to: '/calendario_eventos', permission: 2, iconSelect: 'iconos_menu/icalendarioa.png' }, // PROVEEDOR
         { icon: 'iconos_menu/ichats.png', to: '/chats_proveedor', permission: 2, iconSelect: 'iconos_menu/ichatsa.png' },
         { icon: 'iconos_menu/iperfil.png', to: '/perfil_proveedor', permission: 2, iconSelect: 'iconos_menu/iperfila.png' }

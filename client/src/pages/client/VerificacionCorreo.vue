@@ -5,13 +5,13 @@
     </div>
     <div class="q-mt-sm">
       <div>
-        <q-input class="input-border-new q-pa-sm q-ml-xl q-mr-xl" label-color="grey-14" type="email" v-model="form.email" dense label="Correo electrónico" borderless
-          error-message="ingrese el email" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"
+        <q-input class="input-border-new q-pa-sm q-ml-xl q-mr-xl" label-color="grey-14" type="email"
+          v-model="form.email" dense label="Correo electrónico" borderless
         />
       </div>
       <div>
-        <q-input class="input-border-new q-pa-sm q-ml-xl q-mr-xl" :type="isPwd ? 'password' : 'text'" v-model="password" label="Contraseña" dense label-color="grey-14" borderless
-        error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.password.$error" @blur="$v.password.$touch()">
+        <q-input class="input-border-new q-pa-sm q-ml-xl q-mr-xl" :type="isPwd ? 'password' : 'text'" v-model="form.password"
+          label="Contraseña" dense label-color="grey-14" borderless>
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
           </template>
@@ -23,7 +23,7 @@
      <label @click="modal = true">¿Olvide contraseña?</label>
     </div>
     <div class="text-center q-ma-sm">
-      <q-btn color="primary" class="q-mr-sm button-border" style="width:200px" :loading="loading" type="submit" label="Siguiente">
+      <q-btn color="primary" class="q-mr-sm button-border" style="width:200px" :loading="loading" @click="onSubmit()" label="Iniciar Sesión">
         <template v-slot:loading>
           <q-spinner-hourglass class="on-left" />
             Cargando...
@@ -37,7 +37,7 @@
         </div>
         <div class="q-ma-lg row justify-center">
           <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
-          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="form.verificacion" dense label="correo@gmail.com" borderless/>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="verificacion.email" dense label="correo@gmail.com" borderless/>
           <q-btn color="primary" class="q-mr-sm button-border" style="width:200px" type="submit" label="Enviar correo" @click="modal2 = true"/>
         </div>
       </q-card>
@@ -49,7 +49,7 @@
         </div>
         <div class="q-mr-lg q-ml-lg q-mb-lg row justify-center">
           <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
-          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="form.verificacion" dense label="email escrito" borderless/>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="verificacion.email" dense label="email escrito" borderless/>
           <div class="text-caption q-mr-sm text-grey">Comprueba si has recibido un email con información sobre como restablecer la contraseña</div>
         </div>
       </q-card>
@@ -57,11 +57,12 @@
   </div>
 </template>
 <script>
-import { required, minLength, maxLength, email, sameAs } from 'vuelidate/lib/validators'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
       form: {},
+      verificacion: {},
       countriesOptions: [],
       countries: [],
       shape: [],
@@ -73,55 +74,30 @@ export default {
       loading: false
     }
   },
-  validations: {
-    form: {
-      full_name: { required, minLength: minLength(3), maxLength: maxLength(50) },
-      phone: { required },
-      email: { required, email }
-    },
-    repeatPassword: { sameAsPassword: sameAs('password') },
-    password: { required, maxLength: maxLength(256), minLength: minLength(6) }
-  },
-  mounted () {
-    this.getCountries()
-    this.form.telCode = 'Chile'
-  },
   methods: {
-    getCountries () {
-      this.$api.get('countries').then(res => {
-        this.countriesOptions = res
-        this.countries = res
+    ...mapMutations('generals', ['login']),
+    onSubmit () {
+      // this.loading = true
+      console.log(this.form, 'form')
+      this.$q.loading.show({
+        message: 'Iniciando sesión'
       })
-    },
-    filterFn (val, update) {
-      console.log(val, 'ballllllllll')
-      if (val === '') {
-        update(() => {
-          this.countries = this.countriesOptions
-
-          // with Quasar v1.7.4+
-          // here you have access to "ref" which
-          // is the Vue reference of the QSelect
-        })
-        return
-      }
-      update(() => {
-        const needle = val.toLowerCase()
-        this.countries = this.countriesOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
-      })
-    },
-    agregar () {
-      console.log(this.form, 'aaaaaaaaaaaaaaaaaaaaaaaaa')
-      this.$v.$touch()
-      if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
-        this.form.password = this.password
-        this.$api.post('registrar_cliente', this.form).then(res => {
-          if (res) {
-            console.log('ejecutado o guardado correctamente')
-            this.$router.push('/login')
+      this.$api.post('login', this.form).then(res => {
+        if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
+          const client = res.HEV_SESSION_INFO.roles.find(value => value === 2)
+          if (!client) {
+            this.login(res)
+            this.$router.push('inicio_proveedor')
+          } else {
+            this.login(res)
+            this.$router.push('inicio_cliente')
           }
-        })
-      }
+        } else {
+          console.log('error de ususario')
+          // this.loading = false
+        }
+        this.$q.loading.hide()
+      })
     }
   }
 }
