@@ -71,7 +71,20 @@ class ServicioController {
     } else {
       var proveedores = (await ServicioProveedor.where({id: params.id_servicio}).with('datos_proveedor').fetch()).toJSON()
     }
-    response.send(proveedores)
+    // const myArr = ['😎', '😎', '😎', '😅'] // tenemos duplicados!
+    const newArr = []
+    const myObj = {}
+
+    proveedores.forEach(el => {
+      // comprobamos si el valor existe en el objeto
+      if (!(el in myObj)) {
+        // si no existe creamos ese valor y lo añadimos al array final, y si sí existe no lo añadimos
+        myObj[el] = true
+        newArr.push(el)
+      }
+    })
+    console.log(newArr, 'nuevo array')
+    response.send(newArr)
   }
 
   async serviciosPorProveedor ({ response, auth }) {

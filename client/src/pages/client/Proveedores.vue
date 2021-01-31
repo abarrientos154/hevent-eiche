@@ -35,7 +35,7 @@
           <div class="column full-width justify-center items-center">
             <div class="text-bold text-grey-7 q-pl-sm q-pr-sm" > * {{item.name}} * </div>
             <q-card style="width: 100%; height:260px" class="border-items" >
-              <q-img style="width:100%;height:100%" :src="baseu + item.images[0]" />
+              <q-img style="width:100%;height:100%" :src="baseu + item.id_proveedor" />
               <div style="position:absolute; bottom:0px;border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:0px;border-bottom-right-radius:0px" class="row justify-center full-width bg-white" >
                 <div class="text-h6 text-primary"> $1.200,00 </div>
                 <q-btn class="gradiente-buttom full-width" push style="border-radius:7px" dense label="mas información" />
@@ -94,7 +94,7 @@ export default {
   },
   computed: {},
   mounted () {
-    this.baseu = env.apiUrl + 'file_proveedor/'
+    this.baseu = env.apiUrl + 'file_proveedor/portada/'
     console.log(this.baseu, 'baseu')
     if (this.$route.params.id) {
       this.id = this.$route.params.id

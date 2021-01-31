@@ -17,7 +17,7 @@ const Hash = use('Hash')
 const Factory = use('Factory')
 
 const userData = [
-  {
+  /* {
     _id: '5e90d6e6f75366526a680091',
     email: 'admin@hevent.com',
     password: 'hevent2020',
@@ -37,12 +37,12 @@ const userData = [
     password: 'hevent2020',
     full_name: 'Usuario Proveedor de Ejemplo',
     roles: [3]
-  }
+  } */
 ]
 
 class UserSeeder {
   async run () {
-    for (let i of userData) {
+    /* for (let i of userData) {
       let user = await User.find(i._id)
       if (!user) {
         await User.create(i)
@@ -53,10 +53,9 @@ class UserSeeder {
         user.name = i.name
         user.lastName = i.lastName
         user.roles = i.roles
-        user.country_id = i.country_id ? i.country_id : null
         await user.save()
       }
-    }
+    } */
     console.log('Finished User')
   }
 }
