@@ -37,7 +37,7 @@
             <q-card style="width: 100%; height:260px" class="border-items" >
               <q-img style="width:100%;height:100%" :src="baseu + item.id_proveedor" />
               <div style="position:absolute; bottom:0px;border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:0px;border-bottom-right-radius:0px" class="row justify-center full-width bg-white" >
-                <div class="text-h6 text-primary"> $1.200,00 </div>
+               <!-- <div class="text-h6 text-primary"> $1.200,00 </div>-->
                 <q-btn class="gradiente-buttom full-width" push style="border-radius:7px" dense label="mas información" />
               </div>
             </q-card>
