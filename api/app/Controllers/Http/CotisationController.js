@@ -94,11 +94,13 @@ class CotisationController {
     const user = (await auth.getUser()).toJSON()
     const id_user = user._id
     let cotisation = (await Cotisation.query().where('_id',params.id_cotisation).with('datos_proveedor').with('datos_cliente').with('datos_proveedor_detalles').first()).toJSON()
+    console.log(cotisation, 'asssssssssssss')
     let update_visto = (await ChatMessage.query().where({cotisazion_id: params.id_cotisation, user_id: user.roles[0] === 2 ? cotisation.proveedor_id : cotisation.cliente_id }).update({visto: true})).toJSON()
     let send = {
       datos_proveedor: cotisation.datos_proveedor,
       datos_cliente: cotisation.datos_cliente,
       messages: [],
+      carrito: cotisation.carrito ? cotisation.carrito : false,
       status: cotisation.status ? cotisation.status : 0
     }
     send.datos_proveedor.detalles = cotisation.datos_proveedor_detalles
@@ -134,7 +136,7 @@ class CotisationController {
         console.log(messages, 'aaaa')
         return {
           _id: v._id,
-          full_name: user.roles[0] === 3 ? v.datos_cliente.full_name : v.datos_proveedor.full_name,
+          full_name: user.roles[0] === 2 ? v.datos_cliente.full_name : v.datos_proveedor.full_name,
           last_message: v.last_message,
           created_at_message: moment(v.created_at_message).lang('es').calendar(),
           visto: v.visto,

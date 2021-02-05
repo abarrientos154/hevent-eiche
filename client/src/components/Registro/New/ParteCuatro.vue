@@ -4,7 +4,28 @@
     <div style="position:absolute; top:10px; left:5px" >
       <q-btn color="white" icon="arrow_back" flat dense @click="panel.panel = 'parte_tres'" />
     </div>
-    <div class="text-h6 text-grey-9">Selecciona tu plan</div>
+
+    <div class="q-mt-md text-h6 text-primary text-center"> * Inscripcion * </div>
+    <div class="row justify-center q-gutter-xs q-mb-md q-mt-sm">
+      <div :class="tipoPlan === 'Mensual' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()">Mensual</div>
+      <div :class="tipoPlan === 'Anual' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()" >Anual</div>
+    </div>
+
+    <q-scroll-area horizontal style="height: 450px; width: 100%;" class="q-mb-lg bg-white" :thumb-style="thumbStyle"
+      :content-style="contentStyle" :content-active-style="contentActiveStyle" >
+      <div class="row no-wrap">
+        <div v-for="(plan, index) in fnPlanes" :key="index" :style="`width:${plan.select ? '200px' : '160px'};height:calc(100% - 10em);`" class="q-ma-sm transition"
+          @click="changeSelectPlan(plan.name)"
+        >
+          <q-img :src="`planes/${plan.name}.png`" />
+          <div class="row justify-center">
+            <q-btn label="comienza ahora" class="gradiente-buttom q-mb-md" push @click="onSubmit(plan.name)" dense  />
+          </div>
+        </div>
+      </div>
+    </q-scroll-area>
+
+    <!-- <div class="text-h6 text-grey-9">Selecciona tu plan</div>
     <q-card v-for="(plan) of planes" :key="plan._id" style="border-radius:12px" class="q-pa-xs q-ma-sm">
       <q-item clickable v-ripple :class="plan._id === form.plan_id ? 'bg-grey-5':''" @click="selectPrice(plan._id)" >
         <q-item-section>
@@ -20,24 +41,78 @@
     <q-card-actions>
       <q-space />
       <q-btn @click="onSubmit()" color="primary" push label="Guardar" glossy/>
-    </q-card-actions>
+    </q-card-actions> -->
   </div>
 </template>
 <script>
 import { mapMutations } from 'vuex'
 import { required, email } from 'vuelidate/lib/validators'
-import PaypalRegistro from '../../PaypalRegistro'
+// import PaypalRegistro from '../../PaypalRegistro'
 import moment from 'moment'
 export default {
   props: ['form', 'panel', 'files'],
   data () {
     return {
-      planes: [],
+      contentStyle: {
+        backgroundColor: 'rgba(0,0,0,0.02)',
+        color: '#555'
+      },
+
+      contentActiveStyle: {
+        backgroundColor: '#eee',
+        color: 'black'
+      },
+
+      thumbStyle: {
+        right: '0px',
+        borderRadius: '0px',
+        backgroundColor: '#027be3',
+        width: '0px',
+        opacity: 0
+      },
+      tipoPlan: 'Mensual',
+      planes: [
+        {
+          name: 'Basico',
+          tipo: 'Mensual',
+          select: true
+        },
+        {
+          name: 'Estandar',
+          tipo: 'Mensual',
+          select: false
+        },
+        {
+          name: 'Premium',
+          tipo: 'Mensual',
+          select: false
+        },
+        {
+          name: 'Basico Anual',
+          tipo: 'Anual',
+          select: false
+        },
+        {
+          name: 'Estandar Anual',
+          tipo: 'Anual',
+          select: false
+        },
+        {
+          name: 'Premium Anual',
+          tipo: 'Anual',
+          select: false
+        }
+      ],
       product: {
         price: 0
       },
       formPlan: {},
       selectPlan: ''
+    }
+  },
+  computed: {
+    fnPlanes () {
+      return this.planes.filter(v => v.tipo === this.tipoPlan)
     }
   },
   validations () {
@@ -48,16 +123,30 @@ export default {
     }
   },
   components: {
-    PaypalRegistro
+    // PaypalRegistro
   },
   mounted () {
-    this.getPlans()
+    // this.getPlans()
     console.log(this.form, 'forrrm')
     console.log(this.files, 'files')
+    this.form.tipoPlan = 'Mensual'
   },
   methods: {
     ...mapMutations('generals', ['login']),
-    async onSubmit () {
+    changeSelectPlan (name) {
+      var buscarInd = this.planes.findIndex(v => v.select)
+      this.planes[buscarInd].select = false
+      buscarInd = this.planes.findIndex(v => v.name === name)
+      this.planes[buscarInd].select = true
+    },
+    changeTipoCuenta () {
+      this.tipoPlan = this.tipoPlan === 'Anual' ? 'Mensual' : 'Anual'
+      this.form.tipoPlan = this.tipoPlan
+      console.log(this.form, 'cambiando tipo de plan')
+    },
+    async onSubmit (name) {
+      this.form.plan_id = name
+      console.log(this.form, 'form')
       var formData = new FormData()
       var files = []
       files[0] = this.files[0]
@@ -126,8 +215,34 @@ export default {
 <style>
 .background-cuatro {
   background: url('../../../../public/nube4.png');
-  height: 150px;
+  height: 250px;
   background-size: 100% 100%;
 }
 
+.tipo-cuenta-on {
+  background-color: rgb(4, 174, 233);
+  color: white;
+  border: 1px solid grey;
+  border-radius: 6px;
+  padding: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.tipo-cuenta-off {
+  background-color: rgb(239, 250, 255);
+  color: rgb(172, 180, 180);
+  border: 1px solid grey;
+  border-radius: 6px;
+  padding: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.transition {
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom: 1px solid gray;
+  transition: width 1s, height 1s, margin 0s;
+}
 </style>

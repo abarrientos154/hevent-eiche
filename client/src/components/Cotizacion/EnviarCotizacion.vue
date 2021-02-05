@@ -74,6 +74,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators'
 export default {
+  props: ['carrito_form'],
   data () {
     return {
       tags: [],
@@ -117,6 +118,10 @@ export default {
   },
   mounted () {
     this.getServiciosByProveedor()
+    console.log(this.carrito_form, 'carrito form')
+    if (this.carrito_form) {
+      this.carrito = this.carrito_form
+    }
   },
   methods: {
     getServiciosByProveedor () {

@@ -1,6 +1,8 @@
 <template>
   <q-page>
-    <div class="fondo-estadisticas full-width"></div>
+    <div class="fondo-estadisticas full-width">
+      <div class="text-h6 absolute-top text-center text-white text-bold q-mt-sm">Estadisticas</div>
+    </div>
     <div class="column q-ma-md">
       <q-card class="estilo-card-est q-pa-md no-shadow">
         <div class="row justify-between items-center">
@@ -26,17 +28,72 @@
           </div>
         </div>
       </q-card>
+
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+        <div class="row">
+          <div class="row items-center">
+            <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Tiempo de Respuesta</div>
+          </div>
+          <div class="border-likes" >
+            {{form.tiempoR}}
+          </div>
+        </div>
+      </q-card>
+
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" style="height:300px">
+        <div class="column">
+          <div class="q-ml-md text-subtitle1 text-grey-7 text-bold"> Tipo de Evento Realizado </div>
+        </div>
+      </q-card>
+
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+        <div class="row">
+          <div class="row items-center">
+            <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Cotizaciones Rechazadas</div>
+          </div>
+          <div class="border-likes" >
+            {{form.cr}}
+          </div>
+        </div>
+      </q-card>
+
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+        <div class="row">
+          <div class="row items-center">
+            <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Cotizaciones Aprobadas</div>
+          </div>
+          <div class="border-likes" >
+            {{form.ca}}
+          </div>
+        </div>
+      </q-card>
+
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+        <div class="row">
+          <div class="row items-center">
+            <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Cotizaciones Pagadas</div>
+          </div>
+          <div class="border-likes" >
+            {{form.cp}}
+          </div>
+        </div>
+      </q-card>
     </div>
   </q-page>
 </template>
 
 <script>
+
 export default {
   data () {
     return {
       form: {
         puntuacion: 4.9,
-        like: 29
+        like: 29,
+        tiempoR: '00:42',
+        ca: 25,
+        cr: 24,
+        cp: 10
       }
     }
   },
@@ -45,7 +102,6 @@ export default {
   },
   methods: {
     getEst () {
-
     }
   }
 }
@@ -53,10 +109,15 @@ export default {
 
 <style>
 .border-likes {
+  right: 10px;
+  position: absolute;
+  color: white;
+  background: rgb(192, 192, 192);
   border: 1px solid rgb(192, 192, 192);
-  padding: 3px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 2px;
+  top: 30%
 }
 
 .fondo-estadisticas {
@@ -66,7 +127,7 @@ export default {
   background-size: 100% 100%;
 }
 .estilo-card-est {
-  border-radius: 12px;
+  border-radius: 20px;
   border: 2px solid rgb(192, 192, 192);
 }
 

@@ -78,12 +78,14 @@ addPrefixToGroup(
     Route.get('proveedores_servicios/:id_servicio', 'ServicioController.preguntasPorId')
     Route.get('preguntas_proveedor', 'ServicioController.preguntasPorId')
     Route.get('servicios_proveedor', 'ServicioController.preguntasPorProveedor')
+    Route.get('servicios_proveedor/:id_proveedor', 'ServicioController.preguntasPorProveedorId')
     Route.get('obtener_check_servicios_perfil/:id_proveedor', 'ServicioController.obtenerCheckServiciosPerfil')
     Route.put('modificar_servicios_preguntas', 'ServicioController.modificarServiciosPreguntas')
     ///////////PROVEEDORES/////////////////////
 
     ///////////Usuarios/////////////////////
     Route.get('users_perfil', 'UserController.show')
+    Route.get('info_proveedor/:id', 'UserController.showInfoProveedorAnuncio')
     Route.put('editar_datos_proveedor', 'UserController.editarDatosProveedor')
     Route.post('guardar_descripcion_proveedor', 'UserController.guardarDescripcionProveedor')
     Route.put('users_perfil', 'UserController.update')
@@ -124,6 +126,14 @@ addPrefixToGroup(
 
     ///////////////////////////OPINIONES///////////////////////////////
     Route.get("opiniones", "OpinionController.index")
+    Route.get("opiniones/:id_proveedor", "OpinionController.opinionesPorProveedorId")
+
+
+    ///////////////////////////FAVORITOS///////////////////////////////
+    Route.get("favoritos/:id_proveedor", "ProveedoresFavoritoController.index")
+    Route.post("favoritos/:id_proveedor", "ProveedoresFavoritoController.store")
+    Route.get("favoritos", "ProveedoresFavoritoController.misFavoritos")
+    Route.get("proveedores_que_me_gustan", "ProveedoresFavoritoController.proveedoresLike")
 
   }).middleware("auth")
 );

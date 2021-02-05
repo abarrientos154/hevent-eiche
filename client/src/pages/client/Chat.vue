@@ -18,7 +18,7 @@
     </div>
     <div class="col full-width">
       <q-dialog v-model="dialog" :maximized="true" transition-show="slide-up" transition-hide="slide-down" >
-        <enviar-cotizacion />
+        <enviar-cotizacion :carrito_form="data.carrito" />
       </q-dialog>
       <div class="q-pa-sm">
         <!--<q-chat-message
@@ -30,7 +30,7 @@
         <div id="fin"></div>
       </div>
       <q-footer class="bg-white row shadow-2">
-        <q-input @keyup.enter="sendChat()" v-model="text" placeholder="Mensaje..." rounded class="q-pa-sm col-10" autogrow outlined :disable="deshabilitarMsg" />
+        <q-input @keyup.enter="sendChat()" v-model="text" placeholder="Mensaje..." rounded class="q-pa-sm col-10" autogrow outlined />
         <q-icon href="#fin" @click="sendChat()" size="30px" name="send" color="primary" class="col-2" />
       </q-footer>
     </div>
@@ -73,7 +73,7 @@ export default {
   },
   computed: {},
   mounted () {
-    console.log(this.$route.params)
+    console.log(this.$route.params, 'touteeeeeeeeeeeee')
     if (this.$route.params.id) {
       this.cotizacion_id = this.$route.params.id
       this.getinfo()
@@ -112,8 +112,9 @@ export default {
     getinfo () {
       this.$api.get('show_all_info_cotization/' + this.cotizacion_id).then(v => {
         if (v) {
-          if (v.status > 0) {
+          if (v.status > 1) {
             this.deshabilitarMsg = true
+            if (v.status === 3) { this.deshabilitarMsg = false }
             /* this.$q.dialog({
               title: '¡Atención!',
               message: 'Este chat esta deshabilitado, la cotizacion ya ha sido enviada,aprobada,cotizada o rechazada por el cliente. Podra ver los mensajes pero no puede cotizar ni enviar mensajes en este chat'
@@ -122,8 +123,8 @@ export default {
             }) */
           }
           this.data = v
-          var services = v.datos_proveedor.detalles.servicios
           console.log('data', this.data)
+          /* var services = v.datos_proveedor.detalles.servicios
           services = services.map(v => {
             return {
               name: v,
@@ -134,7 +135,7 @@ export default {
             }
           })
           this.categorias = services
-          console.log(v, this.categorias)
+          console.log(v, this.categorias) */
         }
       })
       this.$api.get('user_info').then(res => {

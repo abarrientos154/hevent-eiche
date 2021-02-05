@@ -4,10 +4,25 @@ import Vuelidate from 'vuelidate'
 import Plugin from '@quasar/quasar-ui-qcalendar'
 import '@quasar/quasar-ui-qcalendar/dist/index.css'
 import routes from './routes'
+import env from '../env'
+const apiKey = env.apiKey
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueRouter)
 Vue.use(Vuelidate)
 Vue.use(Plugin)
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: apiKey,
+    // libraries: 'places' // This is required if you use the Autocomplete plugin
+    // OR: libraries: 'places,drawing'
+    libraries: 'places,drawing,visualization'
+    // (as you require)
+
+    // If you want to set the version, you can do so:
+    // v: '3.26',
+  }
+})
 
 /*
  * If not building with SSR mode, you can

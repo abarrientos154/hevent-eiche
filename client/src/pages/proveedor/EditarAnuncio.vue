@@ -31,17 +31,6 @@
     <div>
       <q-tab-panels v-model="panel" animated class="q-mt-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:350px">
         <q-tab-panel name="Descripcion">
-          <!--<div class="column">
-            <div class="q-pa-md" style="border-radius:20px;height:250px">
-              <div class="text-h6 text-grey-9">Descripcion</div>
-              <div>
-                <q-input borderless bg-color="grey-4" v-model="user.descripcion" style="height:250px" autogrow type="textarea"  />
-              </div>
-            </div>
-            <div class="row justify-center absolute-bottom q-mb-sm" style="margin-top:100px">
-              <q-btn label="guardar" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" @click="guardarDescripcion()" />
-            </div>
-          </div> -->
           <div class="column full-height">
             <div>
               <div class="text-h6 text-grey-9">Descripcion</div>
@@ -61,11 +50,12 @@
         </q-tab-panel>
 
         <q-tab-panel name="Mapas">
-          <div class="bg-grey-4 q-pa-md" style="height:85%; border-radius:12px">
+          <div class="bg-grey-4 q-pa-md q-mb-md" style="height:75vh; border-radius:12px">
             <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
             <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
+            <mapa :center="user.ubicacion" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="true" />
           </div>
-          <div class="row justify-center absolute-bottom q-mb-sm">
+          <div class="row justify-center q-mb-xl">
             <q-btn label="Contactame" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" />
           </div>
         </q-tab-panel>
@@ -95,8 +85,9 @@ import Imagenes from '../../components/Proveedor/EditarAnuncio/Imagenes'
 import Videos from '../../components/Proveedor/EditarAnuncio/Videos'
 import env from '../../env'
 import Opiniones from '../../components/Proveedor/EditarAnuncio/Opiniones.vue'
+import Mapa from '../../components/GoogleMap'
 export default {
-  components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones },
+  components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones, Mapa },
   data () {
     return {
       panel: 'Descripcion',
@@ -117,6 +108,14 @@ export default {
     this.baseu = env.apiUrl
   },
   methods: {
+    getBounds (bounds, center) {
+      console.log(center, 'center')
+    },
+    handleNewPlace (place, coordinates) {
+      console.log('handleNewPlace', coordinates)
+      this.form.ubicacion = coordinates
+      console.log(this.form, 'formmmmmmmmmmmmmmmmmmmmmmm')
+    },
     cambiarImg (img) {
       console.log('entro', img)
       this.mostrarImg = img

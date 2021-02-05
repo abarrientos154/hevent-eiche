@@ -48,12 +48,11 @@ export default {
       rutaActual: this.$router.currentRoute.path,
       buttons_footer: [
         // TODOS LOS ITEM EN MENU PARA LOS CLIENTES
-        { title: 'Blog', icon: 'search', to: '/revista', permission: 1 /* CLIENTE */ },
-        { title: 'Proveedores', icon: 'list_alt', to: '/evento/buscar', permission: 1 /* CLIENTE */ },
-        { title: 'Mi Evento', icon: 'event', to: '/inicio_cliente', permission: 1 /* CLIENTE */ },
-        { title: 'Aprobación', icon: 'assignment_turned_in', to: '/aprobacion_cotizacion', permission: 1 }, // CLIENTE
-        { title: 'Mensajes', icon: 'question_answer', to: '/mensajes/mensajes', permission: 1 /* CLIENTE */ },
-        { title: 'Cerrar Sesion', icon: 'logout', to: '/login', permission: 1 },
+        { icon: 'iconos_menu/iinicio.png', to: '/inicio_cliente', permission: 1, iconSelect: 'iconos_menu/iinicioa.png' },
+        { icon: 'iconos_menu/iblog.png', to: '/revista', permission: 1, iconSelect: 'iconos_menu/ibloga.png' },
+        { icon: 'iconos_menu/iproveedor.png', to: '/ver_mas_servicios', permission: 1, iconSelect: 'iconos_menu/iproveedora.png' },
+        { icon: 'iconos_menu/ichats.png', to: '/chats_clientes', permission: 1, iconSelect: 'iconos_menu/ichatsa.png' },
+        { icon: 'iconos_menu/iperfil.png', to: '/perfil_cliente', permission: 1, iconSelect: 'iconos_menu/iperfila.png' },
         // TODOS LOS ITEM EN MENU PARA LOS PROVEEDORES
         { icon: 'iconos_menu/iinicio.png', to: '/inicio_proveedor', permission: 2, iconSelect: 'iconos_menu/iinicioa.png' /* PROVEEDOR */ },
         { icon: 'iconos_menu/iestadisticas.png', to: '/estadisticas', permission: 2, iconSelect: 'iconos_menu/iestadisticasa.png' /* PROVEEDOR */ },

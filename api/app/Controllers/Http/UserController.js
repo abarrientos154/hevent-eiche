@@ -52,6 +52,10 @@ class UserController {
     //crear la funcion para editar
   }
 
+  async showInfoProveedorAnuncio ({params, response}) {
+    response.send(await User.find(params.id))
+  }
+
   async show({ request, response, auth }) {
     let data = (await auth.getUser()).toJSON()
     response.send(data)

@@ -2,6 +2,7 @@
   <div>
     <div class="row justify-center">
       <img src="Pagina52/Mesa de trabajo 2.png" style="width: 100%;height:400px"/>
+      <q-btn icon="arrow_back" flat round color="white" style="position:absolute;top:5px;left:5px" />
     </div>
     <div class="text-subtitle2 text-center text-primary">Iniciar Sesión</div>
     <div class="q-mt-sm">

@@ -80,7 +80,17 @@ const routes = [
         meta: { toolbar: false, title: 'Mi Perfil', footer: true }
       },
       {
+        path: '/perfil_cliente',
+        component: () => import('pages/client/Perfil.vue'),
+        meta: { toolbar: false, title: 'Mi Perfil', footer: true }
+      },
+      {
         path: '/chats_proveedor',
+        component: () => import('pages/proveedor/Chats.vue'),
+        meta: { toolbar: false, footer: true }
+      },
+      {
+        path: '/chats_clientes',
         component: () => import('pages/proveedor/Chats.vue'),
         meta: { toolbar: false, footer: true }
       },
@@ -133,6 +143,11 @@ const routes = [
         path: '/estadisticas',
         component: () => import('pages/proveedor/Estadisticas.vue'),
         meta: { toolbar: false, title: 'Estadisticas', footer: true }
+      },
+      {
+        path: '/proveedores_me_gustan',
+        component: () => import('pages/client/ProveedoresMeGusta.vue'),
+        meta: { toolbar: false, title: 'Me Gusta', footer: true }
       }
     ]
   },

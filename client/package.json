@@ -12,16 +12,19 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
+    "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "moment": "^2.27.0",
     "quasar": "^1.0.0",
     "ui": "^0.2.4",
     "vue-animation": "^0.1.0",
+    "vue-chartjs": "^3.5.1",
     "vue-core-video-player": "^0.2.0",
     "vue-i18n": "^8.0.0",
     "vue-simple-calendar": "^5.0.0",
     "vue-video": "^0.1.7",
     "vue-vjs-hls": "ice48623/vue-video-player",
+    "vue2-google-maps": "^0.10.7",
     "vuelidate": "^0.7.5"
   },
   "devDependencies": {

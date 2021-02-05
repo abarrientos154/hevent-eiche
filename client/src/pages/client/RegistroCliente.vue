@@ -11,25 +11,36 @@
         />
       </div>
       <div>
-        <div class="row">
-          <q-select borderless class="input-border-new q-pa-xs q-pt-sm" v-model="form.telCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
-            emit-value map-options option-value="name" option-label="name"
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  No results
-                </q-item-section>
-              </q-item>
-            </template>
-            <template v-slot:selected-item="scope">
-              <div class="text-bold q-mt-sm" style="margin-top:12px">{{ scope.opt.dialCode }}</div>
-            </template>
-          </q-select>
-          <q-input v-model="form.phone" class="input-border-new q-pa-sm q-ml-sm" style="width:200px" label="Telefono" dense borderless
-            error-message="ingrese un telefono valido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"
-          />
-        </div>
+      <div class="row items-center justify-center">
+        <q-select borderless v-model="telCode" :options="countries" option-value="name" option-label="name" emit-value map-options
+          style="width:120px" class="input-border-new-re" @input="test()"
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+              <q-item-section avatar>
+                <q-img :src="scope.opt.name !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg' " />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-html="scope.opt.name" />
+                <q-item-label caption>{{ scope.opt.dialCode }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+           <template v-slot:selected-item="scope" class="row" >
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+              <q-item-section avatar>
+                <q-img :src="form.telCode !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg'" style="width:30px;height:20px" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ scope.opt.dialCode }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <q-input v-model="form.phone" class="input-border-new q-pa-sm q-ml-sm" style="width:150px" label="Telefono" dense borderless
+          error-message="ingrese un telefono valido" :error="$v.form.phone.$error" @blur="$v.form.phone.$touch()"
+        />
+      </div>
       </div>
       <div>
         <q-input class="input-border-new q-pa-sm" label-color="grey-14" type="email" v-model="form.email" dense label="Correo electrónico" borderless
@@ -83,8 +94,20 @@ export default {
   data () {
     return {
       form: {},
-      countriesOptions: [],
-      countries: [],
+      telCode: '',
+      obj: {},
+      countries: [
+        {
+          name: 'Chile',
+          dialCode: '+56',
+          code: 'CL'
+        },
+        {
+          name: 'Colombia',
+          dialCode: '+57',
+          code: 'CO'
+        }
+      ],
       password: '',
       repeatPassword: '',
       isPwd: false,
@@ -102,14 +125,14 @@ export default {
   },
   mounted () {
     this.getCountries()
-    this.form.telCode = 'Chile'
+    this.telCode = 'Colombia'
   },
   methods: {
     getCountries () {
-      this.$api.get('countries').then(res => {
-        this.countriesOptions = res
+      /* this.$api.get('countries').then(res => {
         this.countries = res
-      })
+        console.log(this.countries, 'countrie')
+      }) */
     },
     filterFn (val, update) {
       console.log(val, 'ballllllllll')
@@ -140,11 +163,23 @@ export default {
           }
         })
       }
+    },
+    test () {
+      console.log(this.form, 'formmm')
+      this.form.telCode = this.telCode
     }
   }
 }
 </script>
 
 <style>
-
-</style>>
+.input-border-new-re {
+  background: #e1f5ff;
+  border: 0px solid #bbbbbb;
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding-left: 0px;
+}
+</style>

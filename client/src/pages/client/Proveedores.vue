@@ -21,7 +21,7 @@
         <q-scroll-area horizontal class="bg-grey-1 full-width" style="height:120px" :thumb-style="thumbStyle" :content-style="contentStyle"
           :content-active-style="contentActiveStyle" >
           <div class="row no-wrap">
-            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px;" class="q-mt-lg q-ml-md" @click="$router.push('/proveedores/' + serv.id)">
+            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px;" class="q-mt-lg q-ml-md" @click="cambiarProveedor(serv.id)">
               <div class="column items-center justify-center q-ml-sm border-servicios-item">
                 <q-img :src="serv.icon" style="width:35px;height:35px;" />
                 <div class="row justify-center items-center text-grey-7"> {{serv.title}} </div>
@@ -103,6 +103,11 @@ export default {
     }
   },
   methods: {
+    async cambiarProveedor (id) {
+      this.$router.push('/proveedores/' + id)
+      this.id = id
+      await this.getRecord()
+    },
     async getRecord () {
       await this.$api.get('proveedores_servicios/' + this.id).then(res => {
         this.proveedores = res.map(v => {

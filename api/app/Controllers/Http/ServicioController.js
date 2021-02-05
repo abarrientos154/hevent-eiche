@@ -56,22 +56,36 @@ class ServicioController {
     response.send(preguntas)
   }
 
+  async preguntasPorProveedorId ({ response, params }) {
+    let respuestaProveedor = (await RespuestaProveedor.query().where({id_proveedor: params.id_proveedor}).with('servicio_info').fetch()).toJSON()
+    for (let j of respuestaProveedor)
+    j.name = (await ItemServicio.findBy('id', j.id)).name
+    console.log(respuestaProveedor, 'respuesta proveedor')
+    let preguntas = respuestaProveedor.map(v => {
+      return { id: v.id, name: v.name, pregunta: v.pyr, servicio_id: v.servicio_id, _id: v._id, servicioName: v.servicio_info.name }
+    })
+    response.send(preguntas)
+  }
+
   async preguntasPorId ({ response, params }) {
-    console.log(params.id_servicio, 'id servico')
+    console.log(params.id_servicio, 'ID SERVICIO')
     if (params.id_servicio === 'personas') {
-      let buscar = [
-        { id: 'haciendas' }, { id: 'hoteles' }, { id: 'restaurantes' }, { id: 'clubs' }, { id: 'galeria' }, { id: 'salon' }, { id: 'auditorias' }
-      ]
-      var proveedores = (await ServicioProveedor.where({ $and: buscar }).with('datos_proveedor').fetch()).toJSON()
-    } else if (params.id_servicio === 'localizacion') {
+      console.log('entro1')
       let buscar = [
         { id: 'mesero' }, { id: 'acomodador' }, { id: 'aseo' }, { id: 'seguridad' }, { id: 'traductores' }, { id: 'animador' }, { id: 'heventPlaner' }
       ]
       var proveedores = (await ServicioProveedor.where({ $or: buscar }).with('datos_proveedor').fetch()).toJSON()
+    } else if (params.id_servicio === 'localizacion') {
+      console.log('entro2')
+      let buscar = [
+        { id: 'haciendas' }, { id: 'hoteles' }, { id: 'restaurantes' }, { id: 'clubs' }, { id: 'galeria' }, { id: 'salon' }, { id: 'auditorias' }
+      ]
+      var proveedores = (await ServicioProveedor.where({ $or: buscar }).with('datos_proveedor').fetch()).toJSON()
     } else {
+      console.log('entro3')
       var proveedores = (await ServicioProveedor.where({id: params.id_servicio}).with('datos_proveedor').fetch()).toJSON()
     }
-    // const myArr = ['😎', '😎', '😎', '😅'] // tenemos duplicados!
+    console.log(proveedores, 'proveedores')
     const newArr = []
     const myObj = {}
 
@@ -83,7 +97,6 @@ class ServicioController {
         newArr.push(el)
       }
     })
-    console.log(newArr, 'nuevo array')
     response.send(newArr)
   }
 

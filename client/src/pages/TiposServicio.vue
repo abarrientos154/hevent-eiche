@@ -12,6 +12,10 @@
       <div class="text-h6">Busquemos</div>
       <div class="text-h6 text-bold q-ml-sm">Proveedores ...</div>
     </div>
+    <div class="row justify-center">
+      <q-btn icon="assignment" round flat color="primary" dense outlined />
+      <q-btn icon="favorite_border" round flat color="grey-5" class="q-ml-lg" dense outlined @click="$router.push('/proveedores_me_gustan')" />
+    </div>
     <div class="column">
       <div class="row justify-center">
         <div class="row q-gutter-sm justify-around" style="width:300px" >

@@ -62,7 +62,15 @@ class OpinionController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async opinionesPorProveedorId ({ params, request, response }) {
+    let data = (await Opinion.query().where('proveedor_id', params.id_proveedor).with('usuario').fetch()).toJSON()
+    let formatData = data.map(v => {
+      return {
+        ...v,
+        created_at: moment(v.created_at).lang('es').calendar()
+      }
+    })
+    response.send(formatData)
   }
 
   /**

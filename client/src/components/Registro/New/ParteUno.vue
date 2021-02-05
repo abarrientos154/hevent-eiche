@@ -45,42 +45,64 @@
       </div>
       <div>
         <div class="row">
-          <q-select borderless class="input-border-new q-pa-sm q-pt-sm" v-model="form.telCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
-            emit-value map-options option-value="name" option-label="name"
+          <q-select borderless v-model="telCode" :options="countries" option-value="name" option-label="name" emit-value map-options
+            style="width:120px" class="input-border-new-re-pro" @input="test()"
           >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  No results
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+                <q-item-section avatar>
+                  <q-img :src="scope.opt.name !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg' " />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label v-html="scope.opt.name" />
+                  <q-item-label caption>{{ scope.opt.dialCode }}</q-item-label>
                 </q-item-section>
               </q-item>
             </template>
-            <template v-slot:selected-item="scope">
-              <div class="text-bold q-mt-sm" style="margin-top:12px">{{ scope.opt.dialCode }}</div>
+            <template v-slot:selected-item="scope" class="row" >
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+                <q-item-section avatar>
+                  <q-img :src="form.telCode !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg'" style="width:30px;height:20px" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.dialCode }}</q-item-label>
+                </q-item-section>
+              </q-item>
             </template>
           </q-select>
-          <q-input v-model="form.telefono" class="input-border-new q-pa-sm q-ml-sm" style="width:200px" label="Telefono" dense borderless
+          <q-input v-model="form.telefono" class="input-border-new q-pa-sm q-ml-sm" style="width:150px" label="Telefono" dense borderless
             error-message="ingrese un telefono valido" :error="$v.form.telefono.$error" @blur="$v.form.telefono.$touch()"
           />
         </div>
       </div>
       <div>
         <div class="row">
-          <q-select borderless class="input-border-new q-pa-sm q-pt-sm" v-model="form.celCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
-            emit-value map-options option-value="name" option-label="name"
+          <q-select borderless v-model="celCode" :options="countries" option-value="name" option-label="name" emit-value map-options
+            style="width:120px" class="input-border-new-re-pro" @input="test()"
           >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  No results
+            <template v-slot:option="scope">
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+                <q-item-section avatar>
+                  <q-img :src="scope.opt.name !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg' " />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label v-html="scope.opt.name" />
+                  <q-item-label caption>{{ scope.opt.dialCode }}</q-item-label>
                 </q-item-section>
               </q-item>
             </template>
-            <template v-slot:selected-item="scope">
-              <div class="text-bold q-mt-sm" style="margin-top:12px">{{ scope.opt.dialCode }}</div>
+            <template v-slot:selected-item="scope" class="row" >
+              <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+                <q-item-section avatar>
+                  <q-img :src="form.celCode !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg'" style="width:30px;height:20px" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.dialCode }}</q-item-label>
+                </q-item-section>
+              </q-item>
             </template>
           </q-select>
-          <q-input v-model="form.celular" class="input-border-new q-pa-sm q-ml-sm" style="width:200px" label="Celular" dense borderless
+          <q-input v-model="form.celular" class="input-border-new q-pa-sm q-ml-sm" style="width:150px" label="Celular" dense borderless
             error-message="ingrese un celular valido" :error="$v.form.celular.$error" @blur="$v.form.celular.$touch()"
           />
         </div>
@@ -94,6 +116,9 @@
         <q-input v-model="form.direccion" class="input-border-new q-pa-sm" label="Dirección" dense borderless
           error-message="ingrese una direccion valida" :error="$v.form.direccion.$error" @blur="$v.form.direccion.$touch()"
         />
+      </div>
+      <div class="full-width">
+        <google-map :center="center" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="true" />
       </div>
     </div>
     <q-separator inset class="q-mt-md" />
@@ -122,15 +147,34 @@
 
 <script>
 import { required, email, maxLength, minLength, sameAs } from 'vuelidate/lib/validators'
+import GoogleMap from '../../../components/GoogleMap'
 export default {
   props: ['form', 'panel'],
+  components: {
+    GoogleMap
+  },
   data () {
     return {
+      markers: [],
+      center: { lat: -33.44750385220407, lng: -70.66966424231235 },
+      telCode: '',
+      celCode: '',
       repeatPassword: '',
       cuenta: 'Ahorro',
       password: '',
       countriesOptions: [],
-      countries: [],
+      countries: [
+        {
+          name: 'Chile',
+          dialCode: '+56',
+          code: 'CL'
+        },
+        {
+          name: 'Colombia',
+          dialCode: '+57',
+          code: 'CO'
+        }
+      ],
       tel: null,
       cel: null
     }
@@ -153,12 +197,25 @@ export default {
     }
   },
   mounted () {
-    this.getCountries()
-    this.form.telCode = 'Chile'
-    this.form.celCode = 'Chile'
+    // this.getCountries()
+    this.telCode = 'Colombia'
+    this.celCode = 'Colombia'
     this.form.tipoCuenta = 'Ahorro'
   },
   methods: {
+    getBounds (bounds, center) {
+      console.log(center, 'center')
+    },
+    handleNewPlace (place, coordinates) {
+      console.log('handleNewPlace', coordinates)
+      this.form.ubicacion = coordinates
+      console.log(this.form, 'formmmmmmmmmmmmmmmmmmmmmmm')
+    },
+    test () {
+      console.log(this.form, 'form')
+      this.form.telCode = this.telCode
+      this.form.celCode = this.celCode
+    },
     getCountries () {
       this.$api.get('countries').then(res => {
         this.countriesOptions = res
@@ -230,6 +287,16 @@ export default {
   padding: 3px;
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.input-border-new-re-pro {
+  background: #e1f5ff;
+  border: 0px solid #bbbbbb;
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding-left: 0px;
 }
 
 </style>
