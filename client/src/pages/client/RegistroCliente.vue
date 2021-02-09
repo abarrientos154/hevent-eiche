@@ -2,6 +2,7 @@
   <div>
     <div class="row justify-center">
       <img src="RegistroCliente/Mesa de trabajo 2.png" style="width: 100%;height:260px"/>
+      <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:5px;left:5px" @click="$router.push('login_cliente')" />
     </div>
     <div class="row justify-center text-h6 text-primary">Registro</div>
     <div class="q-ma-lg">
@@ -110,7 +111,7 @@ export default {
       ],
       password: '',
       repeatPassword: '',
-      isPwd: false,
+      isPwd: true,
       loading: false
     }
   },

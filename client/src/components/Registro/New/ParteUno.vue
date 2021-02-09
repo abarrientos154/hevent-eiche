@@ -4,7 +4,7 @@
       <img src="RegistroCliente/Mesa de trabajo 2.png" style="width: 100%;height:260px"/>
     </div>
     <div style="position:absolute; top:10px; left:5px" >
-      <q-btn color="white" icon="arrow_back" flat dense @click="$router.go(-1)" />
+      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="$router.go(-1)" />
     </div>
     <div class="text-center text-h6 text-primary">* Registro *</div>
     <q-separator inset />
@@ -19,6 +19,22 @@
         <q-input v-model="password" class="input-border-new q-pa-sm" borderless label="Contraseña" dense
           error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.password.$error" @blur="$v.password.$touch()"
         />
+
+        <q-input class="input-border-new q-pa-sm" :type="isPwd ? 'password' : 'text'" v-model="password" label="Contraseña" dense label-color="grey-14" borderless
+        error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.password.$error" @blur="$v.password.$touch()">
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
+          </template>
+        </q-input>
+      </div>
+      <div>
+        <q-input class="input-border-new q-pa-sm" :type="isPwd ? 'password' : 'text'" v-model="repeatPassword" label="Confirmar Contraseña" dense label-color="grey-14" borderless
+        error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()">
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
+          </template>
+        </q-input>
+
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-input v-model="repeatPassword" class="input-border-new q-pa-sm" borderless label="Repita su Contraseña" dense
