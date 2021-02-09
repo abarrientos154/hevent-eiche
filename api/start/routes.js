@@ -91,6 +91,9 @@ addPrefixToGroup(
     Route.put('users_perfil', 'UserController.update')
     Route.get("show_provider_for_user/:id", "ProveedorController.showProviderForUser")
     Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado
+    Route.post("actualizar_file_cliente", "UploadController.actualizarFileCliente") // metodo para obtener informacion del usuario que esta logueado
+    Route.post('editar_perfil_cliente', 'UserController.editarDCliente')
+
 
     //rutas para cotizaciones
     Route.get("create_cotization/:id_proveedor/:id_event", "CotisationController.store")
@@ -106,6 +109,7 @@ addPrefixToGroup(
     Route.get("quotes_by_status_approve", "CotisationController.quotesByStatusApprove")
     Route.get("cotisations_by_event/:event_id", "CotisationController.cotisationsByEvent")
     Route.get("get_cotisacion_by_id/:id", "CotisationController.getCotisacionById")
+
     ////////// EVENTOS ////////////////////
     Route.get("events", "CotisationController.getEvents")
     Route.get("event_by_id/:id", "CotisationController.getEventById")
