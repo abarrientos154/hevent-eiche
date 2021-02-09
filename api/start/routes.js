@@ -139,5 +139,8 @@ addPrefixToGroup(
     Route.get("favoritos", "ProveedoresFavoritoController.misFavoritos")
     Route.get("proveedores_que_me_gustan", "ProveedoresFavoritoController.proveedoresLike")
 
+    ///////////////////////////////////////////NOTIFICACIONES///////////////////////////////////////////////////////////////////
+    Route.put("editar_notificacion_cliente", "NotificacionController.update")
+
   }).middleware("auth")
 );

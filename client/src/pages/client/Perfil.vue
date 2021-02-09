@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="nube row justify-center items-center">
+    <div class="nube-perfil-cliente row justify-center items-center">
       <div class="q-mb-md">
         <q-img :src="user.perfil ? perfilImg : 'noimg.png'" class="estilo-img">
           <div class="absolute-center bg-transparent text-center" style="width: 100%">
@@ -70,6 +70,7 @@ export default {
   },
   methods: {
     ejecutar (ind) {
+      console.log(ind, 'asd')
       if (ind === 0) { this.dialogos.editarP = true }
       if (ind === 1) { this.dialogos.pass = true }
       if (ind === 2) { this.dialogos.notificaciones = true }
@@ -105,7 +106,7 @@ export default {
 </script>
 
 <style>
-.nube {
+.nube-perfil-cliente {
   background-image: url('../../../public/nubeazul2.png');
   width:100%;
   height: 300px;

@@ -1,6 +1,7 @@
 "use strict";
 
 const User = use("App/Models/User")
+const Notificacion = use("App/Models/Notificacion")
 const Role = use("App/Models/Role")
 const RespuestaProveedor = use("App/Models/RespuestaProveedor")
 const ServicioProveedor = use("App/Models/ServicioProveedor")
@@ -91,6 +92,8 @@ class UserController {
 
   async show({ request, response, auth }) {
     let data = (await auth.getUser()).toJSON()
+    let notificacion = await Notificacion.findBy('user_id', data._id.toString())
+    data.notificacion = notificacion
     response.send(data)
   }
 
@@ -214,6 +217,16 @@ class UserController {
       body.roles=[2]
       body.perfil = false
       let guardar = await User.create(body)
+      let bodyN = {
+        user_id: guardar._id.toString(),
+        eventMail: false,
+        eventCel: false,
+        susMail: false,
+        susCel: false,
+        proCel: false,
+        proMail: false
+      }
+      guardar = await Notificacion.create(bodyN)
       response.send(guardar)
     }
   }
