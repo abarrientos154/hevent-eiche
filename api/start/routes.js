@@ -93,6 +93,7 @@ addPrefixToGroup(
     Route.get("user_info", "UserController.userInfo") // metodo para obtener informacion del usuario que esta logueado
     Route.post("actualizar_file_cliente", "UploadController.actualizarFileCliente") // metodo para obtener informacion del usuario que esta logueado
     Route.post('editar_perfil_cliente', 'UserController.editarDCliente')
+    Route.put("editar_contrasena_cliente", "UserController.editarPCliente")
 
 
     //rutas para cotizaciones
