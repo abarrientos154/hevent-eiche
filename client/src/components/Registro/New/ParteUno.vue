@@ -16,10 +16,6 @@
         />
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-input v-model="password" class="input-border-new q-pa-sm" borderless label="Contraseña" dense
-          error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.password.$error" @blur="$v.password.$touch()"
-        />
-
         <q-input class="input-border-new q-pa-sm" :type="isPwd ? 'password' : 'text'" v-model="password" label="Contraseña" dense label-color="grey-14" borderless
         error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.password.$error" @blur="$v.password.$touch()">
           <template v-slot:append>
@@ -27,19 +23,13 @@
           </template>
         </q-input>
       </div>
-      <div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-input class="input-border-new q-pa-sm" :type="isPwd ? 'password' : 'text'" v-model="repeatPassword" label="Confirmar Contraseña" dense label-color="grey-14" borderless
         error-message="ingrese una contraseña valida, minimo de caracteres es de 6" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()">
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility' : 'visibility_off'" class="cursor-pointer q-pa-sm" color="primary" @click="isPwd = !isPwd" />
           </template>
         </q-input>
-
-      </div>
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-input v-model="repeatPassword" class="input-border-new q-pa-sm" borderless label="Repita su Contraseña" dense
-          error-message="las contraseñas deben ser iguales" :error="$v.repeatPassword.$error" @blur="$v.repeatPassword.$touch()"
-        />
       </div>
     </div>
     <q-separator inset />
@@ -175,9 +165,10 @@ export default {
       center: { lat: -33.44750385220407, lng: -70.66966424231235 },
       telCode: '',
       celCode: '',
-      repeatPassword: '',
       cuenta: 'Ahorro',
       password: '',
+      repeatPassword: '',
+      isPwd: true,
       countriesOptions: [],
       countries: [
         {
