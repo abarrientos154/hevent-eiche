@@ -243,6 +243,38 @@ class UploadController {
     response.download(Helpers.appRoot(`storage/uploads/register/${params.carpeta}${params.id}`))
   }
 
+  async actualizarFileCliente ({ response, auth, request }) {
+    let user = (await auth.getUser()).toJSON()
+    if (!user.perfil) {
+      var userM = await User.find(user._id)
+      userM.perfil = true
+    }
+
+    var profilePic = request.file('files', {
+      size: '250mb'
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/register')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/register'), {
+          name: `perfil${user._id}`,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        if (!user.perfil) {
+          await userM.save()
+        }
+        response.send(profilePic)
+      }
+    }
+
+  }
+
   async actualizarPortadaPerfilProveedor ({response, params, auth, request}) {
     let user = await auth.getUser()
     var profilePic = request.file('files', {

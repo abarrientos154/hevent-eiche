@@ -44,6 +44,7 @@ export default {
   },
   data () {
     return {
+      rol: 2,
       tab: '/revista',
       rutaActual: this.$router.currentRoute.path,
       buttons_footer: [

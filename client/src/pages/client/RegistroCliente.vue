@@ -156,10 +156,11 @@ export default {
       this.$v.$touch()
       if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
         this.form.password = this.password
+        this.form.telCode = this.telCode
         this.$api.post('registrar_cliente', this.form).then(res => {
           if (res) {
             console.log('ejecutado o guardado correctamente')
-            this.$router.push('/login')
+            this.$router.push('/login_cliente')
           }
         })
       }

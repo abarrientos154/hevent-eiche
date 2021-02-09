@@ -20,6 +20,39 @@ const { validate } = use("Validator")
  */
 class UserController {
 
+  async editarDCliente ({ request, response, auth }) {
+    const formUser = ((await auth.getUser()).toJSON())
+    let body = request.only(['full_name', 'telCode', 'phone', 'email'])
+    console.log(body.email, 'asdbody', formUser.email, 'emas')
+    if (body.email === formUser.email) {
+      console.log('entro aqui')
+      let user = await User.find(formUser._id)
+      user.full_name = body.full_name
+      user.telCode = body.telCode
+      user.phone = body.phone
+      await user.save()
+      response.send(user)
+    } else {
+      console.log('entro aqui, asd')
+      let buscarCorreo = (await User.query().where({ email: body.email }).fetch()).toJSON()
+      console.log(buscarCorreo, 'correo')
+      if (buscarCorreo.length > 0) {
+        response.unprocessableEntity([{
+          message: 'Correo ya registrado en el sistema!'
+        }])
+      } else {
+        let user = await User.find(formUser._id)
+        user.full_name = body.full_name
+        user.telCode = body.telCode
+        user.phone = body.phone
+        user.email = body.email
+        await user.save()
+        response.send(user)
+      }
+    }
+
+  }
+
   async guardarDescripcionProveedor({request, response, auth}) {
     const idUser = ((await auth.getUser()).toJSON())._id
     let body = request.only(['descripcion'])
@@ -179,6 +212,7 @@ class UserController {
     } else {
       let body = request.only(User.fillableCliente)
       body.roles=[2]
+      body.perfil = false
       let guardar = await User.create(body)
       response.send(guardar)
     }
