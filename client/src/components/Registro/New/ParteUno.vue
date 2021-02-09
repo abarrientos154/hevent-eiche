@@ -4,7 +4,7 @@
       <img src="RegistroCliente/Mesa de trabajo 2.png" style="width: 100%;height:260px"/>
     </div>
     <div style="position:absolute; top:10px; left:5px" >
-      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="$router.go(-1)" />
+      <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:5px;left:5px" @click="$router.push('login_proveedor')" />
     </div>
     <div class="text-center text-h6 text-primary">* Registro *</div>
     <q-separator inset />
