@@ -1,15 +1,15 @@
 <template>
   <div>
     <div class="row q-ma-lg">
-      <q-btn icon="menu" color="primary" flat />
+      <q-btn flat color="primary" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
       <q-space />
       <div class="row">
-        <div class="text-grey-7 text-h6">Organizamos</div>
-        <div class="text-grey-7 q-ml-sm text-bold text-h6">tu evento?</div>
+        <div class="text-grey-7 text-h6">Organiza</div>
+        <div class="text-grey-7 q-ml-sm text-bold text-h6">tu evento</div>
       </div>
     </div>
     <div class="row text-primary q-ma-md">
-      <div class="text-h6">Busquemos</div>
+      <div class="text-h6">Buscando</div>
       <div class="text-h6 text-bold q-ml-sm">Proveedores ...</div>
     </div>
     <div class="row justify-center">

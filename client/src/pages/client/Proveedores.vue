@@ -7,7 +7,7 @@
               <q-btn flat color="primary" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
           </div>
           <q-space />
-          <q-btn flat round color="red" icon="favorite" />
+          <q-btn flat round color="grey" icon="favorite_border" />
         </div>
         <div class="row justify-center">
           <div>

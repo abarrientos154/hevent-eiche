@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="background-tool" style="height:150px">
-      <q-btn color="white" icon="menu" flat round class="q-ma-xs" />
       <div class="text-bold text-white text-h6 text-center row justify-center">HEVENT</div>
     </div>
     <div>
@@ -59,7 +58,7 @@
       <div class="column">
         <div class="row justify-end items-center">
           <div class="text-center q-mt-md text-grey-7">Proveedores Favoritos</div>
-          <q-btn class="q-ml-md q-mt-md q-mr-md" label="ver todos" flat color="primary" dense />
+          <q-icon class="q-ml-md q-mt-md q-mr-md" flat color="primary" dense name="favorite_border" size="lg" />
         </div>
         <q-scroll-area horizontal style="height: 260px; width: 100%;" class="rounded-borders q-mb-md q-mt-sm q-ml-sm" >
           <div class="row no-wrap q-gutter-sm" v-if="favoritos.length > 0">
@@ -109,6 +108,20 @@ export default {
     return {
       baseu: '',
       data: [
+        {
+          name: 'Nombre 2 Evento Tal',
+          img: 'example_2.jpg'
+        },
+        {
+          name: 'Nombre 1 Evento Tal TAL TAL TAL',
+          img: 'example_1.jpg'
+        },
+        {
+          name: 'Nombre 1 Evento Tal TAL TAL TAL',
+          img: 'example_4.jpg'
+        }
+      ],
+      data2: [
         {
           name: 'Nombre 2 Evento Tal',
           img: 'example_2.jpg'

@@ -1,6 +1,7 @@
 <template>
   <q-page>
-    <div class="text-center text-h6 text-bold text-primary q-mt-sm">Me Gustan</div>
+    <div v-if="this.data.length > 0">
+    <div  class="text-center text-h6 text-bold text-primary q-mt-sm">Me Gustan</div>
     <q-btn color="primary" flat round icon="keyboard_arrow_left" style="position:absolute;top:0px;left:0px" @click="$router.go(-1)" />
 
     <div class="full-width q-ma-sm">
@@ -56,8 +57,11 @@
         </div>
       </q-scroll-area>
     </div>
-
+  </div>
+  <div v-else class="fondo absolute-center" style="height:400px;width:300px" @click="$router.push('/proveedores/localizacion')">
+ </div>
   </q-page>
+
 </template>
 
 <script>
@@ -89,5 +93,11 @@ export default {
   top: 20px;
   right: 40px;
   padding: 3px;
+}
+.fondo {
+  background: url('../../../public/Mensaje FAvoritos 400x400.jpg');
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%
 }
 </style>
