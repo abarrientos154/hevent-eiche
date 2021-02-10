@@ -11,6 +11,7 @@ const fs = require('fs')
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
+const Hash = use('Hash')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -20,6 +21,32 @@ const { validate } = use("Validator")
  * Resourceful controller for interacting with users
  */
 class UserController {
+
+  async editarPCliente ({ request, response, auth }) {
+    // get currently authenticated user
+    const user = auth.current.user
+    console.log(user, 'ser')
+
+    // verify if current password matches
+    const verifyPassword = await Hash.verify(
+        request.input('oldPassword'),
+        user.password
+    )
+
+    // display appropriate message
+    if (!verifyPassword) {
+      console.log('asd')
+      response.unprocessableEntity([{
+        message: 'Contraseña Actual Incorrecta'
+      }])
+    } else {
+      console.log('asasdd')
+      user.password = request.input('password')
+      await user.save()
+      response.send(user)
+    }
+
+  }
 
   async editarDCliente ({ request, response, auth }) {
     const formUser = ((await auth.getUser()).toJSON())
