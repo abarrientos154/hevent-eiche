@@ -118,13 +118,8 @@
           error-message="ingrese una ciudad valida" :error="$v.form.ciudad.$error" @blur="$v.form.ciudad.$touch()"
         />
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-input v-model="form.direccion" class="input-border-new q-pa-sm" label="Dirección" dense borderless
-          error-message="ingrese una direccion valida" :error="$v.form.direccion.$error" @blur="$v.form.direccion.$touch()"
-        />
-      </div>
       <div class="full-width">
-        <google-map :center="center" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="true" />
+        <google-map :center="center" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="false" />
       </div>
     </div>
     <q-separator inset class="q-mt-md" />

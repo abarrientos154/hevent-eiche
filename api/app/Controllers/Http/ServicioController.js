@@ -86,18 +86,14 @@ class ServicioController {
       var proveedores = (await ServicioProveedor.where({id: params.id_servicio}).with('datos_proveedor').fetch()).toJSON()
     }
     console.log(proveedores, 'proveedores')
-    const newArr = []
-    const myObj = {}
 
-    proveedores.forEach(el => {
-      // comprobamos si el valor existe en el objeto
-      if (!(el in myObj)) {
-        // si no existe creamos ese valor y lo añadimos al array final, y si sí existe no lo añadimos
-        myObj[el] = true
-        newArr.push(el)
-      }
-    })
-    response.send(newArr)
+    let newArray = []
+    for (let j of proveedores) {
+      let buscarProveedor = newArray.find(v => v.id_proveedor === j.id_proveedor)
+      if (!buscarProveedor) { newArray.push(j) }
+    }
+
+    response.send(newArray)
   }
 
   async serviciosPorProveedor ({ response, auth }) {

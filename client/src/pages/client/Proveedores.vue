@@ -4,10 +4,10 @@
       <div header class="column">
         <div class="row">
           <div class="col-3">
-              <q-btn flat color="primary" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
+            <q-btn flat color="primary" round style="width: 50px" icon="keyboard_arrow_left" @click="$router.go(-1)"/>
           </div>
           <q-space />
-          <q-btn flat round color="grey" icon="favorite_border" />
+          <q-btn flat round color="grey" icon="favorite_border" @click="$router.push('/proveedores_me_gustan')" />
         </div>
         <div class="row justify-center">
           <div>

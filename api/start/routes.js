@@ -59,6 +59,7 @@ addPrefixToGroup(
     Route.delete("eliminar_archivo_proveedor_video/:file", "UploadController.eliminarArchivoVideo")
     Route.get("test_file/:file", "UploadController.testFile")
     Route.get("file_proveedor/:carpeta/:id", "UploadController.traerImagenPortadaPerfilProveedor")
+    Route.get("file_event/:file", "UploadController.getFileByDirectoryEvent")
 
   })
 );
@@ -110,6 +111,7 @@ addPrefixToGroup(
     Route.get("quotes_by_status_approve", "CotisationController.quotesByStatusApprove")
     Route.get("cotisations_by_event/:event_id", "CotisationController.cotisationsByEvent")
     Route.get("get_cotisacion_by_id/:id", "CotisationController.getCotisacionById")
+    Route.get("eventos_terminados_por_fecha", "CotisationController.eventosRealizados")
 
     ////////// EVENTOS ////////////////////
     Route.get("events", "CotisationController.getEvents")
@@ -128,10 +130,13 @@ addPrefixToGroup(
     Route.post("subir_archivo_proveedor", "UploadController.subirArchivoProveedor")
     Route.post("subir_archivo_proveedor_video", "UploadController.subirArchivoProveedorVideo")
     Route.post("actualizar_file_proveedor/:carpeta", "UploadController.actualizarPortadaPerfilProveedor")
+    Route.post("subir_imagen_evento/:event_id", "UploadController.subirImagenEvento")
 
-    ///////////////////////////OPINIONES///////////////////////////////
+    ///////////////////////////OPINIONES Y ESTADISTICAS///////////////////////////////
     Route.get("opiniones", "OpinionController.index")
     Route.get("opiniones/:id_proveedor", "OpinionController.opinionesPorProveedorId")
+    Route.post("opinar", "OpinionController.store")
+    Route.get("estadisticas", "OpinionController.estadisticas")
 
 
     ///////////////////////////FAVORITOS///////////////////////////////

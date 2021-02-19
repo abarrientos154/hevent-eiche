@@ -100,6 +100,11 @@ const routes = [
         meta: { toolbar: false, title: 'Hevent', footer: false }
       },
       {
+        path: '/proveedor/:header/:id/:anuncio',
+        component: () => import('pages/client/InfoProveedor.vue'),
+        meta: { toolbar: false, title: 'Hevent', footer: false }
+      },
+      {
         path: '/chat/:id',
         component: () => import('pages/client/Chat.vue'),
         meta: { toolbar: false, title: 'Organiza tu Evento', footer: false }
@@ -147,6 +152,11 @@ const routes = [
       {
         path: '/proveedores_me_gustan',
         component: () => import('pages/client/ProveedoresMeGusta.vue'),
+        meta: { toolbar: false, title: 'Me Gusta', footer: true }
+      },
+      {
+        path: '/opiniones_proveedor',
+        component: () => import('pages/proveedor/Opiniones.vue'),
         meta: { toolbar: false, title: 'Me Gusta', footer: true }
       }
     ]

@@ -75,12 +75,12 @@ export default {
         {
           name: 'Basico',
           tipo: 'Mensual',
-          select: true
+          select: false
         },
         {
           name: 'Estandar',
           tipo: 'Mensual',
-          select: false
+          select: true
         },
         {
           name: 'Premium',
@@ -214,7 +214,7 @@ export default {
 
 <style>
 .background-cuatro {
-  background: url('../../../../public/nube4.png');
+  background: url('../../../../public/planes_nube.png');
   height: 250px;
   background-size: 100% 100%;
 }

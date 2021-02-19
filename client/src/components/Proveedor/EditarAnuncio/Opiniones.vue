@@ -3,15 +3,15 @@
     <q-list class="q-mt-sm q-mb-lg">
       <div v-for="(item, index) in data" :key="index">
         <q-item class="q-mt-md">
-          <q-item-section top avatar>
+          <q-item-section center avatar>
             <q-avatar >
-              <q-img :src="item.img" />
+              <q-img :src="baseu + item.usuario._id" />
             </q-avatar>
           </q-item-section>
 
           <q-item-section>
             <q-item-label>{{item.usuario.full_name}}</q-item-label>
-            <q-item-label caption lines="5">{{item.comentario}}</q-item-label>
+            <q-item-label caption lines="5">{{item.opinion}}</q-item-label>
           </q-item-section>
 
           <q-item-section side top>
@@ -35,14 +35,17 @@
 </template>
 
 <script>
+import env from '../../../env'
 export default {
   data () {
     return {
-      data: []
+      data: [],
+      baseu: ''
     }
   },
   mounted () {
     this.consultar()
+    this.baseu = env.apiUrl + 'file_proveedor/perfil/'
   },
   methods: {
     consultar () {

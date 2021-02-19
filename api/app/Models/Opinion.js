@@ -7,6 +7,10 @@ class Opinion extends Model {
   usuario () {
     return this.hasOne('App/Models/User', 'user_id', '_id')
   }
+
+  usuario_proveedor () {
+    return this.hasOne('App/Models/User', 'proveedor_id', '_id')
+  }
 }
 
 module.exports = Opinion

@@ -43,6 +43,7 @@ import { required, email } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      calificarD: true,
       form: {},
       countriesOptions: [],
       countries: [],

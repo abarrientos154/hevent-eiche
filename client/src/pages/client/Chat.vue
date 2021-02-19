@@ -4,7 +4,7 @@
       <div class="row items-center">
         <q-btn color="white" flat dense icon="keyboard_arrow_left" round @click="ruta()" />
         <q-avatar class="q-ml-sm" size="70px">
-          <q-img :src="'noimg.png'" />
+          <q-img :src="baseu + id_img" />
         </q-avatar>
         <div class="q-ml-md text-white text-bold" style="font-size:15px; max-width:180px"> {{usuario}} </div>
         <q-space />
@@ -24,7 +24,7 @@
         <!--<q-chat-message
         :label="date"
         />-->
-        <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" avatar="noimg.png" :text="[mens.message]"
+        <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" :avatar="baseu + mens.id" :text="[mens.message]"
           :stamp="mens.stamp" :sent="mens.send" :bg-color="mens.send ? 'primary' : 'grey-4'" :text-color="mens.send ? 'white' : 'black'" size="6"
         />
         <div id="fin"></div>
@@ -39,13 +39,16 @@
 <script>
 import moment from 'moment'
 import EnviarCotizacion from '../../components/Cotizacion/EnviarCotizacion'
+import env from '../../env'
 export default {
   components: {
     EnviarCotizacion
   },
   data () {
     return {
+      baseu: '',
       header: '',
+      id_img: '',
       usuario: 'Usuario',
       rol: [],
       cotizarBtn: false,
@@ -73,6 +76,7 @@ export default {
   },
   computed: {},
   mounted () {
+    this.baseu = env.apiUrl + 'file_proveedor/perfil/'
     console.log(this.$route.params, 'touteeeeeeeeeeeee')
     if (this.$route.params.id) {
       this.cotizacion_id = this.$route.params.id
@@ -109,8 +113,8 @@ export default {
         }
       })
     },
-    getinfo () {
-      this.$api.get('show_all_info_cotization/' + this.cotizacion_id).then(v => {
+    async getinfo () {
+      await this.$api.get('show_all_info_cotization/' + this.cotizacion_id).then(v => {
         if (v) {
           if (v.status > 1) {
             this.deshabilitarMsg = true
@@ -145,18 +149,17 @@ export default {
           if (res.roles.some(v => v === 3)) {
             this.cotizarBtn = true
             this.usuario = this.data.datos_cliente.full_name
+            this.id_img = this.data.datos_cliente._id
+            console.log('entro aqui', this.usuario)
           } else {
-            this.usuario = this.data.datos_proveedor.full_name
+            this.usuario = this.data.datos_proveedor.name
+            this.id_img = this.data.datos_proveedor._id
           }
         }
       })
     },
     ruta () {
-      if (this.rol.some(v => v === 2)) {
-        this.$router.push('/mensajes/mensajes')
-      } else {
-        this.$router.go(-1)
-      }
+      this.$router.go(-1)
     },
     sendChat () {
       if (this.text !== '') {

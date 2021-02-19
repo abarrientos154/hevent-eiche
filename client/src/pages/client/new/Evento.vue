@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="background-tool" style="height:250px">
+    <q-img :src="form.img ? baseu : 'nubeazul1.png'" style="height:280px;width:100%;position:absolute;top:0px;z-index:-1" />
+    <div style="height:250px">
       <div class="column">
         <div>
-          <q-btn color="white" icon="menu" flat round class="q-ma-xs" />
+          <q-btn color="white" icon="keyboard_arrow_left" flat round class="q-ma-xs" @click="$router.go(-1)" />
         </div>
         <div class="column justify-center items-center">
           <q-file borderless v-model="portadaEvento" class="button-camera" @input="crearImgPortada()" >
@@ -41,7 +42,7 @@
         </div>
       </div>
     </div>
-    <div class="row items-center justify-end q-mr-md">
+    <div class="row items-center justify-end q-mr-md q-mt-xl">
       <q-icon name="alarm" size="30px" color="grey-7" />
       <div class="q-ml-sm bg-grey q-pa-xs text-white text-bold" style="border-radius:6px">Faltan {{form.diasRestantes}} Dias </div>
     </div>
@@ -82,6 +83,7 @@
       </div>
     </div>
     <q-separator inset class="q-mt-md" />
+    <q-btn flat label="cotizaciones pendientes" @click="$router.push('/aprobacion_cotizacion')" dense color="primary" class="q-ma-sm" />
     <div class="column">
       <div class="text-grey text-bold text-center q-mt-sm">Cotización Aprobada</div>
       <div class="column q-mt-sm">
@@ -138,9 +140,12 @@
 </template>
 
 <script>
+import env from '../../../env'
 export default {
   data () {
     return {
+      baseu: '',
+      portadaImg: null,
       form: {},
       cotisaciones: [],
       carrito: [],
@@ -185,12 +190,25 @@ export default {
     }
   },
   mounted () {
+    this.baseu = env.apiUrl + 'file_event/' + this.id
     this.getRecord()
     this.getCotisations()
   },
   methods: {
-    crearImgPortada () {
-
+    async crearImgPortada () {
+      if (this.portadaEvento) {
+        var formData = new FormData()
+        var files = []
+        files[0] = this.portadaEvento
+        formData.append('files', files[0])
+        await this.$api.post('subir_imagen_evento/' + this.id, formData, {
+          headers: {
+            'Content-Type': undefined
+          }
+        }).then((res) => {
+          this.$router.go(this.$router.currentRoute)
+        })
+      }
     },
     getRecord () {
       this.$api.get(`event/${this.id}`).then(res => {

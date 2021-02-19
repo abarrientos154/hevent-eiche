@@ -12,11 +12,21 @@ class Event extends Model {
     }
     return rules
   }
+
   cotisations () {
     return this.hasMany('App/Models/Cotisation', '_id', 'event_id')
   }
   datos_cliente () {
     return this.hasOne('App/Models/User', 'cliente_id', '_id')
+  }
+  datos_proveedor () {
+    return this.hasOne('App/Models/User', 'proveedor_id', '_id')
+  }
+  user_info () {
+    return this.hasOne('App/Models/User', 'user_id', '_id')
+  }
+  cotisaciones () {
+    return this.hasMany('App/Models/Cotisation', '_id', 'event_id')
   }
 }
 

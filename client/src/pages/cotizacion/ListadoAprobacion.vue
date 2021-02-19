@@ -3,12 +3,13 @@
     <div  class="fondo-toolbar">
       <div class="text-center text-white text-bold text-h6 q-pt-lg">Cotizaciones</div>
     </div>
+    <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:10px;left:10px" @click="$router.go(-1)" />
     <div class="row justify-center q-ma-sm">
       <div class="col-xs-11 col-sm-6 col-md-6 col-lg-6 q-pr-sm" v-for="(item, index) in data" :key="index" style="border-radius:8px;margin-top:8px;margin-bottom:8px">
         <q-item class="q-mt-xs q-mb-xs q-ma-sm">
           <q-item-section avatar>
             <q-avatar size="75px">
-              <q-img :src="'noimg.png'" />
+              <q-img :src="item.rolAuth === 2 ? baseu + item.datos_proveedor._id : baseu + item.datos_cliente._id " />
             </q-avatar>
           </q-item-section>
           <q-item-section>
@@ -36,12 +37,14 @@
 
 <script>
 import AprobarCotizacion from '../../components/Cotizacion/AprobarCotizacion'
+import env from '../../env'
 export default {
   components: {
     AprobarCotizacion
   },
   data () {
     return {
+      baseu: '',
       data: [],
       showDialogInfo: false,
       indexSelect: 0,
@@ -70,6 +73,8 @@ export default {
             _id: v._id
           }
         })
+        console.log(this.data, 'dataa')
+        this.baseu = env.apiUrl + 'file_proveedor/perfil/'
       })
     },
     formatPrice (value) {

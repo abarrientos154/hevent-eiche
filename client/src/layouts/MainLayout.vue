@@ -14,6 +14,9 @@
         </template>
       </div>
     </q-footer>
+    <q-dialog v-model="calificarD">
+      <calificar :proveedores="proveedores" />
+    </q-dialog>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -23,9 +26,10 @@
 <script>
 import { mapGetters } from 'vuex'
 import ToolBar from '../components/ToolBar'
+import Calificar from '../components/cliente/Calificar'
 export default {
   components: {
-    ToolBar
+    ToolBar, Calificar
   },
   computed: {
     title () {
@@ -40,10 +44,13 @@ export default {
     icono () {
       return this.$router.currentRoute.path
     },
-    ...mapGetters('generals', ['can'])
+    ...mapGetters('generals', ['can', 'UserInfo'])
   },
   data () {
     return {
+      proveedores: [],
+      calificarD: false,
+      show: true,
       rol: 2,
       tab: '/revista',
       rutaActual: this.$router.currentRoute.path,
@@ -63,15 +70,35 @@ export default {
       ]
     }
   },
-  methods: {
-    irRuta (to) {
-      console.log(this.rutaActual, 'r1')
-      this.rutaActual = to
-      console.log(this.rutaActual, 'r2')
+  watch: {
+    $route (to, from) {
+      console.log(to, 'to', from, 'from')
+      const id = to.params.id
+      if (to.path === '/mi_evento/' + id) {
+        this.rutaActual = '/inicio_cliente'
+      } else {
+        this.rutaActual = to.path
+      }
     }
   },
-  mounted () {
-    console.log(this.$router.currentRoute, 'console')
+  methods: {
+    irRuta (to) {
+      this.rutaActual = to
+    },
+    async obtenerEventosRealizados () {
+      const user = JSON.parse(localStorage.getItem('HEV_SESSION_INFO'))
+      if (user.roles[0] === 2) {
+        await this.$api.get('eventos_terminados_por_fecha').then(res => {
+          if (res) {
+            this.proveedores = res
+            if (this.proveedores.length > 0) { this.calificarD = true }
+          }
+        })
+      }
+    }
+  },
+  async mounted () {
+    await this.obtenerEventosRealizados()
   }
 }
 </script>

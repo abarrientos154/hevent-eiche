@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="background-tool" style="height:150px">
-      <div class="text-bold text-white text-h6 text-center row justify-center">HEVENT</div>
+      <div class="text-bold text-white text-h6 text-center row justify-center items-center" style="height:85%">HEVENT</div>
     </div>
     <div>
       <div class="q-ml-lg row items-center">
@@ -21,7 +21,7 @@
         <div>
           <q-scroll-area horizontal style="height: 130px; width: 100%;" class="bg-grey-1 rounded-borders q-mb-md" >
             <div class="row no-wrap">
-              <div class="shadow-3 q-ma-sm q-ml-md bg-grey-4" style="height:80px;border-radius:12px;width:150px" v-for="(event, index) in data" :key="index" @click="$router.push('mi_evento/' + event._id)">
+              <div class="shadow-3 q-ma-sm q-ml-md bg-grey-4" style="height:80px;border-radius:12px;width:150px" v-for="(event, index) in eventos" :key="index" @click="$router.push('mi_evento/' + event._id)">
                 <div class="bg-primary row items-center justify-center text-white text-center style-titulo">
                   {{event.name}}
                 </div>
@@ -32,6 +32,14 @@
               <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-md bg-grey-5" style="height:110px;border-radius:12px;width:150px">
                 <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Crear Evento</div>
                 <q-btn @click="showCreateEvent = true" round size="20px" push style="width:50px" dense color="primary" icon="add" />
+              </div>
+              <div class="shadow-3 q-ma-sm q-ml-md bg-grey-4" style="height:80px;border-radius:12px;width:150px" v-for="(eventPay, index2) in eventosPagados" :key="index2" @click="$router.push('mi_evento/' + eventPay._id)">
+                <div class="bg-primary row items-center justify-center text-white text-center style-titulo">
+                  {{eventPay.name}}
+                </div>
+                <div style="height:50px; border-bottom-right-radius:12px; border-bottom-left-radius:12px">
+                  <img :src="eventPay.img" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
+                </div>
               </div>
             </div>
           </q-scroll-area>
@@ -58,7 +66,7 @@
       <div class="column">
         <div class="row justify-end items-center">
           <div class="text-center q-mt-md text-grey-7">Proveedores Favoritos</div>
-          <q-icon class="q-ml-md q-mt-md q-mr-md" flat color="primary" dense name="favorite_border" size="lg" />
+          <q-icon class="q-ml-xl q-mt-md q-mr-xl" flat color="grey" dense name="favorite_border" size="sm" @click="$router.push('/proveedores_me_gustan')" />
         </div>
         <q-scroll-area horizontal style="height: 260px; width: 100%;" class="rounded-borders q-mb-md q-mt-sm q-ml-sm" >
           <div class="row no-wrap q-gutter-sm" v-if="favoritos.length > 0">
@@ -106,19 +114,13 @@ export default {
   },
   data () {
     return {
+      eventos: [],
+      eventosPagados: [],
       baseu: '',
       data: [
         {
           name: 'Nombre 2 Evento Tal',
           img: 'example_2.jpg'
-        },
-        {
-          name: 'Nombre 1 Evento Tal TAL TAL TAL',
-          img: 'example_1.jpg'
-        },
-        {
-          name: 'Nombre 1 Evento Tal TAL TAL TAL',
-          img: 'example_4.jpg'
         }
       ],
       data2: [
@@ -174,6 +176,17 @@ export default {
       this.$api.get('events_by_user').then(res => {
         if (res) {
           this.data = res.map(v => {
+            if (v.pay) {
+              this.eventosPagados.push({
+                ...v,
+                img: 'example_4.jpg'
+              })
+            } else {
+              this.eventos.push({
+                ...v,
+                img: 'example_4.jpg'
+              })
+            }
             return {
               _id: v._id,
               name: v.name,
@@ -201,7 +214,7 @@ export default {
 
 <style>
 .background-tool {
-  background-image: url("../../../../public/nube5.png");
+  background-image: url("../../../../public/nubeazul1.png");
   background-size: 100% 100%;
 }
 .skewed {

@@ -11,7 +11,7 @@
 
           <q-item-section>
             <q-item-label>{{item.usuario.full_name}}</q-item-label>
-            <q-item-label caption lines="5">{{item.comentario}}</q-item-label>
+            <q-item-label caption lines="5">{{item.opinion}}</q-item-label>
           </q-item-section>
 
           <q-item-section side top>

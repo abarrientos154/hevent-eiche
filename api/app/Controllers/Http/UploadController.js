@@ -3,6 +3,7 @@
 const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
 const User = use('App/Models/User')
+const Event = use('App/Models/Event')
 const fs = require('fs')
 var randomize = require('randomatic');
 
@@ -129,6 +130,38 @@ class UploadController {
         response.send(proveedor)
       }
     }
+  }
+
+  async subirImagenEvento ({ request, response, params }) {
+    var profilePic = request.file('files', {
+      types: ['image'],
+    })
+    if (profilePic) {
+      if (Helpers.appRoot('storage/uploads/event')) {
+        await profilePic.move(Helpers.appRoot('storage/uploads/event'), {
+          name: params.event_id,
+          overwrite: true
+        })
+      } else {
+        mkdirp.sync(`${__dirname}/storage/Excel`)
+      }
+
+      if (!profilePic.moved()) {
+        return profilePic.error()
+      } else {
+        let event = await Event.find(params.event_id)
+        console.log(event)
+        event.img = true
+        await event.save()
+        response.send(event)
+      }
+    }
+  }
+
+  async getFileByDirectoryEvent({ params, response }) {
+    const dir = params.file
+    console.log(dir,'here')
+    response.download(Helpers.appRoot('storage/uploads/event') + `/${dir}`)
   }
 
   async subirArchivoProveedorVideo ({ request, response, auth }) {

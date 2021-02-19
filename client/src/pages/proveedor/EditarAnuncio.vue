@@ -18,7 +18,7 @@
     <q-img v-else :src="'portada_proveedor.png' " style="height:200px;z-index:-1" class="absolute-top">
     </q-img>
     <div class="q-mt-sm q-ma-sm row justify-end">
-      <q-btn label="ver anuncio" dense class="gradiente-buttom q-pa-xs" size="sm" push />
+      <q-btn label="ver anuncio" dense class="gradiente-buttom q-pa-xs" size="sm" push @click="$router.push('/proveedor/locacion/' + user._id + '/true')" />
     </div>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}

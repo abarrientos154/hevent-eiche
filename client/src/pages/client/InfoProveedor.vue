@@ -3,7 +3,7 @@
     <div style="position:absolute;top:0px;left:0px;font-size:20px;z-index:2" class="text-white" >
       <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
     </div>
-    <div style="position:absolute;top:0px;right:0px;font-size:20px;z-index:2" class="text-white" >
+    <div style="position:absolute;top:0px;right:0px;font-size:20px;z-index:2" class="text-white" v-if="!isAnuncioP" >
       <q-btn :icon="favorito ? 'favorite' : 'favorite_border'" :color="favorito ? 'red': 'white'" flat round @click="addFavoritos()" />
     </div>
     <div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
@@ -78,7 +78,7 @@
       <modal-eventos @goChat="goChat" />
     </q-dialog>
     <div class="absolute-bottom full-width row justify-center q-mb-sm" style="height:50px">
-      <q-btn class="gradiente-buttom" label="contactame" @click="showEvents = true" style="width:70%;height:50px" push />
+      <q-btn :disable="isAnuncioP" class="gradiente-buttom" label="contactame" @click="showEvents = true" style="width:70%;height:50px" push />
     </div>
   </div>
 </template>
@@ -95,6 +95,7 @@ export default {
   components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones, Mapa, ModalEventos },
   data () {
     return {
+      isAnuncioP: false,
       thumbStyle: {
         right: '2px',
         borderRadius: '5px',
@@ -129,6 +130,9 @@ export default {
     this.getUser()
     this.getFavorito()
     this.baseu = env.apiUrl
+    if (this.$route.params.anuncio) {
+      this.isAnuncioP = true
+    }
   },
   methods: {
     getFavorito () {

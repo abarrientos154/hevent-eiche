@@ -21,7 +21,7 @@
           <q-item class="q-mt-sm" v-ripple clickable @click="entrar(chat._id)">
             <q-item-section avatar>
               <q-avatar size="75px">
-                <q-img :src="'noimg.png'" />
+                <q-img :src="baseu + chat.id_usuario" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -45,9 +45,11 @@
   </div>
 </template>
 <script>
+import env from '../../env'
 export default {
   data () {
     return {
+      baseu: '',
       buscar: '',
       slide: 1,
       pointTotal: 4,
@@ -64,6 +66,7 @@ export default {
   },
   mounted () {
     this.getRecords()
+    this.baseu = env.apiUrl + 'file_proveedor/perfil/'
   },
   methods: {
     filtrar () {

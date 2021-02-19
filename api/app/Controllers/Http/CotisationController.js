@@ -24,41 +24,31 @@ const ItemServicio = use("App/Models/ItemServicio")
   3 = Rechazado por el Cliente
   4 = Pagado por el cliente y a la espera de la fecha final del evento
   5 = Evento Finalizado o Cotizacion Finalizada
+
+  ///////////Leyenda del Campo Estatus para El Modelo Eventos////////////////////
+  5 = Evento Finalizado
 */
 
 class CotisationController {
-  /**
-   * Show a list of all cotisations.
-   * GET cotisations
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async index ({ request, response, view }) {
+
+  async eventosRealizados ({ response, auth }) {
+    let eventos = (await Event.where({
+      pay: true,
+      date: { $lte: moment().format('YYYY/MM/DD') }
+    }).with('user_info').fetch()).toJSON()
+    let send = []
+    for (let j of eventos) {
+      let cotisaciones = (await Cotisation.query().where({ event_id: j._id, status: { $lte: 4 }, puntuado: false }).with('datos_proveedor').fetch()).toJSON()
+      if (cotisaciones.length > 0) {
+        for (let i of cotisaciones) {
+          send.push(i)
+        }
+      }
+    }
+
+    response.send(send)
   }
 
-  /**
-   * Render a form to be used for creating a new cotisation.
-   * GET cotisations/create
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async create ({ request, response, view }) {
-  }
-
-  /**
-   * Create/save a new cotisation.
-   * POST cotisations
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store ({ request, response, params, auth }) {
     const id_user = ((await auth.getUser()).toJSON())._id
     let body = {
@@ -109,6 +99,7 @@ class CotisationController {
     send.messages = messages.map(v => {
       return {
         send: id_user === v.user_id ? true : false,
+        id: v.datos_user._id,
         message: v.message,
         stamp: moment(v.created_at).lang('es').calendar(),
         full_name: v.datos_user.full_name
@@ -136,6 +127,7 @@ class CotisationController {
         console.log(messages, 'aaaa')
         return {
           _id: v._id,
+          id_usuario: user.roles[0] === 2 ? v.datos_proveedor._id : v.datos_cliente._id,
           full_name: user.roles[0] === 2 ? v.datos_cliente.full_name : v.datos_proveedor.full_name,
           last_message: v.last_message,
           created_at_message: moment(v.created_at_message).lang('es').calendar(),
@@ -146,6 +138,7 @@ class CotisationController {
         console.log(messages, 'bbbbb')
         return {
           _id: v._id,
+          id_usuario: user.roles[0] === 2 ? v.datos_proveedor._id : v.datos_cliente._id,
           full_name: user.roles[0] === 3 ? v.datos_cliente.full_name : v.datos_proveedor.full_name,
           last_message: 'Escribe un mensaje',
           created_at_message: moment().format('DD/MM/YYYY'),
@@ -206,7 +199,7 @@ class CotisationController {
     const body = {}
     body.status = 4 //Cotizacion Pagada y a la espera por finalizar el evento
     body.fechaPagado = moment().format('DD-MM-YYYY')
-    let update = await Cotisation.query().where({event_id: params.event_id}).update(body)
+    let update = await Cotisation.query().where({event_id: params.event_id, status: 2, puntuado: false}).update(body)
 
     const bodyT = request.only(['total', 'fullName', 'celular', 'email', 'celCode'])
     bodyT.event_id = params.event_id

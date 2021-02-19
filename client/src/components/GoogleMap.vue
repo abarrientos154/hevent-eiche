@@ -4,12 +4,12 @@
     <q-input
       ref="autocomp"
       for="input"
-      class="col-xs-12 col-sm-6 q-pa-md"
+      class="col-xs-12 col-sm-6 q-pa-md input-border-new q-pa-sm"
       v-model="place"
       label="Dirección"
-      placeholder="Av Bolívar Nirgua Venezuela"
+      placeholder="Ingrese Direccion"
       stack-label
-      hint="Ubique su negocio en el mapa"
+      borderless
       disabled
       v-show="!withoutDirection"
     />
@@ -97,11 +97,12 @@ export default {
         autocomplete.addListener('place_changed', function () {
           const placeAutocomplete = autocomplete.getPlace()
           const latLng = { lat: placeAutocomplete.geometry.location.lat(), lng: placeAutocomplete.geometry.location.lng() }
-          vm.map.setCenter(latLng)
+          console.log(latLng, 'asd')
+          map.setCenter(latLng)
           vm.marker.setPosition(latLng)
           vm.place = placeAutocomplete.formatted_address
 
-          vm.map.setZoom(10)
+          map.setZoom(10)
         })
       })
       // mostrar la ruta de origen a destino

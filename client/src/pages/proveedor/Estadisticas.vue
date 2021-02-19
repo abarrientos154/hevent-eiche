@@ -3,6 +3,7 @@
     <div class="fondo-estadisticas full-width">
       <div class="text-h6 absolute-top text-center text-white text-bold q-mt-sm">Estadisticas</div>
     </div>
+    <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:10px;left:10px" @click="$router.go(-1)" />
     <div class="column q-ma-md">
       <q-card class="estilo-card-est q-pa-md no-shadow">
         <div class="row justify-between items-center">
@@ -12,8 +13,59 @@
             <div class="text-h6 text-grey-6 q-ml-sm q-mr-sm"> {{form.puntuacion}} </div>
           </div>
         </div>
+        <q-list dense class="q-mt-md">
+          <q-item>
+            <q-item-section class="q-ml-lg" style="width:100%">
+              <q-item-label class="text-grey-7">Calidad del Servicio</q-item-label>
+            </q-item-section>
+
+            <q-item-section side center class="q-ml-lg" style="width:150px">
+              <q-rating v-model="form.calidadS" size="1.5em" class="q-ml-md" color="primary" />
+            </q-item-section>
+          </q-item>
+
+          <q-item>
+            <q-item-section class="q-ml-lg" style="width:150px">
+              <q-item-label class="text-grey-7">Costo Beneficio</q-item-label>
+            </q-item-section>
+
+            <q-item-section side center>
+              <q-rating v-model="form.costoB" size="1.5em" class="q-ml-md" color="primary" />
+            </q-item-section>
+          </q-item>
+
+          <q-item>
+            <q-item-section class="q-ml-lg" style="width:150px">
+              <q-item-label class="text-grey-7">Profesionalidad</q-item-label>
+            </q-item-section>
+
+            <q-item-section side center>
+              <q-rating v-model="form.profesionalidad" size="1.5em" class="q-ml-md" color="primary" />
+            </q-item-section>
+          </q-item>
+
+          <q-item>
+            <q-item-section class="q-ml-lg" style="width:150px">
+              <q-item-label class="text-grey-7">Respuesta</q-item-label>
+            </q-item-section>
+
+            <q-item-section side center>
+              <q-rating v-model="form.respuesta" size="1.5em" class="q-ml-md" color="primary" />
+            </q-item-section>
+          </q-item>
+
+          <q-item>
+            <q-item-section class="q-ml-lg" style="width:150px">
+              <q-item-label class="text-grey-7">Flexibilidad</q-item-label>
+            </q-item-section>
+
+            <q-item-section side center>
+              <q-rating v-model="form.flexibilidad" size="1.5em" class="q-ml-md" color="primary" />
+            </q-item-section>
+          </q-item>
+        </q-list>
         <div>
-          <q-btn label="ver opiniones" class="float-right gradiente-buttom q-mt-lg" push />
+          <q-btn label="ver opiniones" class="float-right gradiente-buttom q-mt-lg" push @click="$router.push('/opiniones_proveedor')" />
         </div>
       </q-card>
 
@@ -40,13 +92,14 @@
         </div>
       </q-card>
 
-      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" style="height:300px">
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" style="height:360px">
         <div class="column">
           <div class="q-ml-md text-subtitle1 text-grey-7 text-bold"> Tipo de Evento Realizado </div>
+          <pie-chart v-if="ejecutar" :data="chartData" :options="chartOptions" style="width:300px"></pie-chart>
         </div>
       </q-card>
 
-      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" @click="$router.push('/aprobacion_cotizacion')">
         <div class="row">
           <div class="row items-center">
             <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Cotizaciones Rechazadas</div>
@@ -57,7 +110,7 @@
         </div>
       </q-card>
 
-      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" @click="$router.push('/aprobacion_cotizacion')">
         <div class="row">
           <div class="row items-center">
             <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Cotizaciones Aprobadas</div>
@@ -68,7 +121,7 @@
         </div>
       </q-card>
 
-      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" @click="$router.push('/aprobacion_cotizacion')">
         <div class="row">
           <div class="row items-center">
             <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Cotizaciones Pagadas</div>
@@ -83,14 +136,33 @@
 </template>
 
 <script>
-
+import PieChart from '../PieChart'
 export default {
+  components: {
+    PieChart
+  },
   data () {
     return {
+      ejecutar: false,
+      chartOptions: {
+        hoverBorderWidth: 20
+      },
+      chartData: {
+        hoverBackgroundColor: 'red',
+        hoverBorderWidth: 10,
+        labels: ['Celebraciones', 'Boda', 'Corporativo', 'Reunion', 'Convencion', 'Artistico', 'Espiritual'],
+        datasets: [
+          {
+            label: 'Datos',
+            backgroundColor: ['#004B78', '#0068A7', '#008ADE', '#31B1FF', '#75CBFF', '#B8E4FF', '#EDF8FF'],
+            data: [1, 1, 1, 1, 1, 1, 1]
+          }
+        ]
+      },
       form: {
         puntuacion: 4.9,
         like: 29,
-        tiempoR: '00:42',
+        tiempoR: '00:00',
         ca: 25,
         cr: 24,
         cp: 10
@@ -102,6 +174,15 @@ export default {
   },
   methods: {
     getEst () {
+      this.$api.get('estadisticas').then(res => {
+        if (res) {
+          this.form = res
+          console.log(this.chartData, 'res')
+          this.chartData.datasets[0].data = res.dataChar
+          this.ejecutar = true
+          console.log(this.chartData, 'res')
+        }
+      })
     }
   }
 }
@@ -123,7 +204,7 @@ export default {
 .fondo-estadisticas {
   background: url('../../../public/nubeazul1.png');
   width: 100%;
-  height: 220px;
+  height: 150px;
   background-size: 100% 100%;
 }
 .estilo-card-est {

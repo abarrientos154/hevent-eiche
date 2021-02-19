@@ -116,7 +116,8 @@ export default {
 .test {
   background: url('../../public/nube8.png');
   width: 400px;
-  height: 400px;
+  height: 490px;
+  padding-top: 10%;
   background-size: 100% 100%;
   background-color: rgba(255, 255, 255, 0);
 }
