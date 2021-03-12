@@ -2,7 +2,7 @@
   <div>
     <div class="background-dos"></div>
     <div style="position:absolute; top:10px; left:5px" >
-      <q-btn color="white" icon="arrow_back" flat dense @click="$router.go(-1)" />
+      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="$router.go(-1)" />
     </div>
     <div class="text-center text-primary text-subtitle1 q-mt-md"> * Perfil de tu empresa * </div>
     <q-separator class="q-mt-md" inset />

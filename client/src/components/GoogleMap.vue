@@ -41,11 +41,12 @@ export default {
       place: '',
       marker: '',
       autocomplete: {},
-      visiblePolygon: false
+      visiblePolygon: false,
+      primera: true
     }
   },
   async mounted () {
-    this.ejecutar()
+    await this.ejecutar()
   },
   methods: {
     async ejecutar () {
@@ -70,7 +71,9 @@ export default {
         geocoder.geocode({ location: this.marker.getPosition() }, function (results, status) {
           if (status === 'OK') {
             if (results[0]) {
-              vm.place = results[0].formatted_address
+              console.log(vm.primera, 'primara')
+              vm.place = vm.primera ? '' : results[0].formatted_address
+              vm.primera = false
             }
           } else {
             alert('Geocode was not successful for the following reason: ' + status)
@@ -101,7 +104,6 @@ export default {
           map.setCenter(latLng)
           vm.marker.setPosition(latLng)
           vm.place = placeAutocomplete.formatted_address
-
           map.setZoom(10)
         })
       })

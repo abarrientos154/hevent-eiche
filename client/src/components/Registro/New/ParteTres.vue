@@ -1,8 +1,9 @@
 <template>
   <div>
+    <q-btn label="PRUEBA" class="fixed-bottom-left q-ma-md" color="primary" @click="next()" />
     <div class="background-tres"></div>
     <div style="position:absolute; top:10px; left:5px" >
-      <q-btn color="white" icon="arrow_back" flat dense @click="panel.panel = 'parte_dos'" />
+      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="panel.panel = 'parte_dos'" />
     </div>
     <div class="text-center text-primary text-h6 q-mt-md"> * Preguntas Frecuentes * </div>
     <q-separator class="q-mt-md" inset />
@@ -10,22 +11,26 @@
       <div class="text-subtitle1">* {{item.name}} *</div>
       <div class="column" v-for="(subitem, index2) in item.pregunta" :key="index2">
         <div class="text-caption text-grey-8"> {{subitem.pregunta}} </div>
-        <div v-if="subitem.valor" class="row justify-start items-center q-mt-xs">
-          <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" />
-          <div class="text-grey-9 q-mb-md q-ml-sm">Minimo</div>
-          <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" />
-          <div class="text-grey-9 q-mb-md q-ml-sm">Maximo</div>
+        <div v-if="subitem.valor" class="column">
+          <div class="text-negative text-caption text-bold" v-if="!preguntas[index].pregunta[index2].qvalmin || !preguntas[index].pregunta[index2].qvalmax"> Campos Requeridos </div>
+          <div class="row justify-start items-center">
+            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" />
+            <div class="text-grey-9 q-mb-md q-ml-sm">Minimo</div>
+            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" />
+            <div class="text-grey-9 q-mb-md q-ml-sm">Maximo</div>
+          </div>
         </div>
         <div v-else-if="subitem.sino" class="row justify-start items-center q-mt-xs">
-          <!-- <div :class="preguntas[index].pregunta[index2].qval === 'si' ? 'sino-true q-mr-sm' : 'sino-false q-mr-sm'" @click="changesino(index, index2, 'si')">Si</div>
-          <div :class="preguntas[index].pregunta[index2].qval === 'no' ? 'sino-true q-mr-sm' : 'sino-false q-mr-sm'" @click="changesino(index, index2, 'no')">No</div> -->
+          <div class="text-negative text-caption text-bold" v-if="!primera && !preguntas[index].pregunta[index2].qval"> Obligatorio Responder </div>
           <q-radio v-model="preguntas[index].pregunta[index2].qval" val="si" label="Si" />
           <q-radio v-model="preguntas[index].pregunta[index2].qval" val="no" label="No" />
         </div>
         <div v-else-if="subitem.checks" class="row justify-between q-ma-md">
+          <div class="text-negative text-caption text-bold" v-if="!primera && !preguntas[index].pregunta[index2].qvals.length > 0"> Seleccione por lo menos una </div>
           <q-checkbox v-model="preguntas[index].pregunta[index2].qvals" :label="chec" :val="chec" v-for="(chec, checkIndex) in subitem.checks" :key="checkIndex" style="width:140px" />
         </div>
         <div v-else-if="subitem.sinoconrespuesta">
+          <div class="text-negative text-caption text-bold" v-if="!primera && !preguntas[index].pregunta[index2].qval"> Obligatorio Responder </div>
           <div class="row items-center">
             <q-radio v-model="preguntas[index].pregunta[index2].qval" val="si" label="Si" />
             <q-radio v-model="preguntas[index].pregunta[index2].qval" val="no" label="No" />
@@ -33,9 +38,11 @@
           </div>
         </div>
         <div v-else-if="subitem.respuesta">
+          <div class="text-negative text-caption text-bold" v-if="!primera && !preguntas[index].pregunta[index2].qval"> Obligatorio Responder </div>
           <q-input :placeholder="preguntas[index].pregunta[index2].suffix" v-model="preguntas[index].pregunta[index2].qval" borderless class="input-border-new q-ml-md q-mt-md" :style="preguntas[index].pregunta[index2].autogrow ?  'width:250px;height:100px' : 'width:100px;height:30px'" :type="preguntas[index].pregunta[index2].tipo" />
         </div>
         <div v-else-if="subitem.respuestasola">
+          <div class="text-negative text-caption text-bold" v-if="!primera && !preguntas[index].pregunta[index2].qval"> Obligatorio Responder </div>
           <q-input v-model="preguntas[index].pregunta[index2].qval" borderless class="input-border-new q-ml-md q-mt-md" style="width:100px;height:30px" :type="preguntas[index].pregunta[index2].tipo" />
         </div>
       </div>
@@ -55,11 +62,13 @@ export default {
     return {
       formTree: {},
       preguntas: [],
-      respuestas: {}
+      respuestas: {},
+      primera: true
     }
   },
   mounted () {
     this.getPreguntas()
+    console.log(this.primera, 'primera mountedd')
   },
   methods: {
     getPreguntas () {
@@ -73,6 +82,7 @@ export default {
           }
         }
         this.preguntas = res
+        console.log(this.preguntas, 'preguntasssssssssssssssss')
       })
     },
     testo (in1, in2) {
@@ -84,10 +94,12 @@ export default {
       console.log(this.preguntas[in1].pregunta[in2].qval, 'sssss')
     },
     async next () {
-      this.$q.loading.show()
+      this.primera = false
+      console.log(this.preguntas, 'preguntassssssssssssssss', this.primera, 'primera')
+      /* this.$q.loading.show()
       this.form.respuestas = this.preguntas
       this.panel.panel = 'parte_cuatro'
-      this.$q.loading.hide()
+      this.$q.loading.hide() */
     }
   }
 }
