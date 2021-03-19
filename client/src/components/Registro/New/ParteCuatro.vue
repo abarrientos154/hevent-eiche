@@ -2,7 +2,7 @@
   <div class="column">
     <div class="background-cuatro"></div>
     <div style="position:absolute; top:10px; left:5px" >
-      <q-btn color="white" icon="arrow_back" flat dense @click="panel.panel = 'parte_tres'" />
+      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="panel.panel = 'parte_tres'" />
     </div>
 
     <div class="q-mt-md text-h6 text-primary text-center"> * Inscripcion * </div>
@@ -11,7 +11,7 @@
       <div :class="tipoPlan === 'Anual' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()" >Anual</div>
     </div>
 
-    <q-scroll-area horizontal style="height: 450px; width: 100%;" class="q-mb-lg bg-white" :thumb-style="thumbStyle"
+    <q-scroll-area horizontal style="height: 450px; width: 100%;" ref="scrollArea" class="q-mb-lg bg-white" :thumb-style="thumbStyle"
       :content-style="contentStyle" :content-active-style="contentActiveStyle" >
       <div class="row no-wrap">
         <div v-for="(plan, index) in fnPlanes" :key="index" :style="`width:${plan.select ? '200px' : '160px'};height:calc(100% - 10em);`" class="q-ma-sm transition"
@@ -53,6 +53,7 @@ export default {
   props: ['form', 'panel', 'files'],
   data () {
     return {
+      positionScroll: 100,
       contentStyle: {
         backgroundColor: 'rgba(0,0,0,0.02)',
         color: '#555'
@@ -130,9 +131,13 @@ export default {
     console.log(this.form, 'forrrm')
     console.log(this.files, 'files')
     this.form.tipoPlan = 'Mensual'
+    this.scroll()
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    scroll () {
+      this.$refs.scrollArea.setScrollPosition(this.positionScroll)
+    },
     changeSelectPlan (name) {
       var buscarInd = this.planes.findIndex(v => v.select)
       this.planes[buscarInd].select = false

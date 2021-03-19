@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-btn label="PRUEBA" class="fixed-bottom-left q-ma-md" color="primary" @click="next()" />
+    <!-- <q-btn label="PRUEBA" class="fixed-bottom-left q-ma-md" color="primary" @click="next()" /> -->
     <div class="background-tres"></div>
     <div style="position:absolute; top:10px; left:5px" >
       <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="panel.panel = 'parte_dos'" />
@@ -14,9 +14,9 @@
         <div v-if="subitem.valor" class="column">
           <div class="text-negative text-caption text-bold" v-if="!preguntas[index].pregunta[index2].qvalmin || !preguntas[index].pregunta[index2].qvalmax"> Campos Requeridos </div>
           <div class="row justify-start items-center">
-            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" />
+            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" prefix="$" />
             <div class="text-grey-9 q-mb-md q-ml-sm">Minimo</div>
-            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" />
+            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" prefix="$" />
             <div class="text-grey-9 q-mb-md q-ml-sm">Maximo</div>
           </div>
         </div>
@@ -93,13 +93,37 @@ export default {
       this.preguntas[in1].pregunta[in2].qval = val
       console.log(this.preguntas[in1].pregunta[in2].qval, 'sssss')
     },
-    async next () {
+    validar () {
       this.primera = false
-      console.log(this.preguntas, 'preguntassssssssssssssss', this.primera, 'primera')
-      /* this.$q.loading.show()
-      this.form.respuestas = this.preguntas
-      this.panel.panel = 'parte_cuatro'
-      this.$q.loading.hide() */
+      var error = false
+      for (const j of this.preguntas) {
+        if (error) {
+          return error
+        } else {
+          for (const i of j.pregunta) {
+            if (i.valor) {
+              if (!i.qvalmax || !i.qvalmin) { error = true }
+            } else if (i.checks) {
+              if (i.qvals.lenght <= 0) { error = true }
+            } else if (!i.qval) { error = true }
+          }
+        }
+      }
+      return error
+    },
+    async next () {
+      console.log(this.preguntas, 'preguntassssssssssssssss', this.validar(), 'primera')
+      if (!this.validar()) {
+        this.$q.loading.show()
+        this.form.respuestas = this.preguntas
+        this.panel.panel = 'parte_cuatro'
+        this.$q.loading.hide()
+      } else {
+        this.$q.notify({
+          message: 'Todos los campos son necesarios',
+          color: 'warning'
+        })
+      }
     }
   }
 }

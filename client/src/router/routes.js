@@ -174,6 +174,10 @@ const routes = [
     component: () => import('pages/proveedor/Login.vue')
   },
   {
+    path: '/login_proveedor/',
+    component: () => import('pages/proveedor/Login.vue')
+  },
+  {
     path: '/slider',
     component: () => import('pages/Inicio/Slider.vue')
   },

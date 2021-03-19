@@ -82,7 +82,8 @@ export default {
         { title: 'Reunión', id: 'reunion', select: false },
         { title: 'Convención', id: 'convencion', select: false },
         { title: 'Artístico', id: 'artistico', select: false },
-        { title: 'Espititual', id: 'espiritual', select: false }
+        { title: 'Espititual', id: 'espiritual', select: false },
+        { title: 'Deportivo', id: 'deportivo', select: false }
       ]
     }
   },
