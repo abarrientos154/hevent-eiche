@@ -20,7 +20,7 @@
               <template v-slot:append>
                 <q-icon name="event" class="cursor-pointer">
                   <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                    <q-date v-model="form.date">
+                    <q-date v-model="form.date" @input="actualizarDatosEvento({ date: form.date })">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Close" color="primary" flat />
                       </div>
@@ -33,7 +33,7 @@
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-time v-model="form.time">
+                    <q-time v-model="form.time" @input="actualizarDatosEvento({ time: form.time })">
                       <div class="row items-center justify-end">
                         <q-btn v-close-popup label="Close" color="primary" flat />
                       </div>
@@ -58,7 +58,7 @@
       <div class="row justify-center text-grey"> Tipo de Evento </div>
       <q-scroll-area horizontal style="height: 60px; width: 100%;" class="bg-grey-1 rounded-borders q-mb-md" >
         <div class="row no-wrap">
-          <q-card v-for="(tag, index) in tags" :key="index" class="q-pa-xs q-pl-sm q-pr-sm color-background-tags q-mt-md q-mr-sm q-ml-sm" :style="!tag.select ? 'background-color: rgba(143, 214, 255, 0.561);' : 'background-color: rgb(0, 153, 255); color: white'">
+          <q-card @click="actualizarDatosEvento({ tipoEvento: { title: tag.title, id: tag.id } }), cambiarTag(index)" v-for="(tag, index) in tags" :key="index" class="q-pa-xs q-pl-sm q-pr-sm color-background-tags q-mt-md q-mr-sm q-ml-sm" :style="!tag.select ? 'background-color: rgba(143, 214, 255, 0.561);' : 'background-color: rgb(0, 153, 255); color: white'">
             <div :class="!tag.select ? 'text-grey':'text-white'"> {{tag.title}} </div>
           </q-card>
         </div>
@@ -191,7 +191,8 @@ export default {
         { title: 'Reunión', id: 'reunion', select: false },
         { title: 'Convención', id: 'convencion', select: false },
         { title: 'Artístico', id: 'artistico', select: false },
-        { title: 'Espititual', id: 'espiritual', select: false }
+        { title: 'Espititual', id: 'espiritual', select: false },
+        { title: 'Deportivo', id: 'deportivo', select: false }
       ],
       servicios: [
         { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png' },
@@ -230,10 +231,16 @@ export default {
     this.getCotisations()
   },
   methods: {
+    cambiarTag (ind) {
+      const indSelect = this.tags.findIndex(v => v.select)
+      this.tags[indSelect].select = false
+      this.tags[ind].select = true
+    },
     async actualizarDatosEvento (data) {
       this.$q.loading.show()
-      this.$api.put(`events/${this.id}`, data).then(res => {
+      await this.$api.put(`events/${this.id}`, data).then(res => {
         this.$q.loading.hide()
+        this.getRecord()
         if (res) {
           this.$q.notify({
             message: 'Guardado Correctamente',
@@ -257,8 +264,10 @@ export default {
         })
       }
     },
-    getRecord () {
-      this.$api.get(`event/${this.id}`).then(res => {
+    async getRecord () {
+      this.$q.loading.show()
+      await this.$api.get(`event/${this.id}`).then(res => {
+        this.$q.loading.hide()
         this.form = res
         const indextag = this.tags.findIndex(v => v.id === this.form.tipoEvento.id)
         this.tags[indextag].select = true

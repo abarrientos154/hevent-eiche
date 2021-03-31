@@ -74,7 +74,9 @@ export default {
     $route (to, from) {
       console.log(to, 'to', from, 'from')
       const id = to.params.id
-      if (to.path === '/mi_evento/' + id) {
+      if (to.meta.proveedores) {
+        this.rutaActual = '/ver_mas_servicios'
+      } else if (to.path === '/mi_evento/' + id) {
         this.rutaActual = '/inicio_cliente'
       } else {
         this.rutaActual = to.path

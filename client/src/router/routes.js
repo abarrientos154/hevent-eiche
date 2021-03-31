@@ -67,7 +67,7 @@ const routes = [
       {
         path: '/proveedores/:id',
         component: () => import('pages/client/Proveedores.vue'),
-        meta: { toolbar: false, title: 'Organiza tu Evento', footer: true }
+        meta: { toolbar: false, title: 'Organiza tu Evento', footer: true, proveedores: true }
       },
       {
         path: '/inicio_proveedor',

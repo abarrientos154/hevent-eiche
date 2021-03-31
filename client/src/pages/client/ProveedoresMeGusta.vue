@@ -1,8 +1,8 @@
 <template>
   <q-page>
+    <q-btn color="primary" flat round icon="keyboard_arrow_left" style="position:absolute;top:0px;left:0px" @click="$router.go(-1)" />
     <div v-if="data.locacion.length > 0 || data.personas.length > 0 || data.servicios.length > 0">
       <div  class="text-center text-h6 text-bold text-primary q-mt-sm">Me Gustan</div>
-      <q-btn color="primary" flat round icon="keyboard_arrow_left" style="position:absolute;top:0px;left:0px" @click="$router.go(-1)" />
 
       <div class="full-width q-ma-sm">
         <div class="text-h6 text-primary text-bold q-ml-md"> * Locacion * </div>
