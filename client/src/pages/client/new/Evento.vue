@@ -1,16 +1,20 @@
 <template>
   <div>
     <q-img :src="form.img ? baseu : 'nubeazul1.png'" style="height:280px;width:100%;position:absolute;top:0px;z-index:-1" />
-    <div style="height:250px">
+    <div class="fondo-para-nube-anuncio" style="width:100%;height:280px;z-index:1;position:absolute;top:0px;">
+    </div>
+    <div style="height:280px;position:absolute;top:0px;z-index:2;width:100%">
       <div class="column">
         <div>
           <q-btn color="white" icon="keyboard_arrow_left" flat round class="q-ma-xs" @click="$router.go(-1)" />
         </div>
         <div class="column justify-center items-center">
           <q-file borderless v-model="portadaEvento" class="button-camera" @input="crearImgPortada()" >
-            <q-icon name="camera_alt" class="absolute-center" size="20px" color="black" />
+            <q-icon name="camera_alt" class="absolute-center" size="20px" color="primary" />
           </q-file>
-          <q-input label="Nombre del Evento" style="width: 290px; height:35px" v-model="form.name" dense class="input-border q-mt-sm q-pa-sm" borderless />
+          <q-input label="Nombre del Evento" style="width: 290px; height:35px" v-model="form.name" dense class="input-border q-mt-sm q-pa-sm"
+            borderless @blur="actualizarDatosEvento({ name: form.name })"
+          />
           <div class="row q-mt-sm">
             <q-input v-model="form.date" style="width:130px; height:35px" mask="date" :rules="['date']" class="input-border q-pa-xs q-pl-sm q-pr-sm" dense borderless >
               <template v-slot:append>
@@ -42,7 +46,7 @@
         </div>
       </div>
     </div>
-    <div class="row items-center justify-end q-mr-md q-mt-xl">
+    <div class="row items-center justify-end q-mr-md" style="padding-top:280px">
       <q-icon name="alarm" size="30px" color="grey-7" />
       <div class="q-ml-sm bg-grey q-pa-xs text-white text-bold" style="border-radius:6px">Faltan {{form.diasRestantes}} Dias </div>
     </div>
@@ -88,6 +92,35 @@
       <div class="text-grey text-bold text-center q-mt-sm">Cotización Aprobada</div>
       <div class="column q-mt-sm">
         <div class="column q-mt-md q-ma-md" v-for="(item, index) in carrito" :key="index">
+         <div class="column" v-for="(subitem, index2) in item.subitems" :key="index2">
+            <div class="row items-center justify-start" v-if="item.servicio_id !== 3 && item.servicio_id !== 2 || index2 === 0">
+              <q-avatar style="width:40px;height:40px">
+                <q-img :src="`icon_services/${item.servicio_id === 3 ? 'personas' : item.servicio_id === 2 ? 'locacion' : subitem.id }.png`" />
+              </q-avatar>
+              <div class="text-subtitle2 text-grey-9 q-ml-sm"> * {{item.servicio_id === 2 && index2 === 0 || item.servicio_id === 3 && index2 === 0 ? item.servicioName : subitem.name  }} *</div>
+            </div>
+            <div class="column" v-for="(proveedor, index3) in subitem.proveedores" :key="index3">
+              <div class="text-subtitle1 text-bold text-grey-7 q-ml-md"> {{proveedor.proveedorName}} </div>
+              <div>
+                <div class="row justify-between q-mr-sm">
+                  <div class="title-table q-pa-xs" style="width:90px">Producto</div>
+                  <div class="title-table q-pa-xs q-ml-xs">Cantidad</div>
+                  <div class="title-table q-pa-xs q-ml-xs" style="width:70px">Precio</div>
+                  <div class="title-table q-pa-xs q-ml-xs" style="width:70px">Total</div>
+                </div>
+                <div class="row justify-between q-mr-sm q-mt-sm" v-for="(prod, index4) in proveedor.productos" :key="index4">
+                  <div class="title-table-product q-pa-xs" style="width:90px">{{prod.prod}}</div>
+                  <div class="title-table-product q-pa-xs q-ml-xs" style="width:70px">{{prod.cant}}</div>
+                  <div class="title-table-product q-pa-xs q-ml-xs" style="width:70px">{{prod.prec}}</div>
+                  <div class="title-table-product q-pa-xs q-ml-xs" style="width:70px">{{prod.tot}}</div>
+                </div>
+              </div>
+            </div>
+         </div>
+        </div>
+      </div>
+      <!--<div class="column q-mt-sm">
+        <div class="column q-mt-md q-ma-md" v-for="(item, index) in carrito" :key="index">
           <div class="column" v-for="(subitem, index2) in item.subitems" :key="index2">
             <div class="row items-center" v-if="item.servicio_id !== 3 && item.servicio_id !== 2 || index2 === 0">
               <q-avatar size="lg">
@@ -110,7 +143,7 @@
           </div>
           <q-separator class="q-mt-md" inset />
         </div>
-      </div>
+      </div> -->
     </div>
     <!--<div class="row justify-center q-mt-md">
       <div class="colmun">
@@ -180,8 +213,10 @@ export default {
       if (this.carrito.length > 0) {
         for (const j of this.carrito) {
           for (const h of j.subitems) {
-            for (const i of h.productos) {
-              total = total + i.tot
+            for (const f of h.proveedores) {
+              for (const i of f.productos) {
+                total = total + i.tot
+              }
             }
           }
         }
@@ -195,6 +230,18 @@ export default {
     this.getCotisations()
   },
   methods: {
+    async actualizarDatosEvento (data) {
+      this.$q.loading.show()
+      this.$api.put(`events/${this.id}`, data).then(res => {
+        this.$q.loading.hide()
+        if (res) {
+          this.$q.notify({
+            message: 'Guardado Correctamente',
+            color: 'positive'
+          })
+        }
+      })
+    },
     async crearImgPortada () {
       if (this.portadaEvento) {
         var formData = new FormData()
@@ -220,7 +267,7 @@ export default {
     getCotisations () {
       this.$api.get(`cotisations_by_event/${this.id}`).then(res => {
         this.cotisaciones = res
-        this.carrito = res.carrito
+        this.carrito = res
         console.log(this.carrito, 'carritoo')
       })
     },
@@ -231,7 +278,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+.fondo-para-nube-anuncio {
+  background-image: url('../../../../public/nube-carousel.png');
+  background-size: 100% 100%;
+}
 .background-tool {
   background-image: url("../../../../public/nube5.png");
   background-size: 100% 100%;

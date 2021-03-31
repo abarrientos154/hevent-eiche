@@ -12,6 +12,8 @@ const Helpers = use('Helpers')
 const mkdirp = use('mkdirp')
 const { validate } = use("Validator")
 const Hash = use('Hash')
+var randomize = require('randomatic')
+const Env = use('Env')
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -21,6 +23,71 @@ const Hash = use('Hash')
  * Resourceful controller for interacting with users
  */
 class UserController {
+
+  async verificarCode({ request, response, params }) {
+    let user = await User.findBy('codigoRecuperacion', params.code)
+    if (user) {
+      response.send('VERIFICACION EXITOSA')
+    } else {
+      response.unprocessableEntity([{
+        message: 'Codigo Invalido'
+      }])
+    }
+
+  }
+
+  async recuperacion({ request, response, params }) {
+    if (((await User.where({email: params.email}).fetch()).toJSON()).length) {
+      let codigo = randomize('Aa0', 30)
+      await User.query().where({email: params.email}).update({codigoRecuperacion: codigo})
+      let user = (await User.query().where({email: params.email}).first()).toJSON()
+      console.log(user, 'user')
+      let mail = await Email.sendMail(params.email, 'Recuperacion de Correo', `
+          <h1 style="text-align:left">
+            Tu Contrasena
+          </h1>
+          <p>
+            Hola ${user.name ? user.name : user.full_name}
+            Quieres cambiar tu contrasena vinculada a esta cuenta? si es asi
+            confirmar la sociedad. Este enlace es temporal y caduca a las 24 horas
+          </p>
+          <p>
+            Si no tienes intencion de cambiar tu contrasena, ignorar este email. No
+            te preocupes. Tu cuenta esta segura.
+          </p>
+          <p>
+            Un saludo de parte del equipo de Hevent.
+          </p>
+          <div>
+            <button style="width:200px;height:45px;background:#009CFF;color:white;border-radius:12px;border:0px solid red"
+            >
+            <a style="color:white" href="${Env.get('FRONT_URL', '')}login_proveedor/${codigo}">CONFIRMAR</a>
+            </button>
+          </div>
+      `)
+      console.log(mail)
+      response.send(user)
+    } else {
+      response.unprocessableEntity([{
+        message: 'El correo ingresado no existe'
+      }])
+    }
+  }
+
+  async actualizarPass({ request, response, params }) {
+    let user = await User.findBy('codigoRecuperacion', params.code)
+    if (user) {
+      let data = request.only(['password'])
+      user.password = data.password
+      user.codigoRecuperacion = null
+      await user.save()
+      response.send(user)
+    } else {
+      response.unprocessableEntity([{
+        message: 'Codigo Invalido'
+      }])
+    }
+  }
 
   async editarPCliente ({ request, response, auth }) {
     // get currently authenticated user

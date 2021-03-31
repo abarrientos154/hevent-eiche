@@ -4,7 +4,7 @@ exports.sendMail = async (to, subject, message, attach, cc, bcc) => {
   try {
     await Mail.raw(message, (msg) => {
       console.log(msg,'test')
-      msg.from('revisiones@hevent.com', 'Hevent')
+      msg.from('revisiones@test.com', 'Slimedeal')
       msg.to(to)
       msg.subject(subject)
      // msg.cc('slimedeal@user.com')

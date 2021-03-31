@@ -82,6 +82,7 @@ export default {
           console.log('chat', res)
           this.chats = res
           this.chatsOption = res
+          console.log(this.chats, 'sdasdasd')
         }
       })
     }

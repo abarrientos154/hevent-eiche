@@ -61,6 +61,10 @@ addPrefixToGroup(
     Route.get("file_proveedor/:carpeta/:id", "UploadController.traerImagenPortadaPerfilProveedor")
     Route.get("file_event/:file", "UploadController.getFileByDirectoryEvent")
 
+    Route.put("actualizar_pass/:code", "UserController.actualizarPass")
+    Route.get("email_send/:email", "UserController.recuperacion")
+    Route.get("code_verification/:code", "UserController.verificarCode")
+
   })
 );
 
@@ -115,6 +119,7 @@ addPrefixToGroup(
 
     ////////// EVENTOS ////////////////////
     Route.get("events", "CotisationController.getEvents")
+    Route.put("events/:id", "EventController.update")
     Route.get("event_by_id/:id", "CotisationController.getEventById")
     Route.get("eventos_no_pagados", "EventController.eventosNoPagados")
     Route.post("event", "EventController.store")

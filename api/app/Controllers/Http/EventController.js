@@ -102,6 +102,10 @@ class EventController {
    * @param {Response} ctx.response
    */
   async update ({ params, request, response }) {
+    let dat = request.only(Event.fillable)
+    console.log(dat, 'dat')
+    let event = await Event.query().where('_id', params.id).update(dat)
+    response.send(event)
   }
 
   /**

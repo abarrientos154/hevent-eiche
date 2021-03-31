@@ -285,27 +285,75 @@ class CotisationController {
       event_id: params.event_id,
       $or: [{ status: 2 }, { status: 4 }],
     }).with('datos_proveedor').with('datos_cliente').fetch()).toJSON()
-    let enviar = {
-      carrito: []
-    }
+    let servicios = [
+      {
+        servicio_id: 1,
+        servicioName: 'Servicios',
+        subitems: [
+          /* {
+            id: 'alimentos',
+            name: 'Alimentos',
+            proveedores: [
+              {
+                proveedor_id: 'j.proveedor_id',
+                proveedorName: 'j.datos_proveedor.name',
+                productos: []
+              }
+            ]
+          } */
+        ]
+      },
+      {
+        servicio_id: 2,
+        servicioName: 'Locación',
+        subitems: []
+      },
+      {
+        servicio_id: 3,
+        servicioName: 'Personal',
+        subitems: []
+      }
+    ]
+    let proveedores = []
     for (let j of cotisations) {
+      let objPush = { proveedor_id: j.proveedor_id, proveedorName: j.datos_proveedor.name }
       for (let h of j.carrito) {
-        let indexItem = enviar.carrito.findIndex(v => v.servicio_id === h.servicio_id)
-        if (indexItem >= 0) {
-          for (let i of h.subitems) {
-            let indexSubItem = enviar.carrito[indexItem].subitems.findIndex(v => v.id === i.id)
-            console.log(i.productos, 'iiiii')
-            if (indexSubItem >= 0) {
-              let array = enviar.carrito[indexItem].subitems[indexSubItem].productos
-              enviar.carrito[indexItem].subitems[indexSubItem].productos = array.concat(i.productos)
-            }
-          }
-        } else {
-          enviar.carrito.push(h)
+        for (let i of h.subitems) {
+          proveedores.push({
+            servicio_id: h.servicio_id,
+            servicioName: h.servicioName,
+            ...objPush,
+            ...i
+          })
         }
       }
     }
-    response.send(enviar)
+    for (let j of proveedores) {
+      let indexServicio = servicios.findIndex(v => v.servicio_id === j.servicio_id)
+      let indexSubSer = servicios[indexServicio].subitems.findIndex(v => v.id === j.id)
+      if (indexSubSer >= 0) {
+        console.log('entroe')
+        servicios[indexServicio].subitems[indexSubSer].proveedores.push({
+          proveedor_id: j.proveedor_id,
+          proveedorName: j.proveedorName,
+          productos: j.productos
+        })
+      } else {
+        console.log('NO entro')
+        servicios[indexServicio].subitems.push({
+          id: j.id,
+          name: j.name,
+          proveedores: [
+            {
+              proveedor_id: j.proveedor_id,
+              proveedorName: j.proveedorName,
+              productos: j.productos
+            }
+          ]
+        })
+      }
+    }
+    response.send(servicios)
   }
 
   async getCotisacionById ({params, response, auth, request}) {
