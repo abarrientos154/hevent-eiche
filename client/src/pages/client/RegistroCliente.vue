@@ -64,9 +64,12 @@
           </template>
         </q-input>
       </div>
+      <div>
+        <p style="text-align:center">Al seleccionar aceptar y continuar, aceptas las condiciones de uso y la política de protección de datos de Hevent </p>
+      </div>
     </div>
     <div class="text-center q-ma-sm">
-      <q-btn color="primary" class="q-mr-sm button-border" style="width:200px" :loading="loading" type="submit" label="Registrarte" @click="agregar">
+      <q-btn color="primary" class="q-mr-sm button-border" style="width:240px" :loading="loading" type="submit" label="Aceptar y Continuar" @click="agregar">
         <template v-slot:loading>
           <q-spinner-hourglass class="on-left" />
             Cargando...

@@ -61,7 +61,7 @@ class UserController {
           <div>
             <button style="width:200px;height:45px;background:#009CFF;color:white;border-radius:12px;border:0px solid red"
             >
-            <a style="color:white" href="${Env.get('FRONT_URL', '')}login_proveedor/${codigo}">CONFIRMAR</a>
+            <a style="color:white" href="${Env.get('FRONT_URL', '')}login_cliente/${codigo}">CONFIRMAR</a>
             </button>
           </div>
       `)

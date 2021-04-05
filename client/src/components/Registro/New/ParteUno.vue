@@ -140,8 +140,11 @@
       <div :class="cuenta === 'Ahorro' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()">Ahorro</div>
       <div :class="cuenta === 'Corriente' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()" >Corriente</div>
     </div>
+    <div class="q-ma-sm">
+      <p style="text-align:center"> Al seleccionar aceptar y continuar a continuación, aceptas las Condiciones de uso y la política de protección de datos de Hevent </p>
+    </div>
     <div class="row justify-center q-pa-sm">
-      <q-btn class="button-border" style="height:45px; width:150px" color="primary" label="siguiente" @click="next()" />
+      <q-btn class="button-border" style="height:45px; width:190px" color="primary" label="Aceptar y Continuar" @click="next()" />
     </div>
   </div>
 </template>

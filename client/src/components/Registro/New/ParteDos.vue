@@ -62,7 +62,7 @@
     </div>
     <div>
       <div class="row justify-center q-pa-sm q-mt-md q-mb-md">
-        <q-btn class="button-border" style="height:45px; width:150px" color="primary" label="siguiente" @click="next()" />
+        <q-btn class="button-border" style="height:45px; width:150px" color="primary" label="Aceptar y Continuar" @click="next()" />
       </div>
     </div>
   </div>

@@ -23,7 +23,48 @@
         </template>
       </q-input>
     </div>
-
+    <div class="row justify-center">
+      <label @click="modal = true">¿Olvide contraseña?</label>
+    </div>
+    <q-dialog v-model="modal" style="width:100%">
+      <q-card style="border-radius:35px" class="nube">
+        <div class="row justify-end q-mr-md q-mt-md">
+          <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+        </div>
+        <div class="q-ma-lg row justify-center">
+          <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="email" dense label="correo@gmail.com" borderless/>
+          <q-btn color="primary" class="q-mr-sm button-border" style="width:200px" type="submit" label="Enviar correo" @click="enviarCorreo()"/>
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="modal2" style="width:100%">
+      <q-card style="border-radius:35px" class="nube">
+        <div class="row justify-end q-mr-md q-mt-md">
+          <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+        </div>
+        <div class="q-mr-lg q-ml-lg q-mb-lg row justify-center">
+          <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="email" dense label="email escrito" borderless/>
+          <div class="text-caption text-center q-mr-sm text-grey">Comprueba si has recibido un email con información sobre como restablecer la contraseña</div>
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="modalRestablecer" style="width:100%">
+      <q-card style="border-radius:35px" class="nubeRestablecer">
+        <div class="row justify-end q-mr-md q-mt-md">
+          <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+        </div>
+        <div class="q-mr-lg q-ml-lg q-mb-lg q-mt-xl row justify-center">
+          <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="pass" dense label="Introduzca su nueva contrasena" borderless/>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="repeatPass" dense label="Repita su contrasena" borderless/>
+        </div>
+        <div class="row justify-center items-center q-ma-lg">
+          <q-btn label="Restablecer" color="primary" class="full-width" push @click="restablecerContra()" />
+        </div>
+      </q-card>
+    </q-dialog>
     <!-- <div class="row justify-center q-mt-md">
       <div class="row">
          <q-select borderless v-model="telCode" :options="countries" option-value="name" option-label="name" emit-value map-options
@@ -88,9 +129,16 @@
 </template>
 <script>
 import { mapMutations } from 'vuex'
+import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   data () {
     return {
+      email: null,
+      modalRestablecer: false,
+      modal: false,
+      modal2: false,
+      pass: null,
+      repeatPass: null,
       isPwd: true,
       form: {},
       telCode: '',
@@ -109,11 +157,56 @@ export default {
       ]
     }
   },
-  mounted () {
+  validations () {
+    return {
+      repeatPass: { sameAsPassword: sameAs('pass') },
+      pass: { required, maxLength: maxLength(256), minLength: minLength(6) }
+    }
+  },
+  async mounted () {
+    if (this.$route.params.code) {
+      await this.verificarCode()
+    }
     this.telCode = 'Colombia'
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    restablecerContra () {
+      this.$v.$touch()
+      if (!this.$v.pass.$error && !this.$v.repeatPass.$error) {
+        this.$api.put('actualizar_pass/' + this.$route.params.code, { password: this.pass }).then(res => {
+          if (res) {
+            this.modalRestablecer = false
+            this.$q.notify({
+              message: 'Contrasena Restablecida con Exito',
+              color: 'positive'
+            })
+          }
+        })
+      }
+    },
+    verificarCode () {
+      this.$api.get('code_verification/' + this.$route.params.code).then(res => {
+        if (res) {
+          this.modalRestablecer = true
+        } else {
+          this.modal2 = false
+          this.modal = false
+        }
+      })
+    },
+    enviarCorreo () {
+      this.$q.loading.show({
+        message: 'Espere...'
+      })
+      this.$api.get('email_send/' + this.email).then(res => {
+        this.$q.loading.hide()
+        if (res) {
+          this.modal = false
+          this.modal2 = true
+        }
+      })
+    },
     logearse () {
       this.$q.loading.show({
         message: 'Iniciando sesión'

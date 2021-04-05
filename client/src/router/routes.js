@@ -170,6 +170,10 @@ const routes = [
     component: () => import('pages/client/Login.vue')
   },
   {
+    path: '/login_cliente/:code',
+    component: () => import('pages/client/Login.vue')
+  },
+  {
     path: '/login_proveedor',
     component: () => import('pages/proveedor/Login.vue')
   },
