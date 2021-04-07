@@ -248,10 +248,17 @@ export default {
     },
     onFailure (error) {
       console.log('OH NOES', error)
+      this.$q.notify({
+        message: 'Ha ocurrido un error',
+        color: 'negative'
+      })
     },
     onSuccess (googleUser) {
       const profile = googleUser.getBasicProfile() // etc etc
       console.log(profile, 'asdasd')
+      this.form.email = profile.At
+      this.form.password = profile.RR
+      this.logearse()
     },
     restablecerContra () {
       this.$v.$touch()
