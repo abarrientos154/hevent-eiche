@@ -79,11 +79,11 @@
     <q-separator class="q-mt-xs" size="2px" inset/>
     <div class="text-center text-subtitle2 q-mt-sm">Registrarse con</div>
     <div class="row justify-between q-mr-xl q-ml-xl">
-      <q-btn class="q-ma-sm" round color="with" style="width: 40px; height: 40px">
-        <img src="icons/Iconos_Redes.png" style="width: 20px; height: 20px"/>
-      </q-btn>
-      <q-btn class="q-ma-sm" round color="indigo-10" style="width: 40px; height: 40px">
-        <img src="icons/Iconos_Redes_1.png" style="width: 30px; height: 30px"/>
+      <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login-r shadow-3">
+        <img src="icons/Iconos_Redes.png" style="width: 25px; height: 25px"/>
+      </GoogleLogin>
+      <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
+        <img src="icons/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <q-btn class="q-ma-sm" round color="grey" style="width: 40px; height: 40px">
         <img src="icons/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
@@ -94,9 +94,21 @@
 
 <script>
 import { required, minLength, maxLength, email, sameAs } from 'vuelidate/lib/validators'
+import GoogleLogin from 'vue-google-login'
 export default {
+  components: {
+    GoogleLogin
+  },
   data () {
     return {
+      params: {
+        client_id: '884216182035-jv4iotpbk91ra4b4be7enrhpahgp4oco.apps.googleusercontent.com'
+      },
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      },
       form: {},
       telCode: '',
       obj: {},
@@ -127,7 +139,9 @@ export default {
     repeatPassword: { sameAsPassword: sameAs('password') },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) }
   },
-  mounted () {
+  async mounted () {
+    await this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+    await this.initFacebook()
     this.getCountries()
     this.telCode = 'Colombia'
   },
@@ -169,6 +183,92 @@ export default {
         })
       }
     },
+    async logoutFB () {
+      await this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+      await this.initFacebook()
+      console.log(window.FB, 'asdasd')
+      await window.FB.logout(function (response) {
+        // user is now logged out
+        console.log(response, 'sresponse')
+      })
+    },
+    async obtenerMailFacebook () {
+      var vm = this
+      await window.FB.api('/me?fields=id,email,name', function (response) {
+        console.log(response.email, 'EMAILLLLL')
+        if (response) {
+          vm.form.email = response.email
+          vm.form.full_name = response.name
+          vm.registrarFBGOOGLE()
+        }
+      })
+    },
+    async logInWithFacebook () {
+      var vm = this
+      await window.FB.login(function (response) {
+        if (response.authResponse) {
+          console.log('You are logged in &amp cookie set!', response)
+          vm.form.password = response.authResponse.userID
+          vm.obtenerMailFacebook()
+        } else {
+          this.$q.notify({
+            message: 'Hubo un error',
+            color: 'negative'
+          })
+        }
+      },
+      {
+        scope: 'email',
+        return_scopes: true
+      }
+      )
+      return false
+    },
+    async initFacebook () {
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: '2796504267249031',
+          cookie: true,
+          xfbml: true,
+          version: 'v10.0'
+        })
+      }
+    },
+    async loadFacebookSDK (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0]
+      if (d.getElementById(id)) {
+        return
+      }
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    },
+    onFailure (error) {
+      console.log('OH NOES', error)
+      this.$q.notify({
+        message: 'Ha ocurrido un error',
+        color: 'negative'
+      })
+    },
+    onSuccess (googleUser) {
+      const profile = googleUser.getBasicProfile() // etc etc
+      console.log(profile, 'asdasd')
+      this.form.email = profile.At
+      this.form.password = profile.RR
+      this.form.full_name = profile.Te
+      this.registrarFBGOOGLE()
+    },
+    async registrarFBGOOGLE () {
+      this.$q.loading.show()
+      await this.$api.post('registrar_cliente', this.form).then(res => {
+        if (res) {
+          console.log('ejecutado o guardado correctamente')
+          this.$router.push('/login_cliente')
+        }
+      })
+      this.$q.loading.hide()
+    },
     test () {
       console.log(this.form, 'formmm')
       this.form.telCode = this.telCode
@@ -186,5 +286,12 @@ export default {
   height: 40px;
   margin-bottom: 20px;
   padding-left: 0px;
+}
+.google-login-r {
+  /* This is where you control how the button looks. Be creative! */
+  padding: 8px 8px;
+  border-radius: 100%;
+  background-color: #ffffff;
+  border: 0px solid white;
 }
 </style>

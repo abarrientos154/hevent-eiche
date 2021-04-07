@@ -124,7 +124,6 @@
     <div class="column items-center">
       <div class="text-subtitle2 q-mt-sm">¿No tienes una cuenta?</div>
       <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="Registrarte" to="/registro_cliente"/>
-      <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="logout FB" @click="logoutFB"/>
     </div>
   </div>
 </template>
