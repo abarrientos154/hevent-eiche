@@ -27,36 +27,36 @@
       <label @click="modal = true">¿Olvide contraseña?</label>
     </div>
     <q-dialog v-model="modal" style="width:100%">
-      <q-card style="border-radius:35px" class="nube">
+      <q-card style="border-radius:35px" class="nubeRL">
         <div class="row justify-end q-mr-md q-mt-md">
-          <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+          <q-btn color="white" round dense icon="highlight_off" flat outline v-close-popup />
         </div>
         <div class="q-ma-lg row justify-center">
-          <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
+          <label class="text-h6 q-mb-xs text-white">Restablecer contraseña</label>
           <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="email" dense label="correo@gmail.com" borderless/>
           <q-btn color="primary" class="q-mr-sm button-border" style="width:200px" type="submit" label="Enviar correo" @click="enviarCorreo()"/>
         </div>
       </q-card>
     </q-dialog>
     <q-dialog v-model="modal2" style="width:100%">
-      <q-card style="border-radius:35px" class="nube">
+      <q-card style="border-radius:35px" class="nubeRL">
         <div class="row justify-end q-mr-md q-mt-md">
-          <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+          <q-btn color="white" round dense icon="highlight_off" flat outline v-close-popup />
         </div>
         <div class="q-mr-lg q-ml-lg q-mb-lg row justify-center">
-          <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
+          <label class="text-h6 q-mb-xs text-white">Restablecer contraseña</label>
           <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="email" v-model="email" dense label="email escrito" borderless/>
-          <div class="text-caption text-center q-mr-sm text-grey">Comprueba si has recibido un email con información sobre como restablecer la contraseña</div>
+          <div class="text-caption text-center q-mr-sm text-black">Comprueba si has recibido un email con información sobre como restablecer la contraseña.</div>
         </div>
       </q-card>
     </q-dialog>
     <q-dialog v-model="modalRestablecer" style="width:100%">
       <q-card style="border-radius:35px" class="nubeRestablecer">
         <div class="row justify-end q-mr-md q-mt-md">
-          <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
+          <q-btn color="white" round dense icon="highlight_off" flat outline v-close-popup />
         </div>
         <div class="q-mr-lg q-ml-lg q-mb-lg q-mt-xl row justify-center">
-          <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
+          <label class="text-h6 q-mb-xs text-white">Restablecer contraseña</label>
           <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="pass" dense label="Introduzca su nueva contrasena" borderless/>
           <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="repeatPass" dense label="Repita su contrasena" borderless/>
         </div>
@@ -342,15 +342,15 @@ export default {
 </script>
 
 <style>
-.nube {
-  background: url('../../../public/nubeazul1.png');
+.nubeRL {
+  background: url('../../../public/nubeRestablecerPass2.png');
   width: 100%;
   height: 220px;
   background-size: 100% 100%;
   background-color: rgba(255, 255, 255, 0);
 }
 .nubeRestablecer {
-  background: url('../../../public/nube8.png');
+  background: url('../../../public/nubeRestablecerPass1.png');
   width: 100%;
   height: 350px;
   background-size: 100% 100%;

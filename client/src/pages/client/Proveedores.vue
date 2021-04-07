@@ -30,8 +30,8 @@
           </div>
         </q-scroll-area>
       </div>
-      <div class="row q-gutter-sm">
-        <div style="width:170px;height:300px; border-radius:20px" v-for="(item, index) in proveedores" :key="index" @click="$router.push('/proveedor/' + $route.params.id + '/' + item.id_proveedor)" >
+      <div class="row q-gutter-sm justify-around">
+        <div style="width:160px;height:300px; border-radius:20px" v-for="(item, index) in proveedores" :key="index" @click="$router.push('/proveedor/' + $route.params.id + '/' + item.id_proveedor)" >
           <div class="column full-width justify-center items-center">
             <div class="text-bold text-grey-7 q-pl-sm q-pr-sm" > * {{item.name}} * </div>
             <q-card style="width: 100%; height:260px" class="border-items" >
@@ -116,6 +116,9 @@ export default {
             ...v.datos_proveedor
           }
         })
+        // ordenar proveedores por plan premiun en primer lugar
+        const ordenar = this.proveedores.sort((a, b) => (a.plan_id > b.plan_id) ? -1 : ((b.plan_id > a.plan_id) ? 0 : -1))
+        this.proveedores = ordenar
         console.log(this.proveedores, 'proveedores')
       })
     },

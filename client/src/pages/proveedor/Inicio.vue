@@ -180,7 +180,7 @@ export default {
   background-repeat: no-repeat;
 }
 .fondo-para-nube {
-  background-image: url('../../../public/prueba1.png');
+  background-image: url('../../../public/prueba.png');
   background-size: 100% 100%;
   z-index: 1
 }

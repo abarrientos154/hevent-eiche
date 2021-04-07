@@ -19,7 +19,7 @@
         >
           <q-img :src="`planes/${plan.name}.png`" />
           <div class="row justify-center">
-            <q-btn label="comienza ahora" class="gradiente-buttom q-mb-md" push @click="onSubmit(plan.name)" dense  />
+            <q-btn label="comienza ahora" class="gradiente-buttom q-mb-md" push @click="onSubmit(plan)" dense  />
           </div>
         </div>
       </div>
@@ -76,32 +76,38 @@ export default {
         {
           name: 'Basico',
           tipo: 'Mensual',
-          select: false
+          select: false,
+          cual: 1
         },
         {
           name: 'Estandar',
           tipo: 'Mensual',
-          select: true
+          select: true,
+          cual: 2
         },
         {
           name: 'Premium',
           tipo: 'Mensual',
-          select: false
+          select: false,
+          cual: 3
         },
         {
           name: 'Basico Anual',
           tipo: 'Anual',
-          select: false
+          select: false,
+          cual: 1
         },
         {
           name: 'Estandar Anual',
           tipo: 'Anual',
-          select: false
+          select: false,
+          cual: 2
         },
         {
           name: 'Premium Anual',
           tipo: 'Anual',
-          select: false
+          select: false,
+          cual: 3
         }
       ],
       product: {
@@ -149,8 +155,8 @@ export default {
       this.form.tipoPlan = this.tipoPlan
       console.log(this.form, 'cambiando tipo de plan')
     },
-    async onSubmit (name) {
-      this.form.plan_id = name
+    async onSubmit (plan) {
+      this.form.plan_id = plan.cual
       console.log(this.form, 'form')
       var formData = new FormData()
       var files = []
