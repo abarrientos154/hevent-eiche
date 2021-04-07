@@ -14,9 +14,11 @@
         <div v-if="subitem.valor" class="column">
           <div class="text-negative text-caption text-bold" v-if="!preguntas[index].pregunta[index2].qvalmin || !preguntas[index].pregunta[index2].qvalmax"> Campos Requeridos </div>
           <div class="row justify-start items-center">
-            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" prefix="$" />
+            <!-- <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" prefix="$" /> -->
+            <currency-input v-model.number="preguntas[index].pregunta[index2].qvalmin" currency="USD" locale="de-DE" class="input-border-new" style="width:100px;height:30px" />
             <div class="text-grey-9 q-mb-md q-ml-sm">Minimo</div>
-            <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" prefix="$" />
+            <!-- <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" prefix="$" /> -->
+            <currency-input v-model.number="preguntas[index].pregunta[index2].qvalmax" currency="USD" locale="de-DE" class="q-ml-sm input-border-new" style="width:100px;height:30px" />
             <div class="text-grey-9 q-mb-md q-ml-sm">Maximo</div>
           </div>
         </div>
@@ -60,6 +62,7 @@ export default {
   props: ['form', 'panel'],
   data () {
     return {
+      value: 1000,
       formTree: {},
       preguntas: [],
       respuestas: {},

@@ -49,6 +49,33 @@
           error-message="ingrese un email valido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()"
         />
       </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-select v-model="pais" class="input-border-new q-pa-sm" label="Pais" style="height:45px" dense borderless :options="countriesP"
+          error-message="el pais es requerido" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" @input="form.country = pais, prueba()"
+          emit-value map-options
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+              <q-item-section avatar>
+                <q-img :src="scope.opt.label !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg' " />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-html="scope.opt.label" />
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:selected-item="scope" >
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" style="position:absolute;top:5px;left:0px;padding-bottom:10px" >
+              <q-item-section avatar>
+                <q-img :src="pais !== 'cl' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg'" style="width:30px;height:20px" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ scope.opt.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
       <div>
         <div class="row">
           <q-select borderless v-model="telCode" :options="countries" option-value="name" option-label="name" emit-value map-options
@@ -159,6 +186,8 @@ export default {
   },
   data () {
     return {
+      pais: 'co',
+      countriesP: [{ label: 'Chile', value: 'cl' }, { label: 'Colombia', value: 'co' }],
       markers: [],
       center: { lat: -33.44750385220407, lng: -70.66966424231235 },
       telCode: '',
@@ -195,7 +224,8 @@ export default {
         ciudad: { required },
         direccion: { required },
         banco: { required },
-        numCuenta: { required }
+        numCuenta: { required },
+        country: { required }
       },
       repeatPassword: { sameAsPassword: sameAs('password') },
       password: { required, maxLength: maxLength(256), minLength: minLength(6) }
@@ -208,6 +238,9 @@ export default {
     this.form.tipoCuenta = 'Ahorro'
   },
   methods: {
+    prueba () {
+      console.log(this.form, 'formmmmmmm')
+    },
     getBounds (bounds, center) {
       console.log(center, 'center')
     },
