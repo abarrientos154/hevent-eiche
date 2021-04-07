@@ -25,6 +25,11 @@ regenerator-runtime@^0.11.0:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
+vue-apple-signin@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/vue-apple-signin/-/vue-apple-signin-0.1.2.tgz#1bdf2e245e0a351a15392c00115369bc3a44cf06"
+  integrity sha512-8ceeZlHZleIaJ3LFRxWCG+FXsaFUlNn98R2JoN7xnAqWgnobgT4IcvjwV9U+eYw1eRYLN3WezD7miYz6tNdgNA==
+
 vue2-google-maps@^0.10.7:
   version "0.10.7"
   resolved "https://registry.yarnpkg.com/vue2-google-maps/-/vue2-google-maps-0.10.7.tgz#2e4c1239386001bd47777d8c6a0475e5320cc3a8"

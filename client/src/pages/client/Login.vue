@@ -103,10 +103,10 @@
     </div>
     <div class=" text-center text-subtitle2 ">Iniciar Sesión con</div>
     <div class="row justify-between q-mr-xl q-ml-xl q-mt-sm q-mb-sm">
-      <q-btn  round color="with" style="width: 40px; height: 40px">
+      <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login shadow-3">
         <img src="icons/Iconos_Redes.png" style="width: 20px; height: 20px"/>
-      </q-btn>
-      <q-btn  round color="indigo-10" style="width: 40px; height: 40px">
+      </GoogleLogin>
+      <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
         <img src="icons/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <q-btn  round color="grey" style="width: 40px; height: 40px">
@@ -124,15 +124,28 @@
     <div class="column items-center">
       <div class="text-subtitle2 q-mt-sm">¿No tienes una cuenta?</div>
       <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="Registrarte" to="/registro_cliente"/>
+      <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="logout FB" @click="logoutFB"/>
     </div>
   </div>
 </template>
 <script>
 import { mapMutations } from 'vuex'
+import GoogleLogin from 'vue-google-login'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
+  components: {
+    GoogleLogin
+  },
   data () {
     return {
+      params: {
+        client_id: '884216182035-jv4iotpbk91ra4b4be7enrhpahgp4oco.apps.googleusercontent.com'
+      },
+      renderParams: {
+        width: 250,
+        height: 50,
+        longtitle: true
+      },
       email: null,
       modalRestablecer: false,
       modal: false,
@@ -164,6 +177,8 @@ export default {
     }
   },
   async mounted () {
+    await this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+    await this.initFacebook()
     if (this.$route.params.code) {
       await this.verificarCode()
     }
@@ -171,6 +186,73 @@ export default {
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    async logoutFB () {
+      await this.loadFacebookSDK(document, 'script', 'facebook-jssdk')
+      await this.initFacebook()
+      console.log(window.FB, 'asdasd')
+      await window.FB.logout(function (response) {
+        // user is now logged out
+        console.log(response, 'sresponse')
+      })
+    },
+    async obtenerMailFacebook () {
+      var vm = this
+      await window.FB.api('/me?fields=id,email,name', function (response) {
+        console.log(response.email, 'EMAILLLLL')
+        if (response) {
+          vm.form.email = response.email
+          vm.logearse()
+        }
+      })
+    },
+    async logInWithFacebook () {
+      var vm = this
+      await window.FB.login(function (response) {
+        if (response.authResponse) {
+          console.log('You are logged in &amp cookie set!', response)
+          vm.form.password = response.authResponse.userID
+          vm.obtenerMailFacebook()
+        } else {
+          this.$q.notify({
+            message: 'Hubo un error',
+            color: 'negative'
+          })
+        }
+      },
+      {
+        scope: 'email',
+        return_scopes: true
+      }
+      )
+      return false
+    },
+    async initFacebook () {
+      window.fbAsyncInit = function () {
+        window.FB.init({
+          appId: '2796504267249031',
+          cookie: true,
+          xfbml: true,
+          version: 'v10.0'
+        })
+      }
+    },
+    async loadFacebookSDK (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0]
+      if (d.getElementById(id)) {
+        return
+      }
+      js = d.createElement(s)
+      js.id = id
+      js.src = 'https://connect.facebook.net/en_US/sdk.js'
+      fjs.parentNode.insertBefore(js, fjs)
+    },
+    onFailure (error) {
+      console.log('OH NOES', error)
+    },
+    onSuccess (googleUser) {
+      const profile = googleUser.getBasicProfile() // etc etc
+      console.log(profile, 'asdasd')
+    },
     restablecerContra () {
       this.$v.$touch()
       if (!this.$v.pass.$error && !this.$v.repeatPass.$error) {
@@ -254,6 +336,20 @@ export default {
 </script>
 
 <style>
+.nube {
+  background: url('../../../public/nubeazul1.png');
+  width: 100%;
+  height: 220px;
+  background-size: 100% 100%;
+  background-color: rgba(255, 255, 255, 0);
+}
+.nubeRestablecer {
+  background: url('../../../public/nube8.png');
+  width: 100%;
+  height: 350px;
+  background-size: 100% 100%;
+  background-color: rgba(255, 255, 255, 0);
+}
 .input-border-new-re {
   background: #e1f5ff;
   border: 0px solid #bbbbbb;
@@ -262,5 +358,12 @@ export default {
   height: 40px;
   margin-bottom: 20px;
   padding-left: 0px;
+}
+.google-login {
+  /* This is where you control how the button looks. Be creative! */
+  padding: 8px 8px 4px;
+  border-radius: 100%;
+  background-color: #ffffff;
+  border: 0px solid white;
 }
 </style>

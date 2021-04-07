@@ -7,7 +7,9 @@ import routes from './routes'
 import env from '../env'
 const apiKey = env.apiKey
 import * as VueGoogleMaps from 'vue2-google-maps'
+import GSignInButton from 'vue-google-signin-button'
 
+Vue.use(GSignInButton)
 Vue.use(VueRouter)
 Vue.use(Vuelidate)
 Vue.use(Plugin)
