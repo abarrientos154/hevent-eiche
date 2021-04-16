@@ -17,14 +17,24 @@
         <div v-for="(plan, index) in fnPlanes" :key="index" :style="`width:${plan.select ? '200px' : '160px'};height:calc(100% - 10em);`" class="q-ma-sm transition"
           @click="changeSelectPlan(plan.name)"
         >
-          <q-img :src="`planes/${plan.name}.png`" />
+          <q-img :src="`planes/${plan.name}.png`" v-if="form.country === 'co'" />
+          <q-img v-else :src="`planes/chile/${plan.name} Chile.png`" />
           <div class="row justify-center">
             <q-btn label="comienza ahora" class="gradiente-buttom q-mb-md" push @click="onSubmit(plan)" dense  />
           </div>
         </div>
       </div>
     </q-scroll-area>
-
+    <form action="https://checkout.wompi.co/p/" method="GET">
+      <!-- OBLIGATORIOS -->
+      <input type="hidden" name="public-key" value="pub_test_7Q44Osi3VFuxurTJhLhsg5yy8cMl6mNy" />
+      <input type="hidden" name="currency" value="COP" />
+      <input type="hidden" name="amount-in-cents" value="1000000" />
+      <input type="hidden" name="reference" value="referenciaTest1" />
+      <!-- OPCIONALES -->
+      <input type="hidden" name="redirect-url" value="http://localhost:8080" />
+      <button type="submit">Pagar con Wompi</button>
+    </form>
     <!-- <div class="text-h6 text-grey-9">Selecciona tu plan</div>
     <q-card v-for="(plan) of planes" :key="plan._id" style="border-radius:12px" class="q-pa-xs q-ma-sm">
       <q-item clickable v-ripple :class="plan._id === form.plan_id ? 'bg-grey-5':''" @click="selectPrice(plan._id)" >
@@ -156,6 +166,12 @@ export default {
       console.log(this.form, 'cambiando tipo de plan')
     },
     async onSubmit (plan) {
+      if (this.form.country === 'co') {
+
+      } else {
+      }
+    },
+    async registro (plan) {
       this.form.plan_id = plan.cual
       console.log(this.form, 'form')
       var formData = new FormData()

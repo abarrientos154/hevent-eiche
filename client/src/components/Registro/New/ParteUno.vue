@@ -235,6 +235,7 @@ export default {
     // this.getCountries()
     this.telCode = 'Colombia'
     this.celCode = 'Colombia'
+    this.form.country = 'co'
     this.form.tipoCuenta = 'Ahorro'
   },
   methods: {
