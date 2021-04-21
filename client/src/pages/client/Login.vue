@@ -255,8 +255,8 @@ export default {
     onSuccess (googleUser) {
       const profile = googleUser.getBasicProfile() // etc etc
       console.log(profile, 'asdasd')
-      this.form.email = profile.At
-      this.form.password = profile.RR
+      this.form.email = profile.Rt
+      this.form.password = profile.GS
       this.logearse()
     },
     restablecerContra () {
@@ -302,9 +302,18 @@ export default {
       this.$api.post('login', this.form).then(res => {
         if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
           const client = res.HEV_SESSION_INFO.roles.find(value => value === 2)
+          console.log(res, 'ressssss', client)
           if (!client) {
-            this.login(res)
-            this.$router.push('inicio_proveedor')
+            if (res.HEV_SESSION_INFO.status === 0) {
+              this.$q.dialog({
+                title: '¡Atención!',
+                message: 'Su cuenta esta a la espera para aprobar su pago'
+              }).onOk(() => {
+              })
+            } else {
+              this.login(res)
+              this.$router.push('inicio_proveedor')
+            }
           } else {
             this.login(res)
             this.$router.push('inicio_cliente')

@@ -254,9 +254,9 @@ export default {
     onSuccess (googleUser) {
       const profile = googleUser.getBasicProfile() // etc etc
       console.log(profile, 'asdasd')
-      this.form.email = profile.At
-      this.form.password = profile.RR
-      this.form.full_name = profile.Te
+      this.form.email = profile.Rt
+      this.form.password = profile.GS
+      this.form.full_name = profile.Ue
       this.registrarFBGOOGLE()
     },
     async registrarFBGOOGLE () {
