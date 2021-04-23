@@ -101,34 +101,41 @@ class UploadController {
   async subirArchivoProveedor ({ request, response, auth }) {
     let codeFile = randomize('Aa0', 30)
     let user = await auth.getUser()
-    var profilePic = request.file('files', {
-      types: ['image'],
-      size: '25mb'
-    })
-    if (profilePic) {
-      if (Helpers.appRoot('storage/uploads/proveedor_images')) {
-        await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_images'), {
-          name: codeFile,
-          overwrite: true
-        })
-      } else {
-        mkdirp.sync(`${__dirname}/storage/Excel`)
-      }
-
-      if (!profilePic.moved()) {
-        return profilePic.error()
-      } else {
-        let proveedor = await User.find(user._id)
-        if (proveedor.images) {
-          proveedor.images.push(codeFile)
+    if (!user.images) { user.images = [] }
+    let limiteImagenes = user.plan_id === 1 ? 20 : user.plan_id === 2 ? 35 : 50
+    let validarLimite = user.images.length > (limiteImagenes - 1) ? true : false
+    if (!validarLimite) {
+      var profilePic = request.file('files', {
+        types: ['image'],
+        size: '25mb'
+      })
+      if (profilePic) {
+        if (Helpers.appRoot('storage/uploads/proveedor_images')) {
+          await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_images'), {
+            name: codeFile,
+            overwrite: true
+          })
         } else {
-          proveedor.images = []
-          proveedor.images.push(codeFile)
+          mkdirp.sync(`${__dirname}/storage/Excel`)
         }
-        await proveedor.save()
-        console.log(proveedor, 'proveedor buscar')
-        response.send(proveedor)
+
+        if (!profilePic.moved()) {
+          return profilePic.error()
+        } else {
+          let proveedor = await User.find(user._id)
+          if (proveedor.images) {
+            proveedor.images.push(codeFile)
+          } else {
+            proveedor.images = []
+            proveedor.images.push(codeFile)
+          }
+          await proveedor.save()
+          console.log(proveedor, 'proveedor buscar')
+          response.send(proveedor)
+        }
       }
+    } else {
+      response.send({ error: true, message: 'Has llegado a tu limite, no puedes subir mas imagenes' })
     }
   }
 
@@ -167,33 +174,40 @@ class UploadController {
   async subirArchivoProveedorVideo ({ request, response, auth }) {
     let codeFile = randomize('Aa0', 30)
     let user = await auth.getUser()
-    var profilePic = request.file('files', {
-      size: '250mb'
-    })
-    if (profilePic) {
-      if (Helpers.appRoot('storage/uploads/proveedor_videos')) {
-        await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_videos'), {
-          name: codeFile + '.' + profilePic.extname,
-          overwrite: true
-        })
-      } else {
-        mkdirp.sync(`${__dirname}/storage/Excel`)
-      }
-
-      if (!profilePic.moved()) {
-        return profilePic.error()
-      } else {
-        let proveedor = await User.find(user._id)
-        if (proveedor.videos) {
-          proveedor.videos.push(codeFile + '.' + profilePic.extname)
+    if (!user.videos) { user.videos = [] }
+    let limiteVideos = user.plan_id === 1 ? 0 : user.plan_id === 2 ? 2 : 4
+    let validarLimite = user.videos.length > (limiteVideos - 1) ? true : false
+    if (!validarLimite) {
+      var profilePic = request.file('files', {
+        size: '250mb'
+      })
+      if (profilePic) {
+        if (Helpers.appRoot('storage/uploads/proveedor_videos')) {
+          await profilePic.move(Helpers.appRoot('storage/uploads/proveedor_videos'), {
+            name: codeFile + '.' + profilePic.extname,
+            overwrite: true
+          })
         } else {
-          proveedor.videos = []
-          proveedor.videos.push(codeFile + '.' + profilePic.extname)
+          mkdirp.sync(`${__dirname}/storage/Excel`)
         }
-        await proveedor.save()
-        console.log(proveedor, 'proveedor buscar')
-        response.send(proveedor)
+
+        if (!profilePic.moved()) {
+          return profilePic.error()
+        } else {
+          let proveedor = await User.find(user._id)
+          if (proveedor.videos) {
+            proveedor.videos.push(codeFile + '.' + profilePic.extname)
+          } else {
+            proveedor.videos = []
+            proveedor.videos.push(codeFile + '.' + profilePic.extname)
+          }
+          await proveedor.save()
+          console.log(proveedor, 'proveedor buscar')
+          response.send(proveedor)
+        }
       }
+    } else {
+      response.send({ error: true, message: 'Has llegado a tu limite, no puedes subir mas videos' })
     }
   }
 

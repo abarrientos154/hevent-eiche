@@ -15,6 +15,12 @@ const Cruds = use('App/Functions/Cruds')
  */
 class ProveedorController {
 
+  async premiun ({ response }) {
+    let proveedores = (await User.query().where({ plan_id: 3 }).fetch()).toJSON()
+    console.log(proveedores, 'proveedores premiun')
+    response.send(proveedores)
+  }
+
   async index ({ request, response, view }) {
     let proveedores = (await Proveedor.all()).toJSON()
     response.send(proveedores)

@@ -79,8 +79,15 @@ export default {
             'Content-Type': undefined
           }
         }).then((res) => {
-          console.log(res, 'respuesta')
-          this.videos = res.videos
+          if (res.error) {
+            this.$q.notify({
+              color: 'negative',
+              message: res.message
+            })
+          } else if (res) {
+            console.log(res, 'respuesta')
+            this.videos = res.videos
+          }
         })
       }
     },

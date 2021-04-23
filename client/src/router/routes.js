@@ -178,6 +178,10 @@ const routes = [
     component: () => import('pages/proveedor/Login.vue')
   },
   {
+    path: '/login_proveedor/referencia_pago/:ref',
+    component: () => import('pages/proveedor/Login.vue')
+  },
+  {
     path: '/login_proveedor/:code',
     component: () => import('pages/proveedor/Login.vue')
   },

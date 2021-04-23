@@ -24,6 +24,11 @@ const Env = use('Env')
  */
 class UserController {
 
+  async aprovedProvider({ response, params }) {
+    let user = await User.query().where('referencia', params.ref).update({status: 1})
+    response.send(user)
+  }
+
   async verificarCode({ request, response, params }) {
     let user = await User.findBy('codigoRecuperacion', params.code)
     if (user) {
@@ -33,7 +38,6 @@ class UserController {
         message: 'Codigo Invalido'
       }])
     }
-
   }
 
   async recuperacion({ request, response, params }) {
@@ -235,6 +239,7 @@ class UserController {
       body.roles = [3]
       delete body.respuestas
       delete body.checks
+      body.status = 0 // a la espera por aprobar el pago
       const user = await User.create(body)
 
       dat = request.only(['dat'])
@@ -394,6 +399,7 @@ class UserController {
     token.rating = user.rating
     token.email = user.email
     token.verify = user.verify
+    token.status = user.status ? user.status : 0
     let data = {}
     data.HEV_SESSION_INFO = token
     return data

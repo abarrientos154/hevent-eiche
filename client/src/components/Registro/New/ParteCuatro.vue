@@ -29,11 +29,11 @@
       <!-- OBLIGATORIOS -->
       <input type="hidden" name="public-key" value="pub_test_7Q44Osi3VFuxurTJhLhsg5yy8cMl6mNy" />
       <input type="hidden" name="currency" value="COP" />
-      <input type="hidden" name="amount-in-cents" value="1000000" />
-      <input type="hidden" name="reference" value="referenciaTest1" />
+      <input type="hidden" name="amount-in-cents" :value="pricePlan" />
+      <input type="hidden" name="reference" :value="form.referencia" />
       <!-- OPCIONALES -->
-      <input type="hidden" name="redirect-url" value="http://localhost:8080" />
-      <button type="submit">Pagar con Wompi</button>
+      <input type="hidden" name="redirect-url" :value="appUrl" />
+      <button class="ocultar-boton-wompi" type="submit" id="pagarWompi">Pagar con Wompi</button>
     </form>
     <!-- <div class="text-h6 text-grey-9">Selecciona tu plan</div>
     <q-card v-for="(plan) of planes" :key="plan._id" style="border-radius:12px" class="q-pa-xs q-ma-sm">
@@ -57,12 +57,16 @@
 <script>
 import { mapMutations } from 'vuex'
 import { required, email } from 'vuelidate/lib/validators'
+import env from '../../../env'
 // import PaypalRegistro from '../../PaypalRegistro'
 import moment from 'moment'
 export default {
   props: ['form', 'panel', 'files'],
   data () {
     return {
+      pagarWompiParams: {
+      },
+      referencia: null,
       positionScroll: 100,
       contentStyle: {
         backgroundColor: 'rgba(0,0,0,0.02)',
@@ -87,49 +91,64 @@ export default {
           name: 'Basico',
           tipo: 'Mensual',
           select: false,
-          cual: 1
+          cual: 1,
+          priceco: 1500000
         },
         {
           name: 'Estandar',
           tipo: 'Mensual',
           select: true,
-          cual: 2
+          cual: 2,
+          priceco: 5000000
         },
         {
           name: 'Premium',
           tipo: 'Mensual',
           select: false,
-          cual: 3
+          priceco: 10000000
         },
         {
           name: 'Basico Anual',
           tipo: 'Anual',
           select: false,
-          cual: 1
+          cual: 1,
+          priceco: 9990000
         },
         {
           name: 'Estandar Anual',
           tipo: 'Anual',
           select: false,
-          cual: 2
+          cual: 2,
+          priceco: 30000000
         },
         {
           name: 'Premium Anual',
           tipo: 'Anual',
           select: false,
-          cual: 3
+          cual: 3,
+          priceco: 60000000
         }
       ],
       product: {
         price: 0
       },
       formPlan: {},
-      selectPlan: ''
+      selectPlan: '',
+      appUrl: null
     }
   },
   computed: {
     fnPlanes () {
       return this.planes.filter(v => v.tipo === this.tipoPlan)
+    },
+    pricePlan () {
+      const plan = this.planes.find(v => v.select)
+      console.log(plan, 'plannnnnn price seleccionado')
+      if (this.form.country === 'co') {
+        return plan.priceco
+      } else {
+        return 0
+      }
     }
   },
   validations () {
@@ -145,7 +164,9 @@ export default {
   mounted () {
     // this.getPlans()
     console.log(this.form, 'forrrm')
-    console.log(this.files, 'files')
+    this.form.referencia = this.$randomatic('aA0000', 20)
+    this.appUrl = env.appUrl + 'login_proveedor/referencia_pago/' + this.form.referencia
+    console.log(this.form.referencia, 'aquii randomatic', this.appUrl)
     this.form.tipoPlan = 'Mensual'
     this.scroll()
   },
@@ -166,12 +187,7 @@ export default {
       console.log(this.form, 'cambiando tipo de plan')
     },
     async onSubmit (plan) {
-      if (this.form.country === 'co') {
-
-      } else {
-      }
-    },
-    async registro (plan) {
+      this.changeSelectPlan(plan.name)
       this.form.plan_id = plan.cual
       console.log(this.form, 'form')
       var formData = new FormData()
@@ -187,11 +203,11 @@ export default {
         }
       }).then(res => {
         if (res) {
-          this.$q.notify({
-            message: 'Ya formas parte de Hevent, Bienvenido',
-            color: 'positive'
-          })
-          this.loguear()
+          const buttonWompi = document.getElementById('pagarWompi')
+          buttonWompi.click()
+          // this.loguear()
+        } else {
+
         }
       })
     },
@@ -271,5 +287,9 @@ export default {
   border-bottom-left-radius: 20px;
   border-bottom: 1px solid gray;
   transition: width 1s, height 1s, margin 0s;
+}
+
+.ocultar-boton-wompi {
+  display: none;
 }
 </style>

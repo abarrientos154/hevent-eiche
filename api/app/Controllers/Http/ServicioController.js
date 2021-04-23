@@ -90,7 +90,10 @@ class ServicioController {
     let newArray = []
     for (let j of proveedores) {
       let buscarProveedor = newArray.find(v => v.id_proveedor === j.id_proveedor)
-      if (!buscarProveedor) { newArray.push(j) }
+      if (!buscarProveedor) {
+        j.pyr = await RespuestaProveedor.query().where({id: j.id, id_proveedor: j.id_proveedor}).first()
+        newArray.push(j)
+      }
     }
 
     response.send(newArray)

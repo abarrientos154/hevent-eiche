@@ -1,4 +1,5 @@
 import axios from 'axios'
+import randomize from 'randomatic'
 import env from '../env'
 import { Notify } from 'quasar'
 
@@ -6,9 +7,18 @@ const axiosInstance = axios.create({
   baseURL: env.apiUrl// url base cargada de archivo env.js
 })
 
+/* const axiosInstance = axios.create({
+  baseURL: env.wompiUrl// url base cargada de archivo env.js
+})
+
+Vue.prototype.$wompi = randomize */
+
 export default async ({ store, Vue }) => {
-  // Vue.prototype.$axios = axios
+  Vue.prototype.$axios = axios
   Vue.prototype.$api = axiosInstance
+  Vue.prototype.$randomatic = randomize
+
+  Vue.prototype.$WKPriv = env.wompiKeyPriv
 
   axiosInstance.interceptors.response.use(function (response) {
     // console.log('axiosResponse', response)

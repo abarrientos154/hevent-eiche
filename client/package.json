@@ -16,6 +16,7 @@
     "core-js": "^3.6.5",
     "moment": "^2.27.0",
     "quasar": "^1.0.0",
+    "randomatic": "^3.1.1",
     "ui": "^0.2.4",
     "vue-animation": "^0.1.0",
     "vue-chartjs": "^3.5.1",

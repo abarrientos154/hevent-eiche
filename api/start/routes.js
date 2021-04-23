@@ -65,6 +65,7 @@ addPrefixToGroup(
     Route.get("email_send/:email", "UserController.recuperacion")
     Route.get("code_verification/:code", "UserController.verificarCode")
 
+    Route.put("proveedor_aprobado/:ref", "UserController.aprovedProvider")
   })
 );
 
@@ -78,6 +79,7 @@ addPrefixToGroup(
 
     ///////////PROVEEDORES/////////////////////
     Route.get('proveedores', 'ProveedorController.index')
+    Route.get('proveedores_premiun', 'ProveedorController.premiun')
     Route.get('proveedores_perfil', 'ProveedorController.show')
     Route.post('proveedores', 'ProveedorController.store')
     Route.get('proveedores_servicios/:id_servicio', 'ServicioController.preguntasPorId')

@@ -2,7 +2,7 @@
   <div>
     <div class="row justify-center">
       <img src="Pagina52/Mesa de trabajo 2.png" style="width: 100%;height:400px"/>
-      <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:5px;left:5px" @click="$router.push('login_cliente')" />
+      <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:5px;left:5px" to="/login_cliente" />
     </div>
     <div class="text-subtitle2 text-center text-primary">Iniciar Sesión</div>
     <div class="q-mt-sm">
@@ -75,6 +75,7 @@
 <script>
 import { mapMutations } from 'vuex'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
+import env from '../../env'
 export default {
   data () {
     return {
@@ -99,12 +100,67 @@ export default {
     }
   },
   async mounted () {
+    if (this.$route.params.ref) {
+      this.pruebaWompi()
+    }
     if (this.$route.params.code) {
       await this.verificarCode()
     }
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    async aprobarProveedor () {
+      this.$q.loading.show({
+        message: 'Confirmando Transaccion. Por Favor Espere...'
+      })
+      await this.$api.put('proveedor_aprobado/' + this.$route.params.ref).then(res => {
+        this.$q.loading.hide()
+        if (res) {
+          this.$q.notify({
+            message: 'Ya puedes Iniciar Sesion, Bienvenido',
+            color: 'positive'
+          })
+        }
+      })
+    },
+    async pruebaWompi () {
+      this.$q.loading.show({
+        message: 'Confirmando Transaccion. Por Favor Espere...'
+      })
+      const config = {
+        headers: {
+          Authorization: 'Bearer ' + this.$WKPriv
+        }
+      }
+      await this.$axios.get(env.wompiUrl + `transactions?reference=${this.$route.params.ref}`, config).then(res => {
+        this.$q.loading.hide()
+        console.log(res, 'ress')
+        if (res.data.data.length > 0) {
+          console.log(res.data.data[0], 'ressssss')
+          if (res.data.data[0].status === 'ERROR') {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Ocurrio un error con la transaccion, Por Favor contacte con algun administrador'
+            }).onOk(() => {
+            })
+          } else if (res.data.data[0].status === 'APPROVED') {
+            this.aprobarProveedor()
+          } else if (res.data.data[0].status === 'DECLINED') {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Su pago ha sido declinado. Por Favor contacte con algun administrador'
+            }).onOk(() => {
+            })
+          }
+        } else {
+          this.$q.dialog({
+            title: '¡Atención!',
+            message: 'Referencia Invalida o No Encontrada. Por Favor contacte con algun administrador'
+          }).onOk(() => {
+          })
+        }
+      })
+    },
     restablecerContra () {
       this.$v.$touch()
       if (!this.$v.pass.$error && !this.$v.repeatPass.$error) {
@@ -150,12 +206,21 @@ export default {
       this.$api.post('login', this.form).then(res => {
         if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
           const client = res.HEV_SESSION_INFO.roles.find(value => value === 2)
+          console.log(res, 'ressssss', client)
           if (!client) {
-            this.login(res)
-            this.$router.push('/inicio_proveedor')
+            if (res.HEV_SESSION_INFO.status === 0) {
+              this.$q.dialog({
+                title: '¡Atención!',
+                message: 'Su cuenta esta a la espera para aprobar su pago'
+              }).onOk(() => {
+              })
+            } else {
+              this.login(res)
+              this.$router.push('inicio_proveedor')
+            }
           } else {
             this.login(res)
-            this.$router.push('/inicio_cliente')
+            this.$router.push('inicio_cliente')
           }
         } else {
           console.log('error de ususario')
