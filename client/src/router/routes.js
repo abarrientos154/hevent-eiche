@@ -1,6 +1,7 @@
 
 const routes = [
   { path: '/registro', component: () => import('pages/Registro.vue') },
+  { path: '/test_deep_link', component: () => import('pages/TestDeepLink.vue') },
   { path: '/registro_cliente', component: () => import('pages/client/RegistroCliente.vue') },
   { path: '/registro_proveedor', component: () => import('pages/RegistroProveedor.vue') },
   { path: '/test', component: () => import('pages/Test.vue') },
