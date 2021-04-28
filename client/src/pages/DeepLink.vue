@@ -2,7 +2,7 @@
   <div class="absolute-center column">
     <q-input label="url" v-model="form.url" outlined style="width:500px"/>
     <q-space></q-space>
-    <q-btn class="q-mt-sm" label="Prueba" @click="ir()" color="primary" />
+    <q-btn class="q-mt-sm q-ma-sm" label="Volver a la App" @click="ir()" color="primary" push />
   </div>
 </template>
 
@@ -11,12 +11,13 @@ export default {
   data () {
     return {
       form: {
-        url: 'https://app.heventapp.com/#/slider'
+        url: 'https://app.heventapp.com/login_proveedor/referencia_pago/'
       }
     }
   },
   methods: {
     ir () {
+      this.form.url = this.form.url + this.$route.params.ref
       location.href = this.form.url
     }
   }
