@@ -240,7 +240,6 @@ export default {
   },
   methods: {
     prueba () {
-      console.log(this.form, 'formmmmmmm')
     },
     getBounds (bounds, center) {
       console.log(center, 'center')

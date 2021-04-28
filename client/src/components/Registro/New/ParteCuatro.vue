@@ -187,6 +187,7 @@ export default {
       console.log(this.form, 'cambiando tipo de plan')
     },
     async onSubmit (plan) {
+      this.$q.loading.show()
       this.changeSelectPlan(plan.name)
       this.form.plan_id = plan.cual
       console.log(this.form, 'form')
@@ -202,6 +203,7 @@ export default {
           'Content-Type': undefined
         }
       }).then(res => {
+        this.$q.loading.hide()
         if (res) {
           const buttonWompi = document.getElementById('pagarWompi')
           buttonWompi.click()
