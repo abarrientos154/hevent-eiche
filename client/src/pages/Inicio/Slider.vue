@@ -63,13 +63,23 @@ export default {
       tab: 'one',
       showBtn: false,
       pasar: true,
-      timer: ''
+      timer: '',
+      deepLink: 'empty'
     }
   },
   created () {
     this.timer = setInterval(this.test, 3000)
   },
   mounted () {
+    const vm = this
+    if (this.$q.platform.is.mobile) { // Si es teléfono
+      universalLinks.subscribe('ul_myExampleEvent', function (eventData) {
+        // do some work
+        // alert('Did launch application from the link: ' + eventData.url)
+        vm.deepLink = eventData.path
+        vm.$router.push(eventData.path)
+      })
+    }
   },
   beforeDestroy () {
     clearInterval(this.timer)

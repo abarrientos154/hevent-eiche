@@ -6,13 +6,13 @@
     <div style="position:absolute;top:0px;right:0px;font-size:20px;z-index:2" class="text-white" v-if="!isAnuncioP" >
       <q-btn :icon="favorito ? 'favorite' : 'favorite_border'" :color="favorito ? 'red': 'white'" flat round @click="addFavoritos()" />
     </div>
-    <div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
-    </div>
-    <!--<q-carousel animated v-model="slide" navigation infinite class="absolute-top" style="height:200px;z-index:-1" swipeable v-if="user.images && user.images.length > 1">
+    <!-- <div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
+    </div> -->
+    <q-carousel animated v-model="slide" navigation infinite style="height:200px;z-index:0" swipeable v-if="user.images && user.images.length > 1">
       <q-carousel-slide :name="index" :img-src="baseu + 'file_proveedor/' + item" v-for="(item, index) in user.images" :key="index" >
       </q-carousel-slide>
-    </q-carousel>-->
-    <q-img v-if="user.images" :src="user.images
+    </q-carousel>
+    <q-img v-else-if="user.images" :src="user.images
       ? baseu + 'file_proveedor/' + mostrarImg
       : user.images.length === 0
       ? 'portada_proveedor.png'
@@ -31,7 +31,7 @@
     <div>
       <q-tab-panels v-model="panel" animated class="q-mt-md" style="border-top-left-radius:20px;border-top-right-radius:20px;height:350px">
         <q-tab-panel name="Descripcion">
-          <div class="column full-height">
+          <div class="column full-height ">
             <div>
               <div class="text-h6 text-grey-9">Descripcion</div>
             </div>
@@ -40,6 +40,22 @@
                 <p class="q-pa-sm">
                   {{user.descripcion}}
                 </p>
+              </q-scroll-area>
+            </div>
+            <div class="col" v-if="otherProviders.length > 0">
+              <div class="text-h6 text-primary">Recomendados</div>
+              <q-scroll-area horizontal style="height: 350px; width: 100%;" class="rounded-borders q-mb-md q-mt-sm q-ml-sm" >
+                <div class="row no-wrap q-gutter-sm">
+                  <div class="column" v-for="(card, index) in otherProviders" :key="index">
+                    <div class="text-center q-mt-sm text-bold text-primary"> {{card.name}} </div>
+                    <q-card class="forma-card-info bg-primary">
+                      <q-img :src="baseu + 'file_proveedor/portada/' + card._id" style="height:90%"></q-img>
+                      <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px"
+                        @click="masInformacion(card._id)"
+                      />
+                    </q-card>
+                  </div>
+                </div>
               </q-scroll-area>
             </div>
           </div>
@@ -95,6 +111,9 @@ export default {
   components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones, Mapa, ModalEventos },
   data () {
     return {
+      baseu: env.apiUrl,
+      basico: true,
+      otherProviders: [],
       isAnuncioP: false,
       thumbStyle: {
         right: '2px',
@@ -126,15 +145,28 @@ export default {
       ]
     }
   },
-  mounted () {
-    this.getUser()
-    this.getFavorito()
+  async mounted () {
     this.baseu = env.apiUrl
+    await this.getUser()
+    this.getFavorito()
     if (this.$route.params.anuncio) {
       this.isAnuncioP = true
     }
+    this.proveedoresPlanPremiun()
   },
   methods: {
+    masInformacion (id) {
+      this.$router.push('/proveedor/alimentos/' + id)
+      location.reload()
+    },
+    proveedoresPlanPremiun () {
+      if (this.basico) {
+        this.$api.get('proveedores_premiun').then(res => {
+          this.otherProviders = res
+          console.log(this.otherProviders, 'proveedores premiun')
+        })
+      }
+    },
     getFavorito () {
       this.$api.get('favoritos/' + this.id).then(res => {
         this.favorito = res.favorito
@@ -157,13 +189,14 @@ export default {
       console.log('entro', img)
       this.mostrarImg = img
     },
-    getUser () {
+    async getUser () {
       console.log(this.id, 'idddddddd')
-      this.$api.get('info_proveedor/' + this.id).then(res => {
+      await this.$api.get('info_proveedor/' + this.id).then(res => {
         if (res) {
           this.user = res
           this.mostrarImg = res.images[0]
-          console.log(this.user, 'this user')
+          if (res.plan_id > 1) { this.basico = false }
+          console.log(this.user, 'this user', this.basico, 'basico')
         }
       })
     },
@@ -207,5 +240,10 @@ export default {
 }
 .bordes-bottom-descripcion {
   border-radius: 20px;
+}
+.forma-card-info {
+  border-radius: 12px;
+  height: 230px;
+  width: 170px;
 }
 </style>

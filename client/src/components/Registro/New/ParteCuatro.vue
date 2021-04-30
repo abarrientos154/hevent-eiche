@@ -165,7 +165,7 @@ export default {
     // this.getPlans()
     console.log(this.form, 'forrrm')
     this.form.referencia = this.$randomatic('aA0000', 20)
-    this.appUrl = env.appUrl + 'login_proveedor/referencia_pago/' + this.form.referencia
+    this.appUrl = env.appUrl + 'deep_link/' + this.form.referencia
     console.log(this.form.referencia, 'aquii randomatic', this.appUrl)
     this.form.tipoPlan = 'Mensual'
     this.scroll()

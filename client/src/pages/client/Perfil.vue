@@ -15,9 +15,11 @@
     </div>
     <div class="text-center text-primary text-h5 text-bold"> * Perfil * </div>
     <div class="column items-center justify-start q-mb-lg text-left">
-      <div v-for="(item, index) in opciones" :key="index" class="cursor-pointer q-mt-md text-left" style="font-size:18px" @click="ejecutar(index)">
-        <div class="text-grey-8 text-left">{{item.titulo}}</div>
-        <q-separator />
+      <div v-for="(item, index) in opciones" :key="index" class="cursor-pointer q-mt-md text-left" style="font-size:18px" @click="ejecutar(item.val)">
+        <div v-if="item.visible" class="column">
+          <div class="text-grey-8 text-left">{{item.titulo}}</div>
+          <q-separator />
+        </div>
       </div>
     </div>
     <q-dialog v-model="dialogos.editarP" style="height:300px" >
@@ -31,6 +33,10 @@
     <q-dialog v-model="dialogos.notificaciones" >
       <editar-notifi />
     </q-dialog>
+
+    <q-dialog v-model="dialogos.eventosR" >
+      <eventos-realizados />
+    </q-dialog>
   </q-page>
 </template>
 
@@ -39,9 +45,10 @@ import env from '../../env'
 import EditarPerfil from '../../components/cliente/perfil/Datos'
 import EditarContra from '../../components/cliente/perfil/Pass'
 import EditarNotifi from '../../components/cliente/perfil/Notificaciones'
+import EventosRealizados from '../../components/cliente/perfil/EventosRealizados.vue'
 export default {
   components: {
-    EditarPerfil, EditarContra, EditarNotifi
+    EditarPerfil, EditarContra, EditarNotifi, EventosRealizados
   },
   data () {
     return {
@@ -52,13 +59,15 @@ export default {
       dialogos: {
         editarP: false,
         pass: false,
-        notificaciones: false
+        notificaciones: false,
+        eventosR: false
       },
       opciones: [
-        { titulo: 'Editar Perfil' },
-        { titulo: 'Modificar Contraseña' },
-        { titulo: 'Notificaciones' },
-        { titulo: 'Cerrar Sesión' }
+        { titulo: 'Editar Perfil', visible: true, val: 0 },
+        { titulo: 'Modificar Contraseña', visible: true, val: 1 },
+        { titulo: 'Eventos Realizados', visible: true, val: 4 },
+        { titulo: 'Notificaciones', visible: false, val: 2 },
+        { titulo: 'Cerrar Sesión', visible: true, val: 3 }
       ]
     }
   },
@@ -76,6 +85,9 @@ export default {
       if (ind === 2) { this.dialogos.notificaciones = true }
       if (ind === 3) {
         this.$router.push('/login_cliente')
+      }
+      if (ind === 4) {
+        this.$router.push('/eventos_realizados')
       }
     },
     async changePerfil () {
