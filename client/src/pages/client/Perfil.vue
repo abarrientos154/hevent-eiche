@@ -34,9 +34,9 @@
       <editar-notifi />
     </q-dialog>
 
-    <q-dialog v-model="dialogos.eventosR" >
+    <!-- <q-dialog v-model="dialogos.eventosR" >
       <eventos-realizados />
-    </q-dialog>
+    </q-dialog> -->
   </q-page>
 </template>
 
@@ -45,10 +45,10 @@ import env from '../../env'
 import EditarPerfil from '../../components/cliente/perfil/Datos'
 import EditarContra from '../../components/cliente/perfil/Pass'
 import EditarNotifi from '../../components/cliente/perfil/Notificaciones'
-import EventosRealizados from '../../components/cliente/perfil/EventosRealizados.vue'
+// import EventosRealizados from '../../components/cliente/perfil/EventosRealizados.vue'
 export default {
   components: {
-    EditarPerfil, EditarContra, EditarNotifi, EventosRealizados
+    EditarPerfil, EditarContra, EditarNotifi //, EventosRealizados
   },
   data () {
     return {
