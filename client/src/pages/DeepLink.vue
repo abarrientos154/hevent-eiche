@@ -1,8 +1,9 @@
 <template>
-  <div class="absolute-center column">
-    <q-input label="url" v-model="form.url" outlined style="width:500px"/>
-    <q-space></q-space>
-    <q-btn class="q-mt-sm q-ma-sm" label="Volver a la App" @click="ir()" color="primary" push />
+  <div class="absolute-center column fit items-center justify-center bg-primary">
+    <!-- <q-input label="url" v-model="form.url" outlined style="width:500px"/>
+    <q-space></q-space> -->
+    <p style="text-align:center;font-size:19px" class="q-ma-md text-bold text-white">Para continuar con su registro y procesar su pago regrese a nuestra app desde el siguiente boton:</p>
+    <q-btn class="q-mt-sm q-ma-sm" label="Volver a la App" @click="ir()" color="white" text-color="primary" push style="height:60px;width:70%" />
   </div>
 </template>
 
