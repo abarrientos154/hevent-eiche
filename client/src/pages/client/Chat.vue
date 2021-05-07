@@ -4,7 +4,7 @@
       <div class="row items-center">
         <q-btn color="white" flat dense icon="keyboard_arrow_left" round @click="ruta()" />
         <q-avatar class="q-ml-sm" size="70px">
-          <q-img :src="baseu + id_img" />
+          <q-img :src="imgConcatenado" />
         </q-avatar>
         <div class="q-ml-md text-white text-bold" style="font-size:15px; max-width:180px"> {{usuario}} </div>
         <q-space />
@@ -24,7 +24,7 @@
         <!--<q-chat-message
         :label="date"
         />-->
-        <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" :avatar="baseu + mens.id" :text="[mens.message]"
+        <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" :avatar="mens.perfil ? baseu + mens.id : proveedor ? baseu + mens.id : 'noimg.png'" :text="[mens.message]"
           :stamp="mens.stamp" :sent="mens.send" :bg-color="mens.send ? 'primary' : 'grey-4'" :text-color="mens.send ? 'white' : 'black'" size="6"
         />
         <div id="fin"></div>
@@ -59,6 +59,8 @@ export default {
       text: '',
       date: moment().format('DD-MMMM-YYYY'),
       total: 0,
+      imgConcatenado: 'noimg.png',
+      proveedor: null,
       categorias: [
         { name: 'Locacion', list: [] },
         { name: 'Alimentos', list: [] },
@@ -77,7 +79,6 @@ export default {
   computed: {},
   mounted () {
     this.baseu = env.apiUrl + 'file_proveedor/perfil/'
-    console.log(this.$route.params, 'touteeeeeeeeeeeee')
     if (this.$route.params.id) {
       this.cotizacion_id = this.$route.params.id
       this.getinfo()
@@ -150,10 +151,13 @@ export default {
             this.cotizarBtn = true
             this.usuario = this.data.datos_cliente.full_name
             this.id_img = this.data.datos_cliente._id
-            console.log('entro aqui', this.usuario)
+            this.imgConcatenado = this.data.datos_cliente.perfil ? this.baseu + this.id_img : 'noimg.png'
+            this.proveedor = false
           } else {
             this.usuario = this.data.datos_proveedor.name
             this.id_img = this.data.datos_proveedor._id
+            this.imgConcatenado = this.baseu + this.id_img
+            this.proveedor = true
           }
         }
       })
@@ -167,7 +171,6 @@ export default {
         this.$api.post('send_message/' + this.cotizacion_id, { message: this.text }).then(v => {
           this.text = ''
           this.$api.get('show_all_info_cotization/' + this.cotizacion_id).then(v => {
-            console.log(v)
             if (v) {
               this.data.messages = v.messages
             }

@@ -57,7 +57,7 @@ export default {
       buttons_footer: [
         // TODOS LOS ITEM EN MENU PARA LOS CLIENTES
         { icon: 'iconos_menu/iinicio.png', to: '/inicio_cliente', permission: 1, iconSelect: 'iconos_menu/iinicioa.png' },
-        { icon: 'iconos_menu/iblog.png', to: '/revista', permission: 1, iconSelect: 'iconos_menu/ibloga.png' },
+        { icon: 'iconos_menu/iblog.png', to: '/blog', permission: 1, iconSelect: 'iconos_menu/ibloga.png' },
         { icon: 'iconos_menu/iproveedor.png', to: '/ver_mas_servicios', permission: 1, iconSelect: 'iconos_menu/iproveedora.png' },
         { icon: 'iconos_menu/ichats.png', to: '/chats_clientes', permission: 1, iconSelect: 'iconos_menu/ichatsa.png' },
         { icon: 'iconos_menu/iperfil.png', to: '/perfil_cliente', permission: 1, iconSelect: 'iconos_menu/iperfila.png' },
