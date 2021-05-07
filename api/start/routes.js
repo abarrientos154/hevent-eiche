@@ -26,6 +26,14 @@ Route.get('/', () => {
   }
 })
 
+/* Route.post('hello-world/:tokenPay', ({ view }) => {
+  return view.render('flow-pay')
+}) */
+
+Route.post('pay-flow', ({ view }) => {
+  return view.render('flow-pay')
+})
+
 const addPrefixToGroup = group => {
   // Grupo para rutas con prefijo /api/
   group.prefix("api");
@@ -66,6 +74,8 @@ addPrefixToGroup(
     Route.get("code_verification/:code", "UserController.verificarCode")
 
     Route.put("proveedor_aprobado/:ref", "UserController.aprovedProvider")
+
+    Route.post("pay_flow", "UserController.payFlow")
   })
 );
 
@@ -154,6 +164,14 @@ addPrefixToGroup(
 
     ///////////////////////////////////////////NOTIFICACIONES///////////////////////////////////////////////////////////////////
     Route.put("editar_notificacion_cliente", "NotificacionController.update")
+
+    ///////////////////////////////////////////----IMPRESIONES----///////////////////////////////////////////////////////////////////
+    Route.post("impressions/:proveedor_id", "ImpressionController.store")
+
+    ///////////////////////////-----BLOGS-----/////////////////////////////////////////////////////////////
+    Route.get("blogs", "BlogController.index")
+    Route.get("blogs/:id", "BlogController.show")
+
 
   }).middleware("auth")
 );

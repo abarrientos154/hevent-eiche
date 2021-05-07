@@ -51,11 +51,6 @@ const routes = [
         meta: { toolbar: true, title: 'Organiza tu Evento', footer: true }
       },
       {
-        path: '/revista',
-        component: () => import('pages/client/Revista.vue'),
-        meta: { toolbar: false, title: 'Seccion Revista', footer: true }
-      },
-      {
         path: '/inicio_cliente',
         component: () => import('pages/client/new/Inicio.vue'),
         meta: { toolbar: false, title: 'Mi Evento', footer: true }
@@ -159,6 +154,21 @@ const routes = [
         path: '/opiniones_proveedor',
         component: () => import('pages/proveedor/Opiniones.vue'),
         meta: { toolbar: false, title: 'Me Gusta', footer: true }
+      },
+      {
+        path: '/eventos_realizados',
+        component: () => import('components/cliente/perfil/EventosRealizados.vue'),
+        meta: { toolbar: false, title: 'Eventos Realizados', footer: true }
+      },
+      {
+        path: '/blog',
+        component: () => import('pages/Blog/List.vue'),
+        meta: { toolbar: false, title: 'Eventos Realizados', footer: true }
+      },
+      {
+        path: '/blog/:id',
+        component: () => import('pages/Blog/Detalle.vue'),
+        meta: { toolbar: false, title: 'Seccion Revista', footer: true }
       }
     ]
   },
