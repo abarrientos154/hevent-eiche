@@ -4,6 +4,21 @@
       <div class="text-h6 absolute-top text-center text-white text-bold q-mt-sm">Estadisticas</div>
     </div>
     <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:10px;left:10px" @click="$router.go(-1)" />
+    <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" style="height:400px">
+      <div class="column">
+        <div class="row items-center">
+          <div class="row items-center">
+            <q-icon name="visibility" color="black" size="lg" />
+            <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Impresiones</div>
+          </div>
+          <q-space />
+          <div class="bg-grey q-pa-xs text-white text-bold border-impression" >
+            {{form.totalImpressions}}
+          </div>
+        </div>
+        <bar-chart v-if="ejecutar" :data="chartDataImpression" :options="chartOptionsImpression" style="width:300px" class="q-mt-sm"></bar-chart>
+      </div>
+    </q-card>
     <div class="column q-ma-md">
       <q-card class="estilo-card-est q-pa-md no-shadow">
         <div class="row justify-between items-center">
@@ -20,7 +35,7 @@
             </q-item-section>
 
             <q-item-section side center class="q-ml-lg" style="width:150px">
-              <q-rating v-model="form.calidadS" size="1.5em" class="q-ml-md" color="primary" />
+              <q-rating disable v-model="form.calidadS" size="1.5em" class="q-ml-md" color="primary" />
             </q-item-section>
           </q-item>
 
@@ -30,7 +45,7 @@
             </q-item-section>
 
             <q-item-section side center>
-              <q-rating v-model="form.costoB" size="1.5em" class="q-ml-md" color="primary" />
+              <q-rating disable v-model="form.costoB" size="1.5em" class="q-ml-md" color="primary" />
             </q-item-section>
           </q-item>
 
@@ -40,7 +55,7 @@
             </q-item-section>
 
             <q-item-section side center>
-              <q-rating v-model="form.profesionalidad" size="1.5em" class="q-ml-md" color="primary" />
+              <q-rating disable v-model="form.profesionalidad" size="1.5em" class="q-ml-md" color="primary" />
             </q-item-section>
           </q-item>
 
@@ -50,7 +65,7 @@
             </q-item-section>
 
             <q-item-section side center>
-              <q-rating v-model="form.respuesta" size="1.5em" class="q-ml-md" color="primary" />
+              <q-rating disable v-model="form.respuesta" size="1.5em" class="q-ml-md" color="primary" />
             </q-item-section>
           </q-item>
 
@@ -60,7 +75,7 @@
             </q-item-section>
 
             <q-item-section side center>
-              <q-rating v-model="form.flexibilidad" size="1.5em" class="q-ml-md" color="primary" />
+              <q-rating disable v-model="form.flexibilidad" size="1.5em" class="q-ml-md" color="primary" />
             </q-item-section>
           </q-item>
         </q-list>
@@ -137,20 +152,36 @@
 
 <script>
 import PieChart from '../PieChart'
+import BarChart from '../proveedor/BarChart'
 export default {
   components: {
-    PieChart
+    PieChart, BarChart
   },
   data () {
     return {
       ejecutar: false,
+      chartOptionsImpression: {
+        hoverBorderWidth: 20
+      },
+      chartDataImpression: {
+        hoverBackgroundColor: 'red',
+        hoverBorderWidth: 10,
+        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        datasets: [
+          {
+            label: 'Impresiones',
+            backgroundColor: ['#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE', '#008ADE'],
+            data: [1, 1, 1, 1, 1, 1, 1]
+          }
+        ]
+      },
       chartOptions: {
         hoverBorderWidth: 20
       },
       chartData: {
         hoverBackgroundColor: 'red',
         hoverBorderWidth: 10,
-        labels: ['Celebraciones', 'Boda', 'Corporativo', 'Reunion', 'Convencion', 'Artistico', 'Espiritual'],
+        labels: ['Celebraciones', 'Boda', 'Corporativo', 'Reunion', 'Convencion', 'Artistico', 'Espiritual', 'Deportivo'],
         datasets: [
           {
             label: 'Datos',
@@ -177,8 +208,8 @@ export default {
       this.$api.get('estadisticas').then(res => {
         if (res) {
           this.form = res
-          console.log(this.chartData, 'res')
           this.chartData.datasets[0].data = res.dataChar
+          this.chartDataImpression.datasets[0].data = res.dataCharImpression
           this.ejecutar = true
           console.log(this.chartData, 'res')
         }
@@ -189,6 +220,11 @@ export default {
 </script>
 
 <style>
+.border-impression {
+  border-radius: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 .border-likes {
   right: 10px;
   position: absolute;

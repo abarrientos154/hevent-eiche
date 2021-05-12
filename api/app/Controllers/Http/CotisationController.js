@@ -99,6 +99,7 @@ class CotisationController {
     send.messages = messages.map(v => {
       return {
         send: id_user === v.user_id ? true : false,
+        perfil: id_user === v.user_id ? true : v.datos_user.perfil ? true : false,
         id: v.datos_user._id,
         message: v.message,
         stamp: moment(v.created_at).lang('es').calendar(),

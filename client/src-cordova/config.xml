@@ -25,5 +25,8 @@
         <host event="ul_myExampleEvent" name="app.heventapp.com" scheme="https">
             <path url="/login_proveedor/referencia_pago/*" />
         </host>
+        <host event="flowEvent" name="app.heventapp.com" scheme="https">
+          <path url="/login_proveedor/referencia_pago/flow/*" />
+        </host>
     </universal-links>
 </widget>

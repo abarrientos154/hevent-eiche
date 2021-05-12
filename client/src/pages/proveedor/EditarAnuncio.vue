@@ -3,12 +3,12 @@
     <div style="position:absolute;top:0px;left:0px;font-size:20px;z-index:2" class="text-white" >
       <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
     </div>
-    <div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
+    <!--<div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
     </div>
-    <!--<q-carousel animated v-model="slide" navigation infinite class="absolute-top" style="height:200px;z-index:-1" swipeable v-if="user.images && user.images.length > 1">
+    <q-carousel animated v-model="slide" navigation infinite class="absolute-top" style="height:200px;z-index:-1" swipeable v-if="user.images && user.images.length > 1">
       <q-carousel-slide :name="index" :img-src="baseu + 'file_proveedor/' + item" v-for="(item, index) in user.images" :key="index" >
       </q-carousel-slide>
-    </q-carousel>-->
+    </q-carousel>
     <q-img v-if="user.images" :src="user.images
       ? baseu + 'file_proveedor/' + mostrarImg
       : user.images.length === 0
@@ -16,6 +16,16 @@
       : 'portada_proveedor.png' " style="height:200px;z-index:-1;" class="absolute-top">
     </q-img>
     <q-img v-else :src="'portada_proveedor.png' " style="height:200px;z-index:-1" class="absolute-top">
+    </q-img>-->
+    <q-carousel v-if="user.images && user.images.length > 1" animated v-model="slide" navigation infinite style="height:200px" swipeable>
+      <q-carousel-slide :name="index" :img-src="baseu + 'file_proveedor/' + item" v-for="(item, index) in user.images" :key="index" >
+      </q-carousel-slide>
+    </q-carousel>
+    <q-img v-else-if="user.images" :src="user.images
+      ? baseu + 'file_proveedor/' + mostrarImg
+      : user.images.length === 0
+      ? 'portada_proveedor.png'
+      : 'portada_proveedor.png' " style="height:200px;z-index:-1;">
     </q-img>
     <div class="q-mt-sm q-ma-sm row justify-end">
       <q-btn label="ver anuncio" dense class="gradiente-buttom q-pa-xs" size="sm" push @click="$router.push('/proveedor/locacion/' + user._id + '/true')" />

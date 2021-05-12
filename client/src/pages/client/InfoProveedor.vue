@@ -155,8 +155,13 @@ export default {
     this.proveedoresPlanPremiun()
   },
   methods: {
-    masInformacion (id) {
+    async masInformacion (id) {
+      this.$q.loading.show()
       this.$router.push('/proveedor/alimentos/' + id)
+      await this.$api.post('impressions/' + id).then(res => {
+        this.$q.loading.hide()
+        console.log(res, 'res impresiones')
+      })
       location.reload()
     },
     proveedoresPlanPremiun () {

@@ -59,6 +59,7 @@ import { mapMutations } from 'vuex'
 import { required, email } from 'vuelidate/lib/validators'
 import env from '../../../env'
 // import PaypalRegistro from '../../PaypalRegistro'
+import { openURL } from 'quasar'
 import moment from 'moment'
 export default {
   props: ['form', 'panel', 'files'],
@@ -92,41 +93,47 @@ export default {
           tipo: 'Mensual',
           select: false,
           cual: 1,
-          priceco: 1500000
+          priceco: 1500000,
+          pricecl: 3100
         },
         {
           name: 'Estandar',
           tipo: 'Mensual',
           select: true,
           cual: 2,
-          priceco: 5000000
+          priceco: 5000000,
+          pricecl: 10300
         },
         {
           name: 'Premium',
           tipo: 'Mensual',
           select: false,
-          priceco: 10000000
+          priceco: 10000000,
+          pricecl: 20630
         },
         {
           name: 'Basico Anual',
           tipo: 'Anual',
           select: false,
           cual: 1,
-          priceco: 9990000
+          priceco: 9990000,
+          pricecl: 20500
         },
         {
           name: 'Estandar Anual',
           tipo: 'Anual',
           select: false,
           cual: 2,
-          priceco: 30000000
+          priceco: 30000000,
+          pricecl: 62000
         },
         {
           name: 'Premium Anual',
           tipo: 'Anual',
           select: false,
           cual: 3,
-          priceco: 60000000
+          priceco: 60000000,
+          pricecl: 124000
         }
       ],
       product: {
@@ -134,7 +141,8 @@ export default {
       },
       formPlan: {},
       selectPlan: '',
-      appUrl: null
+      appUrl: null,
+      redirectFlow: ''
     }
   },
   computed: {
@@ -147,7 +155,7 @@ export default {
       if (this.form.country === 'co') {
         return plan.priceco
       } else {
-        return 0
+        return plan.pricecl
       }
     }
   },
@@ -163,6 +171,7 @@ export default {
   },
   mounted () {
     // this.getPlans()
+    this.$q.loading.hide()
     console.log(this.form, 'forrrm')
     this.form.referencia = this.$randomatic('aA0000', 20)
     this.appUrl = env.appUrl + 'deep_link/' + this.form.referencia
@@ -172,6 +181,18 @@ export default {
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    async pagarFlow () {
+      await this.$api.post('pay_flow', { amount: this.pricePlan, email: this.form.email }).then(res => {
+        console.log(res, 'RESSSSSSS FLOWWWWWW PAYY')
+        if (res) {
+          this.form.referencia = res.token
+          this.redirectFlow = res.redirect
+          return res
+        } else {
+          return false
+        }
+      })
+    },
     scroll () {
       this.$refs.scrollArea.setScrollPosition(this.positionScroll)
     },
@@ -191,6 +212,10 @@ export default {
       this.changeSelectPlan(plan.name)
       this.form.plan_id = plan.cual
       console.log(this.form, 'form')
+      if (this.form.country === 'cl') {
+        await this.pagarFlow()
+        console.log(this.form.referencia, 'FLOWWWFFFFFFFFFFFFFFF TOKENNNNNNNNNNNNN')
+      }
       var formData = new FormData()
       var files = []
       files[0] = this.files[0]
@@ -205,8 +230,15 @@ export default {
       }).then(res => {
         this.$q.loading.hide()
         if (res) {
-          const buttonWompi = document.getElementById('pagarWompi')
-          buttonWompi.click()
+          console.log(res, 'ress')
+          if (this.form.country === 'co') {
+            const buttonWompi = document.getElementById('pagarWompi')
+            buttonWompi.click()
+          } else {
+            this.$q.loading.show()
+            openURL(this.redirectFlow)
+            this.$q.loading.hide()
+          }
           // this.loguear()
         } else {
 

@@ -76,6 +76,7 @@ addPrefixToGroup(
     Route.put("proveedor_aprobado/:ref", "UserController.aprovedProvider")
 
     Route.post("pay_flow", "UserController.payFlow")
+    Route.post("verificar_flow_ref/:ref", "UserController.verificarPayFlow")
   })
 );
 

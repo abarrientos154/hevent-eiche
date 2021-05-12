@@ -14,6 +14,14 @@ const { validate } = use("Validator")
 const Hash = use('Hash')
 var randomize = require('randomatic')
 const Env = use('Env')
+const Flow = require('flowcl-node-api-client')
+
+var configFlow = {
+  apiKey: Env.get('FLOW_APIKEY'),
+  secretKey: Env.get('FLOW_SECRETKEY'),
+  apiURL: Env.get('FLOW_APIURL'),
+  baseURL: Env.get('FLOW_BASEURL')
+}
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
@@ -23,6 +31,69 @@ const Env = use('Env')
  * Resourceful controller for interacting with users
  */
 class UserController {
+
+  async verificarPayFlow ({ response, params, request }) {
+    let dat = params.ref
+    const paramss = {
+      token: dat
+    }
+    // const infoLocal = (await Floww.query().where({token: dat}).fetch()).toJSON()
+    // var tienda = await Data.findBy('tienda_id', infoLocal[0].tienda_id)
+    /* var config = {
+       apiKey: tienda.apiKey,
+       secretKey: tienda.secretKey,
+       apiURL: Env.get('FLOW_APIURL'),
+       baseURL: Env.get('FLOW_BASEURL')
+    } */
+    const serviceName = 'payment/getStatus'
+    console.log(dat,'floww')
+      try {
+        //console.log(Flow)
+        // Instancia la clase FlowApi
+        const flowApi = new Flow.default(configFlow)
+        // Ejecuta el servicio
+        var respon = await flowApi.send(serviceName, paramss, 'get')
+        // Prepara url para redireccionar el browser del pagador
+        //var redirect = respon.url + '?token=' + respon.token
+        console.log(`location: ${respon}`)
+        // const infoLocal = (await Floww.query().where({token: dat}).fetch()).toJSON()
+        response.send({flow: respon, status: respon.status})
+      } catch (error) {
+        console.log(error)
+        response.unprocessableEntity(error.message)
+      }
+  }
+
+  async payFlow ({ response, params, request }) {
+    const dat = request.only(['amount', 'email'])
+    const parametros = {
+      commerceOrder: Math.floor(Math.random() * (2000 - 1100 + 1)) + 1100,
+      subject: 'Pago de prueba',
+      currency: 'CLP',
+      amount: dat.amount,
+      email: dat.email,
+      paymentMethod: 9,
+      urlConfirmation: configFlow.baseURL,
+      urlReturn: configFlow.baseURL,
+    }
+
+    const serviceName = 'payment/create'
+
+    try {
+      //console.log(Flow)
+      // Instancia la clase FlowApi
+      const flowApi = new Flow.default(configFlow)
+      // Ejecuta el servicio
+      var respon = await flowApi.send(serviceName, parametros, 'POST')
+      // Prepara url para redireccionar el browser del pagador
+      var redirect = respon.url + '?token=' + respon.token
+      console.log(`location: ${redirect}`)
+      response.send({redirect, token: respon.token})
+    } catch (error) {
+      console.log(error)
+      response.unprocessableEntity(error.message)
+    }
+  }
 
   async aprovedProvider({ response, params }) {
     let user = await User.query().where('referencia', params.ref).update({status: 1})

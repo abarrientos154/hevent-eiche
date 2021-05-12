@@ -11,7 +11,7 @@
             <q-card v-for="(item, index) in data.locacion" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor.name ? item.info_proveedor.name : 'Proveedor'}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
-              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="$router.push('proveedor/l/' + item.proveedor_id)" />
+              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />
               <div class="puntuacion-favoritos-like row justify-center items-center" >
                 <q-icon name="star_rate" size="25px" color="orange" />
                 <div class="text-white text-bold q-mr-sm"> 0 </div>
@@ -29,7 +29,7 @@
             <q-card v-for="(item, index) in data.locacion" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor.name ? item.info_proveedor.name : 'Proveedor'}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
-              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="$router.push('proveedor/l/' + item.proveedor_id)" />
+              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />
               <div class="puntuacion-favoritos-like row justify-center items-center" >
                 <q-icon name="star_rate" size="25px" color="orange" />
                 <div class="text-white text-bold q-mr-sm"> 0 </div>
@@ -47,7 +47,7 @@
             <q-card v-for="(item, index) in data.personas" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor ? item.info_proveedor.name : 'Proveedor'}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
-              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="$router.push('proveedor/l/' + item.proveedor_id)" />
+              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />
               <div class="puntuacion-favoritos-like row justify-center items-center" >
                 <q-icon name="star_rate" size="25px" color="orange" />
                 <div class="text-white text-bold q-mr-sm"> 0 </div>
@@ -78,6 +78,14 @@ export default {
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
   },
   methods: {
+    async masInformacion (id) {
+      this.$q.loading.show()
+      this.$router.push('/proveedor/1/' + id)
+      await this.$api.post('impressions/' + id).then(res => {
+        this.$q.loading.hide()
+        console.log(res, 'res impresiones')
+      })
+    },
     async getProveedores () {
       await this.$api.get('proveedores_que_me_gustan').then(res => {
         this.data = res

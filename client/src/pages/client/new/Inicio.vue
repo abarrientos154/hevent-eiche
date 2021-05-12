@@ -7,7 +7,7 @@
       <div class="q-ml-lg row items-center">
         <div>
           <q-avatar size="100px">
-            <img src="noimg.png" style="width: 70px;height:70px">
+            <img :src="user.perfil ? perfilImg : 'noimg.png'" style="width: 70px;height:70px">
           </q-avatar>
         </div>
         <div class="column">
@@ -73,7 +73,7 @@
             <q-card v-for="(item, index) in favoritos" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor.name}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
-              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="$router.push('proveedor/l/' + item.proveedor_id)" />
+              <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />
               <div class="puntuacion-favoritos row justify-center items-center" >
                 <q-icon name="star_rate" size="25px" color="orange" />
                 <div class="text-white text-bold q-mr-sm"> 0 </div>
@@ -90,7 +90,9 @@
         <div class="text-center text-grey-7 q-mt-sm">Blog</div>
         <q-scroll-area horizontal style="height: 120px; width: 100%;" class="bg-grey-1 rounded-borders q-mb-md" >
           <div class="row no-wrap">
-            <div class="shadow-3 q-ma-sm q-ml-md bg-grey-4" style="height:80px;border-radius:12px;width:150px" v-for="(blog, index) in blogs" :key="index">
+            <div v-for="(blog, index) in blogs" :key="index" class="shadow-3 q-ma-sm q-ml-md bg-grey-4" style="height:80px;border-radius:12px;width:150px"
+              @click="$router.push('blog/' + blog._id)"
+            >
               <div class="bg-primary row items-center justify-center text-white text-center style-titulo">
                 {{blog.titulo}}
               </div>
@@ -148,14 +150,11 @@ export default {
         { title: 'Ver Mas', id: 'vermas', icon: 'icon_services/vermas.png' }
       ],
       blogs: [
-        {
-          titulo: 'BLOG Tal',
-          img: 'example_2.jpg'
-        }
       ],
       showCreateEvent: false,
       user: {},
-      favoritos: []
+      favoritos: [],
+      perfilImg: 'noimg.png'
     }
   },
   mounted () {
@@ -163,8 +162,22 @@ export default {
     this.getEvents()
     this.getUser()
     this.misProveedoresFavoritos()
+    this.getBlogs()
   },
   methods: {
+    getBlogs () {
+      this.$api.get('blogs').then(res => {
+        this.blogs = res
+      })
+    },
+    async masInformacion (id) {
+      this.$q.loading.show()
+      this.$router.push('/proveedor/1/' + id)
+      await this.$api.post('impressions/' + id).then(res => {
+        this.$q.loading.hide()
+        console.log(res, 'res impresiones')
+      })
+    },
     misProveedoresFavoritos () {
       this.$api.get('favoritos').then(res => {
         if (res) {
@@ -201,6 +214,7 @@ export default {
       this.$api.get('users_perfil').then(res => {
         if (res) {
           this.user = res
+          this.perfilImg = env.apiUrl + 'file_proveedor/perfil/' + this.user._id
           console.log(this.user, 'this user')
         }
       })

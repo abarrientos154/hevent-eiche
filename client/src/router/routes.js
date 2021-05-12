@@ -193,6 +193,10 @@ const routes = [
     component: () => import('pages/proveedor/Login.vue')
   },
   {
+    path: '/login_proveedor/referencia_pago/flow/:reFlow',
+    component: () => import('pages/proveedor/Login.vue')
+  },
+  {
     path: '/login_proveedor/:code',
     component: () => import('pages/proveedor/Login.vue')
   },

@@ -18,11 +18,11 @@
       </div>
       <div class="column">
         <div class="text-center text-h6 text-grey-6 q-mt-md"> Escoger Proveedores </div>
-        <q-scroll-area horizontal class="bg-grey-1 full-width" style="height:120px" :thumb-style="thumbStyle" :content-style="contentStyle"
+        <q-scroll-area horizontal class="bg-white full-width" style="height:120px" :thumb-style="thumbStyle" :content-style="contentStyle"
           :content-active-style="contentActiveStyle" >
-          <div class="row no-wrap">
-            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px;" class="q-mt-lg q-ml-md" @click="cambiarProveedor(serv.id)">
-              <div class="column items-center justify-center q-ml-sm border-servicios-item">
+          <div class="row no-wrap bg-white fit">
+            <div v-for="(serv, index) in servicios" :key="index" style="width:90px; height:40px;" class="q-mt-lg q-ml-md" @click="cambiarProveedor(serv.id, index)">
+              <div class="column items-center justify-center q-ml-sm border-servicios-item" :class="serv.select ? 'bg-cyan-1': 'bg-white'">
                 <q-img :src="serv.icon" style="width:35px;height:35px;" />
                 <div class="row justify-center items-center text-grey-7"> {{serv.title}} </div>
               </div>
@@ -31,13 +31,13 @@
         </q-scroll-area>
       </div>
       <div class="row q-gutter-sm justify-around">
-        <div style="width:160px;height:300px; border-radius:20px" v-for="(item, index) in proveedores" :key="index" @click="$router.push('/proveedor/' + $route.params.id + '/' + item.id_proveedor)" >
+        <div style="width:160px;height:300px; border-radius:20px" v-for="(item, index) in proveedores" :key="index" @click="masInformacion(item.id_proveedor)" >
           <div class="column full-width justify-center items-center">
             <div class="text-bold text-grey-7 q-pl-sm q-pr-sm" > * {{item.name}} * </div>
             <q-card style="width: 100%; height:260px" class="border-items" >
               <q-img style="width:100%;height:100%" :src="baseu + item.id_proveedor" />
               <div style="position:absolute; bottom:0px;border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:0px;border-bottom-right-radius:0px" class="row justify-center full-width bg-white" >
-               <!-- <div class="text-h6 text-primary"> $1.200,00 </div>-->
+               <div class="text-h6 text-primary" v-if="item.pyr.pyr[0].qvalmin"> ${{item.pyr.pyr[0].qvalmin}} </div>
                 <q-btn class="gradiente-buttom full-width" push style="border-radius:7px" dense label="mas información" />
               </div>
             </q-card>
@@ -95,7 +95,6 @@ export default {
   computed: {},
   mounted () {
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
-    console.log(this.baseu, 'baseu')
     if (this.$route.params.id) {
       this.id = this.$route.params.id
       this.header = this.id.charAt(0).toUpperCase() + this.id.slice(1)
@@ -103,9 +102,20 @@ export default {
     }
   },
   methods: {
-    async cambiarProveedor (id) {
+    async masInformacion (id) {
+      this.$q.loading.show()
+      await this.$api.post('impressions/' + id).then(res => {
+        this.$q.loading.hide()
+        console.log(res, 'res impresiones')
+      })
+      this.$router.push('/proveedor/' + this.$route.params.id + '/' + id)
+    },
+    async cambiarProveedor (id, ind) {
       this.$router.push('/proveedores/' + id)
       this.id = id
+      const indexSelect = this.servicios.findIndex(v => v.select)
+      this.servicios[indexSelect].select = false
+      this.servicios[ind].select = true
       await this.getRecord()
     },
     async getRecord () {
@@ -116,7 +126,7 @@ export default {
             ...v.datos_proveedor
           }
         })
-        // ordenar proveedores por plan premiun en primer lugar
+        // ordenar proveedores por plan premiun, estandar y por ultimo los basicos
         const ordenar = this.proveedores.sort((a, b) => (a.plan_id > b.plan_id) ? -1 : ((b.plan_id > a.plan_id) ? 0 : -1))
         this.proveedores = ordenar
         console.log(this.proveedores, 'proveedores')
@@ -135,7 +145,7 @@ export default {
   border-radius: 20px;
 }
 .border-servicios-item {
-  border: 0.5px solid $grey-4;
+  border: 0.5px solid white;
   border-radius: 12px;
   height: 85px;
   width: 85px;

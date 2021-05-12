@@ -106,14 +106,44 @@ export default {
     if (this.$route.params.code) {
       await this.verificarCode()
     }
+    if (this.$route.params.reFlow) {
+      this.verificarFlow()
+    }
   },
   methods: {
     ...mapMutations('generals', ['login']),
-    async aprobarProveedor () {
+    async verificarFlow () {
       this.$q.loading.show({
         message: 'Confirmando Transaccion. Por Favor Espere...'
       })
-      await this.$api.put('proveedor_aprobado/' + this.$route.params.ref).then(res => {
+      console.log('verificar flow')
+      await this.$api.post('verificar_flow_ref/' + this.$route.params.reFlow).then(res => {
+        this.$q.loading.hide()
+        if (res) {
+          if (res.status === 2) {
+            this.aprobarProveedor(this.$route.params.reFlow)
+          } else {
+            this.$q.dialog({
+              title: '¡Atención!',
+              message: 'Ha ocurrido un error al procesar su pago, por favor contacte con algun administrador'
+            }).onOk(() => {
+            })
+          }
+        } else {
+          this.$q.dialog({
+            title: '¡Atención!',
+            message: 'Ha ocurrido un Error'
+          }).onOk(() => {
+          })
+        }
+      })
+      // this.aprobarProveedor(this.$route.params.reFlow)
+    },
+    async aprobarProveedor (ref) {
+      this.$q.loading.show({
+        message: 'Confirmando Transaccion. Por Favor Espere...'
+      })
+      await this.$api.put('proveedor_aprobado/' + ref).then(res => {
         this.$q.loading.hide()
         if (res) {
           this.$q.notify({
@@ -144,7 +174,7 @@ export default {
             }).onOk(() => {
             })
           } else if (res.data.data[0].status === 'APPROVED') {
-            this.aprobarProveedor()
+            this.aprobarProveedor(this.$route.params.ref)
           } else if (res.data.data[0].status === 'DECLINED') {
             this.$q.dialog({
               title: '¡Atención!',

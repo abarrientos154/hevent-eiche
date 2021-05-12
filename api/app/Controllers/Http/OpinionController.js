@@ -6,6 +6,7 @@
 const Opinion = use("App/Models/Opinion")
 const Cotisation = use("App/Models/Cotisation")
 const ProveedoresFavorito = use("App/Models/ProveedoresFavorito")
+const Impression = use("App/Models/Impression")
 const moment = require('moment')
 /**
  * Resourceful controller for interacting with opinions
@@ -81,7 +82,8 @@ class OpinionController {
       reunion: 0,
       convencion: 0,
       artistico: 0,
-      espiritual: 0
+      espiritual: 0,
+      deportivo: 0
     }
     let cotisaciones = (await Cotisation.query().where({
       $or: [{ status: 4 }, { status: 5 }]
@@ -94,12 +96,49 @@ class OpinionController {
       if (j.evento.tipoEvento.id === 'convencion') { tipo.convencion += 1 }
       if (j.evento.tipoEvento.id === 'artistico') { tipo.artistico += 1 }
       if (j.evento.tipoEvento.id === 'espiritual') { tipo.espiritual += 1 }
+      if (j.evento.tipoEvento.id === 'deportivo') { tipo.deportivo += 1 }
     }
-    let dataChar = [ tipo.celebracion, tipo.boda, tipo.corporativo, tipo.reunion, tipo.convencion, tipo.artistico, tipo.espiritual ]
+    let dataChar = [ tipo.celebracion, tipo.boda, tipo.corporativo, tipo.reunion, tipo.convencion, tipo.artistico, tipo.espiritual, tipo.deportivo ]
     enviar.dataChar = dataChar
-    console.log(dataChar, 'asdasdasdasdas')
     ////////////////////////////////////////////////////////////////////////////////////////////
     enviar.tiempoR = '00:00'
+    ////////////////////////////////--Impresiones--//////////////////////////////////
+    let meses = {
+      enero: 0,
+      febrero: 0,
+      marzo: 0,
+      abril: 0,
+      mayo: 0,
+      junio: 0,
+      julio: 0,
+      agosto: 0,
+      septiembre: 0,
+      octubre: 0,
+      noviembre: 0,
+      diciembre: 0
+    }
+    let impresiones = (await Impression.query().where({ proveedor_id: idUser }).fetch()).toJSON()
+    for (let j of impresiones) {
+      let mes = moment(j.created_at).lang('es').format('MMMM')
+      console.log(mes, 'messsssssssss')
+      if (mes === 'enero') { meses.enero += 1 }
+      if (mes === 'febrero') { meses.febrero += 1 }
+      if (mes === 'marzo') { meses.marzo += 1 }
+      if (mes === 'abril') { meses.abril += 1 }
+      if (mes === 'mayo') { meses.mayo += 1 }
+      if (mes === 'junio') { meses.junio += 1 }
+      if (mes === 'julio') { meses.julio += 1 }
+      if (mes === 'agosto') { meses.agosto += 1 }
+      if (mes === 'septiembre') { meses.septiembre += 1 }
+      if (mes === 'octubre') { meses.octubre += 1 }
+      if (mes === 'noviembre') { meses.noviembre += 1 }
+      if (mes === 'diciembre') { meses.diciembre += 1 }
+    }
+
+    let dataCharImpression = [ meses.enero, meses.febrero, meses.marzo, meses.abril, meses.mayo, meses.junio, meses.julio, meses.agosto, meses.septiembre, meses.octubre, meses.noviembre, meses.diciembre ]
+    enviar.dataCharImpression = dataCharImpression
+    enviar.totalImpressions = impresiones.length
+
     response.send(enviar)
   }
 

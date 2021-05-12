@@ -79,6 +79,12 @@ export default {
         vm.deepLink = eventData.path
         vm.$router.push(eventData.path)
       })
+      universalLinks.subscribe('flowEvent', function (eventData) {
+        // do some work
+        // alert('Did launch application from the link: ' + eventData.url)
+        vm.deepLink = eventData.path
+        vm.$router.push(eventData.path)
+      })
     }
   },
   beforeDestroy () {

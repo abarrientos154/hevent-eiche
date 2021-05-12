@@ -1,6 +1,13 @@
 <template>
   <div>
     <div v-if="imagenes.length > 0" style="height:100px;border-radius:12px;width:100%" class="row justify-between">
+      <q-card class="q-ml-sm q-mr-sm q-mt-sm" style="height:100px;border-radius:12px;width:140px">
+        <q-img :src="baseu + 'file_proveedor/' + 'portada/' + userId" style="height:100px;border-radius:12px;width:140px" >
+        </q-img>
+        <div class="full-width row justify-center" style="position:absolute;bottom:2px;right:0px">
+        <q-btn label="portada" dense color="primary" push style="width:80%"  />
+        </div>
+      </q-card>
       <q-card class="q-ml-sm q-mr-sm q-mt-sm" v-for="(item, index) in imagenes" :key="index" style="height:100px;border-radius:12px;width:140px">
         <q-img :src="baseu + 'file_proveedor/' + item" style="height:100px;border-radius:12px;width:140px" @click="cambiarPortada(item)" >
           <q-btn @click="confirmEliminar(item)" flat class="absolute all-pointer-events" size="15px" dense icon="delete" color="negative" style="top: 0px; left: 0px" rounded />
@@ -38,7 +45,8 @@ export default {
       imagenes: [
       ],
       img: null,
-      baseu: ''
+      baseu: '',
+      userId: null
     }
   },
   mounted () {
@@ -53,6 +61,7 @@ export default {
     cargarImagenes () {
       this.$api.get('users_perfil').then(res => {
         if (res) {
+          this.userId = res._id
           if (res.images) {
             this.imagenes = res.images
           }
