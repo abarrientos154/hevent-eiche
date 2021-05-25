@@ -163,6 +163,9 @@ export default {
     this.getUser()
     this.misProveedoresFavoritos()
     this.getBlogs()
+    if (this.$route.path === '/inicio_cliente/crear_evento') {
+      this.showCreateEvent = true
+    }
   },
   methods: {
     getBlogs () {

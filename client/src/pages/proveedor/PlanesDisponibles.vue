@@ -1,8 +1,8 @@
 <template>
-  <div class="column">
-    <div class="background-cuatro"></div>
+  <q-page>
+    <div class="background-planes"></div>
     <div style="position:absolute; top:10px; left:5px" >
-      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="panel.panel = 'parte_tres'" />
+      <q-btn color="white" icon="keyboard_arrow_left" flat dense @click="$router.go(-1)" />
     </div>
 
     <div class="q-mt-md text-h6 text-primary text-center"> * Inscripcion * </div>
@@ -25,6 +25,7 @@
         </div>
       </div>
     </q-scroll-area>
+
     <form action="https://checkout.wompi.co/p/" method="GET">
       <!-- OBLIGATORIOS -->
       <input type="hidden" name="public-key" value="pub_test_7Q44Osi3VFuxurTJhLhsg5yy8cMl6mNy" />
@@ -35,50 +36,42 @@
       <input type="hidden" name="redirect-url" :value="appUrl" />
       <button class="ocultar-boton-wompi" type="submit" id="pagarWompi">Pagar con Wompi</button>
     </form>
-    <!-- <div class="text-h6 text-grey-9">Selecciona tu plan</div>
-    <q-card v-for="(plan) of planes" :key="plan._id" style="border-radius:12px" class="q-pa-xs q-ma-sm">
-      <q-item clickable v-ripple :class="plan._id === form.plan_id ? 'bg-grey-5':''" @click="selectPrice(plan._id)" >
-        <q-item-section>
-          <q-item-label class="text-bold">* {{plan.name}}</q-item-label>
-          <q-item-label caption v-for="offer of plan.offers" :key="offer.id" >-{{offer.name}} </q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-card>
-    <q-card style="border-radius:12px" class="q-ma-sm q-pa-sm">
-      <div class="text-h6 row justify-center q-mt-sm text-primary"> Precio a pagar {{product.price}}$ </div>
-      <paypal-registro @registrar="onSubmit()" v-if="product.price > 0" class="q-pa-lg" :product="product" :form="form" :selectedPlan="formPlan" />
-    </q-card>
-    <q-card-actions>
-      <q-space />
-      <q-btn @click="onSubmit()" color="primary" push label="Guardar" glossy/>
-    </q-card-actions> -->
-  </div>
+
+  </q-page>
 </template>
+
 <script>
-import { mapMutations } from 'vuex'
-import { required, email } from 'vuelidate/lib/validators'
-import env from '../../../env'
-// import PaypalRegistro from '../../PaypalRegistro'
+import env from '../../env'
 import { openURL } from 'quasar'
 import moment from 'moment'
 export default {
-  props: ['form', 'panel', 'files'],
+  computed: {
+    fnPlanes () {
+      return this.planes.filter(v => v.tipo === this.tipoPlan)
+    },
+    pricePlan () {
+      const plan = this.planes.find(v => v.select)
+      console.log(plan, 'plannnnnn price seleccionado')
+      if (this.form.country === 'co') {
+        return plan.priceco
+      } else {
+        return plan.pricecl
+      }
+    }
+  },
   data () {
     return {
-      pagarWompiParams: {
-      },
-      referencia: null,
+      form: {},
+      tipoPlan: 'Mensual',
       positionScroll: 100,
       contentStyle: {
         backgroundColor: 'rgba(0,0,0,0.02)',
         color: '#555'
       },
-
       contentActiveStyle: {
         backgroundColor: '#eee',
         color: 'black'
       },
-
       thumbStyle: {
         right: '0px',
         borderRadius: '0px',
@@ -86,7 +79,10 @@ export default {
         width: '0px',
         opacity: 0
       },
-      tipoPlan: 'Mensual',
+      formPlan: {},
+      selectPlan: '',
+      appUrl: null,
+      redirectFlow: '',
       planes: [
         {
           name: 'Basico',
@@ -136,54 +132,37 @@ export default {
           priceco: 60000000,
           pricecl: 124000
         }
-      ],
-      product: {
-        price: 0
-      },
-      formPlan: {},
-      selectPlan: '',
-      appUrl: null,
-      redirectFlow: ''
+      ]
     }
   },
-  computed: {
-    fnPlanes () {
-      return this.planes.filter(v => v.tipo === this.tipoPlan)
-    },
-    pricePlan () {
-      const plan = this.planes.find(v => v.select)
-      console.log(plan, 'plannnnnn price seleccionado')
-      if (this.form.country === 'co') {
-        return plan.priceco
-      } else {
-        return plan.pricecl
-      }
-    }
-  },
-  validations () {
-    return {
-      form: {
-        email: { required, email }
-      }
-    }
-  },
-  components: {
-    // PaypalRegistro
-  },
-  mounted () {
-    // this.getPlans()
-    this.$q.loading.hide()
+  async mounted () {
+    this.$q.loading.show()
+    await this.getInfoUser()
     console.log(this.form, 'forrrm')
     this.form.referencia = this.$randomatic('aA0000', 20)
     this.appUrl = env.appUrl + 'deep_link/' + this.form.referencia
     console.log(this.form.referencia, 'aquii randomatic', this.appUrl)
     this.form.tipoPlan = 'Mensual'
     this.scroll()
+    this.$q.loading.hide()
   },
   methods: {
-    ...mapMutations('generals', ['login']),
+    async getInfoUser () {
+      await this.$api.get('user_info').then(res => {
+        this.form = res
+      })
+    },
+    changeTipoCuenta () {
+      this.tipoPlan = this.tipoPlan === 'Anual' ? 'Mensual' : 'Anual'
+      this.form.tipoPlan = this.tipoPlan
+      console.log(this.form, 'cambiando tipo de plan')
+    },
+    scroll () {
+      this.$refs.scrollArea.setScrollPosition(this.positionScroll)
+    },
     async pagarFlow () {
-      await this.$api.post('pay_flow', { amount: this.pricePlan, email: this.form.email }).then(res => {
+      console.log(this.pricePlan, 'price Plan')
+      await this.$api.post('pay_flow_update', { amount: this.pricePlan, email: this.form.email }).then(res => {
         console.log(res, 'RESSSSSSS FLOWWWWWW PAYY')
         if (res) {
           this.form.referencia = res.token
@@ -194,20 +173,6 @@ export default {
         }
       })
     },
-    scroll () {
-      this.$refs.scrollArea.setScrollPosition(this.positionScroll)
-    },
-    changeSelectPlan (name) {
-      var buscarInd = this.planes.findIndex(v => v.select)
-      this.planes[buscarInd].select = false
-      buscarInd = this.planes.findIndex(v => v.name === name)
-      this.planes[buscarInd].select = true
-    },
-    changeTipoCuenta () {
-      this.tipoPlan = this.tipoPlan === 'Anual' ? 'Mensual' : 'Anual'
-      this.form.tipoPlan = this.tipoPlan
-      console.log(this.form, 'cambiando tipo de plan')
-    },
     async onSubmit (plan) {
       this.$q.loading.show()
       this.changeSelectPlan(plan.name)
@@ -216,7 +181,18 @@ export default {
       if (this.form.country === 'cl') {
         await this.pagarFlow()
         console.log(this.form.referencia, 'FLOWWWFFFFFFFFFFFFFFF TOKENNNNNNNNNNNNN')
+        this.$q.loading.show()
+        openURL(this.redirectFlow)
+        this.$q.loading.hide()
+      } else if (this.form.country === 'co') {
+        await this.$api.post('pay_by_wompi', this.form).then(res => {
+          if (res) {
+            const buttonWompi = document.getElementById('pagarWompi')
+            buttonWompi.click()
+          }
+        })
       }
+      /*
       var formData = new FormData()
       var files = []
       files[0] = this.files[0]
@@ -244,34 +220,7 @@ export default {
         } else {
 
         }
-      })
-    },
-    loguear () {
-      this.$api.post('login', this.form).then(res => {
-        if (res) { // Se debe ejecutar una mutacion que modifique el state con sessionInfo
-          const client = res.HEV_SESSION_INFO.roles.find(value => value === 2)
-          if (!client) {
-            this.login(res)
-            this.$router.push('inicio_proveedor')
-          } else {
-            this.login(res)
-            this.$router.push('revista')
-          }
-        } else {
-          console.log('error de ususario')
-          // this.loading = false
-        }
-        this.$q.loading.hide()
-      })
-    },
-    async getPlans () {
-      this.$q.loading.show()
-      await this.$api.get('plans').then(res => {
-        console.log(res, 'res de planes')
-        this.planes = res
-        this.selectPrice(this.planes[0]._id)
-      })
-      this.$q.loading.hide()
+      }) */
     },
     async selectPrice (planID) {
       this.selectPlan = planID
@@ -283,16 +232,26 @@ export default {
       this.form.plan_id = planID
       console.log(this.form, 'form SELECT PRICE')
     },
-    testPadre () {
-      console.log('console del test padre')
+    changeSelectPlan (name) {
+      var buscarInd = this.planes.findIndex(v => v.select)
+      this.planes[buscarInd].select = false
+      buscarInd = this.planes.findIndex(v => v.name === name)
+      this.planes[buscarInd].select = true
     }
   }
 }
 </script>
 
-<style>
-.background-cuatro {
-  background: url('../../../../public/planes_nube.png');
+<style scoped>
+.transition {
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom: 1px solid gray;
+  transition: width 1s, height 1s, margin 0s;
+}
+
+.background-planes {
+  background: url('../../../public/planes_nube.png');
   height: 250px;
   background-size: 100% 100%;
 }
@@ -317,14 +276,8 @@ export default {
   padding-right: 20px;
 }
 
-.transition {
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-bottom: 1px solid gray;
-  transition: width 1s, height 1s, margin 0s;
-}
-
 .ocultar-boton-wompi {
   display: none;
 }
+
 </style>

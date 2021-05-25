@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pb-lg">
+  <q-page v-if="data.length > 0" class="q-pb-lg">
     <div class="absolute-top-center text-center full-width q-mt-sm text-h6 text-white" style="position: absolute">Eventos Realizados</div>
     <q-btn icon="arrow_back_ios" flat dense color="white" style="position: absolute" class="q-mt-sm q-ml-sm" @click="$router.go(-1)" />
     <img src="nubeazul1.png" height="170px" width="100%" />
@@ -16,6 +16,14 @@
           <div class="text-black text-bold"># Invitados: {{item.invitados}}</div>
         </div>
       </q-card>
+    </div>
+  </q-page>
+  <q-page v-else>
+    <div class="absolute-top-center text-center full-width q-mt-sm text-h6 text-white" style="position: absolute">Eventos Realizados</div>
+    <q-btn icon="arrow_back_ios" flat dense color="white" style="position: absolute" class="q-mt-sm q-ml-sm" @click="$router.go(-1)" />
+    <img src="nube300x160.jpg" height="170px" width="100%" />
+    <div class="absolute-center">
+      <img src="sin_eventos_realizados.jpg" alt="sin eventos" @click="$router.push('/inicio_cliente/crear_evento')">
     </div>
   </q-page>
 </template>

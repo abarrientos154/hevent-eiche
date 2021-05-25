@@ -11,9 +11,11 @@
         </div>
         <div class="row justify-center">
           <div>
-            <q-input class="input-border q-pl-sm" label-color="grey-14" type="email" v-model="busqueda" dense label="¿Que estas Buscando?" borderless style="width:300px" />
+            <q-input class="input-border q-pl-sm" label-color="grey-14" type="email" v-model="busqueda" dense label="¿Que estas Buscando?" borderless style="width:300px"
+              @input="filtrarInput()"
+            />
           </div>
-          <q-btn flat round color="black" icon="tune" />
+          <q-btn flat round color="black" icon="tune" @click="filterModal = true" />
         </div>
       </div>
       <div class="column">
@@ -45,13 +47,84 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="filterModal" class="window-width">
+      <q-card class="full-width q-pa-lg text-bold">
+        <div class="column">
+          <div class="text-h6">Filtros:</div>
+          <div class="row q-gutter-x-md">
+            <q-radio v-model="filterRB" val="re" label="Relevancia" />
+            <q-radio v-model="filterRB" val="mayorp" label="Mayor Precio" />
+            <q-radio v-model="filterRB" val="menorp" label="Menor Precio" />
+          </div>
+        </div>
+        <q-separator inset class="q-ma-sm" />
+        <div class="column">
+          <div class="text-h6">Ubicacion:</div>
+          <div>
+            <q-select borderless v-model="country" :options="optionsCountry" label="Paises" class="input-border-new-re-pro" emit-value map-options
+              @input="filterCheck = []"
+            />
+          </div>
+          <div class="row q-gutter-x-md" v-if="country">
+            <q-checkbox v-model="filterCheck" v-for="(item, index) in optionsCities" :key="index" :label="item.label" :val="item.value" />
+          </div>
+        </div>
+        <q-card-actions>
+          <q-btn label="Cancelar" flat color="negative" style="width:45%" v-close-popup />
+          <q-btn label="Filtrar" push color="primary" style="width:45%" @click="filtrar()" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import env from '../../env'
+const cities = [
+  {
+    label: 'Antofagasta',
+    value: 1,
+    paisCode: 'cl'
+  },
+  {
+    label: 'Santiago',
+    value: 2,
+    paisCode: 'cl'
+  },
+  {
+    label: 'Concepcion',
+    value: 3,
+    paisCode: 'cl'
+  },
+  {
+    label: 'Cali',
+    value: 4,
+    paisCode: 'co'
+  },
+  {
+    label: 'Bogota',
+    value: 5,
+    paisCode: 'co'
+  }
+]
 export default {
   data () {
     return {
+      proveedoresT: [],
+      country: null,
+      optionsCountry: [
+        {
+          label: 'Colombia',
+          value: 'co'
+        },
+        {
+          label: 'Chile',
+          value: 'cl'
+        }
+      ],
+      checksByCities: [],
+      filterCheck: [],
+      filterRB: 're',
+      filterModal: false,
       baseu: '',
       busqueda: '',
       header: '',
@@ -92,7 +165,15 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    optionsCities () {
+      if (this.country) {
+        return cities.filter(v => v.paisCode === this.country)
+      } else {
+        return false
+      }
+    }
+  },
   mounted () {
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
     if (this.$route.params.id) {
@@ -102,6 +183,74 @@ export default {
     }
   },
   methods: {
+    filtrarInput () {
+      if (this.busqueda === '') {
+        this.filtrar()
+      } else {
+        // const needle = this.busqueda.toLowerCase()
+        const fil = this.proveedores.filter(v => v.name.toLowerCase().indexOf(this.busqueda.toLowerCase()) > -1)
+        // const fil = this.proveedores.filter(v => v.name >= this.busqueda)
+        this.proveedores = fil
+      }
+    },
+    async verificarCiudad (valueCity) {
+      for (const j of this.filterCheck) {
+        console.log('verificarCiudad', j, valueCity)
+        if (j === valueCity) {
+          return true
+        }
+      }
+      return false
+    },
+    async filtrar () {
+      console.log(this.country, this.filterCheck, this.filterRB)
+      this.$q.loading.show()
+      this.proveedores = this.proveedoresT
+      var newFilter = []
+      var filtradoRB = []
+      if (this.country && this.filterCheck.length > 0) {
+        if (this.filterRB === 'mayorp') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmax + b.pyr.pyr[0].qvalmax))
+        } else if (this.filterRB === 'menorp') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin - b.pyr.pyr[0].qvalmin))
+        } else if (this.filterRB === 're') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.plan_id > b.plan_id) ? -1 : ((b.plan_id > a.plan_id) ? 0 : -1))
+        }
+        this.proveedores = filtradoRB
+        newFilter = []
+        for (const j of this.proveedores) {
+          if (await this.verificarCiudad(j.ciudad.value)) { newFilter.push(j) }
+          console.log(newFilter, 'newFilter', await this.verificarCiudad(j.ciudad.value), 'asd')
+        }
+        this.proveedores = newFilter
+      } else if (this.country) {
+        console.log('else country')
+        if (this.filterRB === 'mayorp') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmax + b.pyr.pyr[0].qvalmax))
+        } else if (this.filterRB === 'menorp') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin - b.pyr.pyr[0].qvalmin))
+        } else if (this.filterRB === 're') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.plan_id > b.plan_id) ? -1 : ((b.plan_id > a.plan_id) ? 0 : -1))
+        }
+        this.proveedores = filtradoRB
+        newFilter = []
+        for (const j of this.proveedores) {
+          if (j.country === this.country) { newFilter.push(j) }
+        }
+        this.proveedores = newFilter
+      } else {
+        if (this.filterRB === 'mayorp') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmax + b.pyr.pyr[0].qvalmax))
+        } else if (this.filterRB === 'menorp') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin - b.pyr.pyr[0].qvalmin))
+        } else if (this.filterRB === 're') {
+          filtradoRB = this.proveedores.sort((a, b) => (a.plan_id > b.plan_id) ? -1 : ((b.plan_id > a.plan_id) ? 0 : -1))
+        }
+        this.proveedores = filtradoRB
+      }
+      console.log(this.proveedores, 'proveedores resultado filtrado')
+      this.$q.loading.hide()
+    },
     async masInformacion (id) {
       this.$q.loading.show()
       await this.$api.post('impressions/' + id).then(res => {
@@ -129,6 +278,7 @@ export default {
         // ordenar proveedores por plan premiun, estandar y por ultimo los basicos
         const ordenar = this.proveedores.sort((a, b) => (a.plan_id > b.plan_id) ? -1 : ((b.plan_id > a.plan_id) ? 0 : -1))
         this.proveedores = ordenar
+        this.proveedoresT = ordenar
         console.log(this.proveedores, 'proveedores')
       })
     },
@@ -151,5 +301,15 @@ export default {
   width: 85px;
   padding-right: 5px;
   padding-left: 5px;
+}
+
+.input-border-new-re-pro {
+  background: #e1f5ff;
+  border: 0px solid #bbbbbb;
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding-left: 10px;
 }
 </style>

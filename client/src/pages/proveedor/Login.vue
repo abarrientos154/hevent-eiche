@@ -118,6 +118,7 @@ export default {
       })
       console.log('verificar flow')
       await this.$api.post('verificar_flow_ref/' + this.$route.params.reFlow).then(res => {
+        console.log(res, 'res flow')
         this.$q.loading.hide()
         if (res) {
           if (res.status === 2) {
@@ -242,6 +243,12 @@ export default {
               this.$q.dialog({
                 title: '¡Atención!',
                 message: 'Su cuenta esta a la espera para aprobar su pago'
+              }).onOk(() => {
+              })
+            } else if (res.HEV_SESSION_INFO.status === 2) {
+              this.$q.dialog({
+                title: '¡Atención!',
+                message: 'Su cuenta esta a la espera para aprobar su pago por cambio de plan'
               }).onOk(() => {
               })
             } else {

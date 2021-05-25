@@ -15,7 +15,7 @@
     </div>
     <div class="text-center text-primary text-h5 text-bold"> * Perfil * </div>
     <div class="column items-center justify-start q-mb-lg">
-      <div v-for="(item, index) in opciones" :key="index" class="cursor-pointer q-mt-md column" style="font-size:18px" @click="ejecutar(index)">
+      <div v-for="(item, index) in opciones" :key="index" class="cursor-pointer q-mt-md column" style="font-size:18px" @click="ejecutar(item.ind, index)">
         <div class="text-grey-8">{{item.titulo}}</div>
         <q-separator />
       </div>
@@ -54,12 +54,13 @@ export default {
       user: {},
       perfil: null,
       opciones: [
-        { titulo: 'Editar Datos', dialog: true },
-        { titulo: 'Perfil de tu Empresa', dialog: true },
-        { titulo: 'Preguntas Frecuentes', dialog: true },
-        { titulo: 'Renovar Pago', url: '', dialog: false },
-        { titulo: 'Notificaciones', dialog: true },
-        { titulo: 'Cerrar Sesión', accion: 'logout', dialog: false }
+        { titulo: 'Editar Datos', dialog: true, ind: 0 },
+        { titulo: 'Perfil de tu Empresa', dialog: true, ind: 1 },
+        { titulo: 'Preguntas Frecuentes', dialog: true, ind: 2 },
+        { titulo: 'Renovar Pago', url: '', dialog: false, ind: 3 },
+        { titulo: 'Planes Disponibles', url: '/planes_disponibles', dialog: false, ind: 6 },
+        { titulo: 'Notificaciones', dialog: true, ind: 4 },
+        { titulo: 'Cerrar Sesión', accion: 'logout', dialog: false, ind: 5 }
       ]
     }
   },
@@ -95,9 +96,9 @@ export default {
         }
       })
     },
-    ejecutar (index) {
-      console.log(this.opciones[index], 'ssss')
-      if (this.opciones[index].dialog) {
+    ejecutar (index, indOption) {
+      console.log(this.opciones[indOption], 'ssss', index, 'indexxxxx')
+      if (this.opciones[indOption].dialog) {
         if (index === 0) {
           this.dialogos.editarDatos = true
         } else if (index === 1) {
@@ -105,9 +106,9 @@ export default {
         } else if (index === 2) {
           this.dialogos.editarPreguntas = true
         }
-      } else if (this.opciones[index].url) {
-        this.$router.push(this.opciones[index].url)
-      } else if (this.opciones[index].accion === 'logout') {
+      } else if (this.opciones[indOption].url) {
+        this.$router.push(this.opciones[indOption].url)
+      } else if (this.opciones[indOption].accion === 'logout') {
         this.logout()
       }
     },

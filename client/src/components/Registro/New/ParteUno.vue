@@ -51,7 +51,7 @@
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <q-select v-model="pais" class="input-border-new q-pa-sm" label="Pais" style="height:45px" dense borderless :options="countriesP"
-          error-message="el pais es requerido" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" @input="form.country = pais, prueba()"
+          error-message="el pais es requerido" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" @input="form.country = pais, prueba(), form.ciudad = null, ciudad = null"
           emit-value map-options
         >
           <template v-slot:option="scope">
@@ -141,8 +141,8 @@
         </div>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-        <q-input v-model="form.ciudad" class="input-border-new q-pa-sm" label="Ciudad" dense borderless
-          error-message="ingrese una ciudad valida" :error="$v.form.ciudad.$error" @blur="$v.form.ciudad.$touch()"
+        <q-select borderless v-model="ciudad" :options="citiesF" option-value="value" option-label="label" map-options
+          class="input-border-new-re-pro" style="padding-left:10px" @input="form.ciudad = ciudad" label="Ciudad"
         />
       </div>
       <div class="full-width">
@@ -186,6 +186,7 @@ export default {
   },
   data () {
     return {
+      ciudad: null,
       pais: 'co',
       countriesP: [{ label: 'Chile', value: 'cl' }, { label: 'Colombia', value: 'co' }],
       markers: [],
@@ -209,8 +210,44 @@ export default {
           code: 'CO'
         }
       ],
+      cities: [
+        {
+          label: 'Antofagasta',
+          value: 1,
+          paisCode: 'cl'
+        },
+        {
+          label: 'Santiago',
+          value: 2,
+          paisCode: 'cl'
+        },
+        {
+          label: 'Concepcion',
+          value: 3,
+          paisCode: 'cl'
+        },
+        {
+          label: 'Cali',
+          value: 4,
+          paisCode: 'co'
+        },
+        {
+          label: 'Bogota',
+          value: 5,
+          paisCode: 'co'
+        }
+      ],
       tel: null,
       cel: null
+    }
+  },
+  computed: {
+    citiesF () {
+      if (this.pais) {
+        return this.cities.filter(v => v.paisCode === this.pais)
+      } else {
+        return []
+      }
     }
   },
   validations () {
@@ -250,7 +287,6 @@ export default {
       console.log(this.form, 'formmmmmmmmmmmmmmmmmmmmmmm')
     },
     test () {
-      console.log(this.form, 'form')
       this.form.telCode = this.telCode
       this.form.celCode = this.celCode
     },
@@ -261,7 +297,6 @@ export default {
       })
     },
     filterFn (val, update) {
-      console.log(val, 'ballllllllll')
       if (val === '') {
         update(() => {
           this.countries = this.countriesOptions

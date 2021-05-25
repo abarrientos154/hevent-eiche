@@ -56,6 +56,11 @@ const routes = [
         meta: { toolbar: false, title: 'Mi Evento', footer: true }
       },
       {
+        path: '/inicio_cliente/crear_evento',
+        component: () => import('pages/client/new/Inicio.vue'),
+        meta: { toolbar: false, title: 'Mi Evento', footer: true }
+      },
+      {
         path: '/mi_evento/:id',
         component: () => import('pages/client/new/Evento.vue'),
         meta: { toolbar: false, title: 'Mi Evento', footer: true }
@@ -169,6 +174,11 @@ const routes = [
         path: '/blog/:id',
         component: () => import('pages/Blog/Detalle.vue'),
         meta: { toolbar: false, title: 'Seccion Revista', footer: true }
+      },
+      {
+        path: '/planes_disponibles',
+        component: () => import('pages/proveedor/PlanesDisponibles.vue'),
+        meta: { toolbar: false, title: 'Seccion Revista', footer: false }
       }
     ]
   },
@@ -214,7 +224,7 @@ const routes = [
   },
   {
     path: '*',
-    redirect: '/login'
+    redirect: '/login_cliente'
   }
 ]
 

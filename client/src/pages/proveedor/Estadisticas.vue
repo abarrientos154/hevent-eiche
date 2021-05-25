@@ -238,7 +238,7 @@ export default {
 }
 
 .fondo-estadisticas {
-  background: url('../../../public/nubeazul1.png');
+  background: url('../../../public/nube400x150.jpg');
   width: 100%;
   height: 150px;
   background-size: 100% 100%;

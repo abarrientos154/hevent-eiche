@@ -8,7 +8,7 @@
         <div class="text-h6 text-primary text-bold q-ml-md"> * Locacion * </div>
         <q-scroll-area horizontal style="height: 260px; width: 100%;" class="rounded-borders q-mb-md q-mt-sm q-ml-sm" >
           <div class="row no-wrap q-gutter-sm">
-            <q-card v-for="(item, index) in data.locacion" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
+            <q-card v-for="(item, index) in data.locacion" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey" @click="masInformacion(item.proveedor_id)">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor.name ? item.info_proveedor.name : 'Proveedor'}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
               <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />
@@ -26,7 +26,7 @@
         <div class="text-h6 text-primary text-bold q-ml-md"> * Servicios * </div>
         <q-scroll-area horizontal style="height: 260px; width: 100%;" class="rounded-borders q-mb-md q-mt-sm q-ml-sm" >
           <div class="row no-wrap q-gutter-sm">
-            <q-card v-for="(item, index) in data.locacion" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
+            <q-card v-for="(item, index) in data.locacion" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey" @click="masInformacion(item.proveedor_id)">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor.name ? item.info_proveedor.name : 'Proveedor'}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
               <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />
@@ -44,7 +44,7 @@
         <div class="text-h6 text-primary text-bold q-ml-md"> * Personas * </div>
         <q-scroll-area horizontal style="height: 260px; width: 100%;" class="rounded-borders q-mb-md q-mt-sm q-ml-sm q-mr-xl" >
           <div class="row no-wrap q-gutter-sm">
-            <q-card v-for="(item, index) in data.personas" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey">
+            <q-card v-for="(item, index) in data.personas" :key="index" style="width:170px;height:250px;border-radius:12px;border:1px solid grey" @click="masInformacion(item.proveedor_id)">
               <div class="text-center text-grey-7 text-bold"> * {{item.info_proveedor ? item.info_proveedor.name : 'Proveedor'}} * </div>
               <img :src="baseu + item.proveedor_id" style="height:83%">
               <q-btn dense class="full-width gradiente-buttom" push style="border-radius:6px" label="mas informacion" size="10px" @click="masInformacion(item.proveedor_id)" />

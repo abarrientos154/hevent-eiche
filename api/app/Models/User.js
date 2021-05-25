@@ -39,7 +39,7 @@ class User extends Model {
       celCode: 'string',
       celular: 'string',
       checks: 'array',
-      ciudad: 'string',
+      ciudad: 'object',
       descripcion: 'string',
       direccion: 'string',
       email: 'email',

@@ -5,6 +5,7 @@ const Notificacion = use("App/Models/Notificacion")
 const Role = use("App/Models/Role")
 const RespuestaProveedor = use("App/Models/RespuestaProveedor")
 const ServicioProveedor = use("App/Models/ServicioProveedor")
+const Payment = use("App/Models/Payment")
 const Email = use('App/Functions/Email')
 const Cruds = use('App/Functions/Cruds')
 const fs = require('fs')
@@ -23,6 +24,13 @@ var configFlow = {
   baseURL: Env.get('FLOW_BASEURL')
 }
 
+/*
+  //////////////LEYENDA ESTATUS PROVEEDORES//////////////
+  0 = A LA ESPERA POR PAGAR REGISTRO
+  1 = ACTIVO
+  2 = EN PROCESO POR PAGAR CAMBIO DE PLAN
+*/
+
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
@@ -31,6 +39,54 @@ var configFlow = {
  * Resourceful controller for interacting with users
  */
 class UserController {
+
+  async cambioPlanByWompi ({ response, params, request, view }) {
+
+  }
+
+  async payFlowUpdateVerify ({ response, params, request, view }) {
+    const body = request.post()
+    let buscarPago = await Payment.findBy('ref', body.token)
+    if (!buscarPago) {
+      await Payment.create({ ref: body.token })
+    }
+    return view.render('flow-pay-update')
+  }
+
+
+  async payFlowUpdate ({ response, params, request, auth }) {
+    const idUser = (await auth.getUser()).toJSON()
+    const dat = request.only(['amount', 'email'])
+    const parametros = {
+      commerceOrder: Math.floor(Math.random() * (2000 - 1100 + 1)) + 1100,
+      subject: 'Pago de prueba',
+      currency: 'CLP',
+      amount: dat.amount,
+      email: dat.email,
+      paymentMethod: 9,
+      urlConfirmation: configFlow.baseURL + 'api/flow-pay-update',
+      urlReturn: configFlow.baseURL + 'api/flow-pay-update',
+    }
+
+    const serviceName = 'payment/create'
+
+    try {
+      //console.log(Flow)
+      // Instancia la clase FlowApi
+      const flowApi = new Flow.default(configFlow)
+      // Ejecuta el servicio
+      var respon = await flowApi.send(serviceName, parametros, 'POST')
+      // Prepara url para redireccionar el browser del pagador
+      var redirect = respon.url + '?token=' + respon.token
+      console.log(`location: ${redirect}`)
+      await Payment.create({ ref: respon.token, user_id: idUser._id , email: idUser.email })
+      await User.query().where('_id', idUser._id).update({ status: 2 })
+      response.send({redirect, token: respon.token})
+    } catch (error) {
+      console.log(error)
+      response.unprocessableEntity(error.message)
+    }
+  }
 
   async verificarPayFlow ({ response, params, request }) {
     let dat = params.ref
@@ -73,8 +129,8 @@ class UserController {
       amount: dat.amount,
       email: dat.email,
       paymentMethod: 9,
-      urlConfirmation: configFlow.baseURL,
-      urlReturn: configFlow.baseURL,
+      urlConfirmation: configFlow.baseURL + 'pay-flow',
+      urlReturn: configFlow.baseURL + 'pay-flow',
     }
 
     const serviceName = 'payment/create'
@@ -316,6 +372,8 @@ class UserController {
       dat = request.only(['dat'])
       dat = JSON.parse(dat.dat)
       let bodyServicios = dat.checks
+
+      await Payment.create({ ref: body.referencia, email: body.email })
 
       for (let j in bodyServicios) {
         let crear = {
