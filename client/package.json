@@ -1,9 +1,9 @@
 {
-  "name": "hevent",
-  "version": "0.0.1",
-  "description": "A Quasar Framework app",
+  "name": "HeventApp",
+  "version": "0.1.1",
+  "description": "A EICHE Project",
   "productName": "hevent",
-  "author": "example <example@example.com>",
+  "author": "maeep154@gmail.com",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
