@@ -251,7 +251,7 @@ export default {
                 message: 'Su cuenta esta a la espera para aprobar su pago por cambio de plan'
               }).onOk(() => {
               })
-            } else {
+            } else if (res.HEV_SESSION_INFO.status === 1) {
               this.login(res)
               this.$router.push('inicio_proveedor')
             }

@@ -40,8 +40,12 @@ var configFlow = {
  */
 class UserController {
 
-  async cambioPlanByWompi ({ response, params, request, view }) {
-
+  async cambioPlanByWompi ({ response, params, request, auth }) {
+    let body = request.only(['referencia', '_id', 'email', 'plan_id', 'tipoPlan', 'country' ])
+    console.log(body, 'bodyd')
+    await Payment.create({ ref: body.referencia, user_id: body._id , email: body.email, plan_id: body.plan_id, tipoPlan: body.tipoPlan, country: body.country })
+    let user = await User.query().where('_id', body._id).update({ status: 2, referencia: body.referencia })
+    response.send(user)
   }
 
   async payFlowUpdateVerify ({ response, params, request, view }) {
@@ -79,8 +83,8 @@ class UserController {
       // Prepara url para redireccionar el browser del pagador
       var redirect = respon.url + '?token=' + respon.token
       console.log(`location: ${redirect}`)
-      await Payment.create({ ref: respon.token, user_id: idUser._id , email: idUser.email })
-      await User.query().where('_id', idUser._id).update({ status: 2 })
+      await Payment.create({ ref: respon.token, user_id: idUser._id , email: idUser.email, plan_id: idUser.plan_id, tipoPlan: idUser.tipoPlan, country: idUser.country })
+      await User.query().where('_id', idUser._id).update({ status: 2, referencia: respon.token })
       response.send({redirect, token: respon.token})
     } catch (error) {
       console.log(error)
@@ -152,6 +156,7 @@ class UserController {
   }
 
   async aprovedProvider({ response, params }) {
+    console.log(params.ref, 'este es la referencia')
     let user = await User.query().where('referencia', params.ref).update({status: 1})
     response.send(user)
   }

@@ -69,14 +69,18 @@ export default {
       primera: true
     }
   },
-  mounted () {
+  async mounted () {
+    this.$q.loading.show()
     this.getPreguntas()
+    this.$q.loading.hide()
     console.log(this.primera, 'primera mountedd')
   },
   methods: {
     getPreguntas () {
       console.log(this.form, 'formm')
+      this.$q.loading.show()
       this.$api.post('preguntas', this.form).then(res => {
+        this.$q.loading.hide()
         for (const j of res) {
           for (const i of j.pregunta) {
             if (i.checks) {

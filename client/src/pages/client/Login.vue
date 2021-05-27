@@ -104,19 +104,19 @@
     <div class=" text-center text-subtitle2 ">Iniciar Sesión con</div>
     <div class="row justify-between q-mr-xl q-ml-xl q-mt-sm q-mb-sm">
       <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login shadow-3">
-        <img src="icons/Iconos_Redes.png" style="width: 20px; height: 20px"/>
+        <img src="iconos2/Iconos_Redes.png" style="width: 20px; height: 20px"/>
       </GoogleLogin>
       <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
-        <img src="icons/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
+        <img src="iconos2/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <q-btn  round color="grey" style="width: 40px; height: 40px">
-        <img src="icons/Iconos_Redes_2.png" style="width: 20px; height: 20px"/>
+        <img src="iconos2/Iconos_Redes_2.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <!--<q-btn  round color="primary" style="width: 40px; height: 40px" to="/verificacion_correo">
-        <img src="icons/Iconos_Redes_3.png" style="width: 20px; height: 20px"/>
+        <img src="iconos2/Iconos_Redes_3.png" style="width: 20px; height: 20px"/>
       </q-btn> -->
       <q-btn  round color="light-blue" style="width: 40px; height: 40px" to="/slider_proveedor">
-        <img src="icons/Iconos_Redes_4.png" style="width: 20px; height: 20px"/>
+        <img src="iconos2/Iconos_Redes_4.png" style="width: 20px; height: 20px"/>
       </q-btn>
     </div>
     <div class="text-center text-caption">Si eres un proveedor, ingresa el icono de la caja</div>
@@ -310,7 +310,13 @@ export default {
                 message: 'Su cuenta esta a la espera para aprobar su pago'
               }).onOk(() => {
               })
-            } else {
+            } else if (res.HEV_SESSION_INFO.status === 2) {
+              this.$q.dialog({
+                title: '¡Atención!',
+                message: 'Su cuenta esta a la espera para aprobar su pago por cambio de plan'
+              }).onOk(() => {
+              })
+            } else if (res.HEV_SESSION_INFO.status === 1) {
               this.login(res)
               this.$router.push('inicio_proveedor')
             }

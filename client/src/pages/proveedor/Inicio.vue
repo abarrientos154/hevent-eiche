@@ -51,10 +51,10 @@ export default {
     return {
       usuario: '',
       rutas: [
-        { name: 'Calendario', icon: 'icons/calendario.png', ruta: '/calendario_eventos' },
-        { name: 'Mensajes', icon: 'icons/mensajes.png', ruta: '/chats_proveedor' },
-        { name: 'Cotizaciones', icon: 'icons/cotizar_add.png', ruta: '/aprobacion_cotizacion' },
-        { name: 'Estadísticas', icon: 'icons/estadisticas.png', ruta: '/estadisticas' }
+        { name: 'Calendario', icon: 'iconos2/calendario.png', ruta: '/calendario_eventos' },
+        { name: 'Mensajes', icon: 'iconos2/mensajes.png', ruta: '/chats_proveedor' },
+        { name: 'Cotizaciones', icon: 'iconos2/cotizar_add.png', ruta: '/aprobacion_cotizacion' },
+        { name: 'Estadísticas', icon: 'iconos2/estadisticas.png', ruta: '/estadisticas' }
       ],
       portadaImg: '',
       perfilImg: '',

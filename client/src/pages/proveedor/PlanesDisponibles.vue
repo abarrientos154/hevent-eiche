@@ -28,7 +28,7 @@
 
     <form action="https://checkout.wompi.co/p/" method="GET">
       <!-- OBLIGATORIOS -->
-      <input type="hidden" name="public-key" value="pub_test_7Q44Osi3VFuxurTJhLhsg5yy8cMl6mNy" />
+      <input type="hidden" name="public-key" :value="keyPub" />
       <input type="hidden" name="currency" value="COP" />
       <input type="hidden" name="amount-in-cents" :value="pricePlan" />
       <input type="hidden" name="reference" :value="form.referencia" />
@@ -61,6 +61,7 @@ export default {
   },
   data () {
     return {
+      keyPub: '',
       form: {},
       tipoPlan: 'Mensual',
       positionScroll: 100,
@@ -137,6 +138,7 @@ export default {
   },
   async mounted () {
     this.$q.loading.show()
+    this.keyPub = this.$WKPub
     await this.getInfoUser()
     console.log(this.form, 'forrrm')
     this.form.referencia = this.$randomatic('aA0000', 20)
@@ -181,11 +183,11 @@ export default {
       if (this.form.country === 'cl') {
         await this.pagarFlow()
         console.log(this.form.referencia, 'FLOWWWFFFFFFFFFFFFFFF TOKENNNNNNNNNNNNN')
-        this.$q.loading.show()
         openURL(this.redirectFlow)
         this.$q.loading.hide()
       } else if (this.form.country === 'co') {
         await this.$api.post('pay_by_wompi', this.form).then(res => {
+          this.$q.loading.hide()
           if (res) {
             const buttonWompi = document.getElementById('pagarWompi')
             buttonWompi.click()

@@ -80,13 +80,13 @@
     <div class="text-center text-subtitle2 q-mt-sm">Registrarse con</div>
     <div class="row justify-between q-mr-xl q-ml-xl">
       <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login-r shadow-3">
-        <img src="icons/Iconos_Redes.png" style="width: 25px; height: 25px"/>
+        <img src="iconos2/Iconos_Redes.png" style="width: 25px; height: 25px"/>
       </GoogleLogin>
       <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
-        <img src="icons/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
+        <img src="iconos2/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <q-btn class="q-ma-sm" round color="grey" style="width: 40px; height: 40px">
-        <img src="icons/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
+        <img src="iconos2/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
       </q-btn>
     </div>
   </div>
@@ -177,6 +177,10 @@ export default {
         this.form.telCode = this.telCode
         this.$api.post('registrar_cliente', this.form).then(res => {
           if (res) {
+            this.$q.notify({
+              message: 'Registrado Correctamente, ya puedes iniciar sesion',
+              color: 'positive'
+            })
             console.log('ejecutado o guardado correctamente')
             this.$router.push('/login_cliente')
           }

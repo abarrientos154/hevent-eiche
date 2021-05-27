@@ -27,7 +27,7 @@
     </q-scroll-area>
     <form action="https://checkout.wompi.co/p/" method="GET">
       <!-- OBLIGATORIOS -->
-      <input type="hidden" name="public-key" value="pub_test_7Q44Osi3VFuxurTJhLhsg5yy8cMl6mNy" />
+      <input type="hidden" name="public-key" :value="keyPub" />
       <input type="hidden" name="currency" value="COP" />
       <input type="hidden" name="amount-in-cents" :value="pricePlan" />
       <input type="hidden" name="reference" :value="form.referencia" />
@@ -65,6 +65,7 @@ export default {
   props: ['form', 'panel', 'files'],
   data () {
     return {
+      keyPub: '',
       pagarWompiParams: {
       },
       referencia: null,
@@ -173,6 +174,7 @@ export default {
   mounted () {
     // this.getPlans()
     this.$q.loading.hide()
+    this.keyPub = this.$WKPub
     console.log(this.form, 'forrrm')
     this.form.referencia = this.$randomatic('aA0000', 20)
     this.appUrl = env.appUrl + 'deep_link/' + this.form.referencia

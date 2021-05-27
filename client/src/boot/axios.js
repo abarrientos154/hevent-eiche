@@ -19,6 +19,7 @@ export default async ({ store, Vue }) => {
   Vue.prototype.$randomatic = randomize
 
   Vue.prototype.$WKPriv = env.wompiKeyPriv
+  Vue.prototype.$WKPub = env.wompiKeyPub
 
   axiosInstance.interceptors.response.use(function (response) {
     // console.log('axiosResponse', response)

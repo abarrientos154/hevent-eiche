@@ -29,6 +29,9 @@
     <q-dialog v-model="dialogos.editarPreguntas" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
       <editar-preguntas class="q-mt-xl" />
     </q-dialog>
+    <q-dialog v-model="dialogos.tuplan" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+      <tu-plan class="q-mt-xl" />
+    </q-dialog>
   </div>
 </template>
 
@@ -37,9 +40,10 @@ import env from '../../env'
 import EditarDatos from '../../components/Proveedor/Perfil/EditarDatos'
 import EditarPerfil from '../../components/Proveedor/Perfil/PerfilEmpresa'
 import EditarPreguntas from '../../components/Proveedor/Perfil/PreguntasFrecuentes'
+import TuPlan from '../../components/Proveedor/Perfil/TuPlan'
 export default {
   components: {
-    EditarDatos, EditarPerfil, EditarPreguntas
+    EditarDatos, EditarPerfil, EditarPreguntas, TuPlan
   },
   data () {
     return {
@@ -48,7 +52,8 @@ export default {
       dialogos: {
         editarDatos: false,
         editarPerfil: false,
-        editarPreguntas: false
+        editarPreguntas: false,
+        tuplan: false
       },
       perfilImg: '',
       user: {},
@@ -57,7 +62,7 @@ export default {
         { titulo: 'Editar Datos', dialog: true, ind: 0 },
         { titulo: 'Perfil de tu Empresa', dialog: true, ind: 1 },
         { titulo: 'Preguntas Frecuentes', dialog: true, ind: 2 },
-        { titulo: 'Renovar Pago', url: '', dialog: false, ind: 3 },
+        { titulo: 'Tu Plan', url: '', dialog: true, ind: 3 },
         { titulo: 'Planes Disponibles', url: '/planes_disponibles', dialog: false, ind: 6 },
         { titulo: 'Notificaciones', dialog: true, ind: 4 },
         { titulo: 'Cerrar Sesión', accion: 'logout', dialog: false, ind: 5 }
@@ -105,6 +110,8 @@ export default {
           this.dialogos.editarPerfil = true
         } else if (index === 2) {
           this.dialogos.editarPreguntas = true
+        } else if (index === 3) {
+          this.dialogos.tuplan = true
         }
       } else if (this.opciones[indOption].url) {
         this.$router.push(this.opciones[indOption].url)
