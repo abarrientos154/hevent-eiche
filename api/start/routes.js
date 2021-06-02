@@ -79,14 +79,17 @@ addPrefixToGroup(
 
     Route.post("pay_flow", "UserController.payFlow")
     Route.post("verificar_flow_ref/:ref", "UserController.verificarPayFlow")
+
+    Route.post("pay_flow_update", "UserController.payFlowUpdate")
+    Route.post("pay_by_wompi", "UserController.cambioPlanByWompi")
+
+    Route.get("user_info/:id", "UserController.userInfoById")
   })
 );
 
 addPrefixToGroup(
   Route.group(() => {
 
-    Route.post("pay_flow_update", "UserController.payFlowUpdate")
-    Route.post("pay_by_wompi", "UserController.cambioPlanByWompi")
     // Insertar rutas con protección de autenticación aquí
 
     /////////////Imagenes///////////////////

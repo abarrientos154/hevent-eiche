@@ -40,6 +40,11 @@ var configFlow = {
  */
 class UserController {
 
+  async userInfoById ({ response, params }) {
+    const user = (await User.find(params.id)).toJSON()
+    response.send(user)
+  }
+
   async cambioPlanByWompi ({ response, params, request, auth }) {
     let body = request.only(['referencia', '_id', 'email', 'plan_id', 'tipoPlan', 'country' ])
     console.log(body, 'bodyd')
@@ -59,8 +64,9 @@ class UserController {
 
 
   async payFlowUpdate ({ response, params, request, auth }) {
-    const idUser = (await auth.getUser()).toJSON()
     const dat = request.only(['amount', 'email'])
+    const idUser =  await User.findBy('email', dat.email) //(await auth.getUser()).toJSON()
+
     const parametros = {
       commerceOrder: Math.floor(Math.random() * (2000 - 1100 + 1)) + 1100,
       subject: 'Pago de prueba',
@@ -378,7 +384,7 @@ class UserController {
       dat = JSON.parse(dat.dat)
       let bodyServicios = dat.checks
 
-      await Payment.create({ ref: body.referencia, email: body.email })
+      await Payment.create({ ref: body.referencia, email: body.email, user_id: user._id.toString(), plan_id: body.plan_id, tipoPlan: body.tipoPlan })
 
       for (let j in bodyServicios) {
         let crear = {
@@ -528,6 +534,7 @@ class UserController {
     })
 
     console.log(permissions, 'permissions')
+    token.user_id = user._id
     token.name = user.name
     token.lastName = user.lastName
     token.rating = user.rating

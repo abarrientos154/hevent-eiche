@@ -179,6 +179,11 @@ const routes = [
         path: '/planes_disponibles',
         component: () => import('pages/proveedor/PlanesDisponibles.vue'),
         meta: { toolbar: false, title: 'Seccion Revista', footer: false }
+      },
+      {
+        path: '/planes_disponibles/:proveedor_id',
+        component: () => import('pages/proveedor/PlanesDisponibles.vue'),
+        meta: { toolbar: false, title: 'Seccion Revista', footer: false }
       }
     ]
   },

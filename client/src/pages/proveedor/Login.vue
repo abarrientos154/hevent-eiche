@@ -112,6 +112,14 @@ export default {
   },
   methods: {
     ...mapMutations('generals', ['login']),
+    backToPayPlan (id) {
+      this.$q.dialog({
+        title: 'Eleccion de Plan!',
+        message: 'Desea volver al modulo de eleccion de planes?'
+      }).onOk(() => {
+        this.$router.push('/planes_disponibles/' + id)
+      })
+    },
     async verificarFlow () {
       this.$q.loading.show({
         message: 'Confirmando Transaccion. Por Favor Espere...'
@@ -244,12 +252,14 @@ export default {
                 title: '¡Atención!',
                 message: 'Su cuenta esta a la espera para aprobar su pago'
               }).onOk(() => {
+                this.backToPayPlan(res.HEV_SESSION_INFO.user_id)
               })
             } else if (res.HEV_SESSION_INFO.status === 2) {
               this.$q.dialog({
                 title: '¡Atención!',
                 message: 'Su cuenta esta a la espera para aprobar su pago por cambio de plan'
               }).onOk(() => {
+                this.backToPayPlan(res.HEV_SESSION_INFO.user_id)
               })
             } else if (res.HEV_SESSION_INFO.status === 1) {
               this.login(res)

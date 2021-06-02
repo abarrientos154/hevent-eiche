@@ -61,6 +61,7 @@ export default {
   },
   data () {
     return {
+      id: this.$route.params.proveedor_id,
       keyPub: '',
       form: {},
       tipoPlan: 'Mensual',
@@ -150,9 +151,16 @@ export default {
   },
   methods: {
     async getInfoUser () {
-      await this.$api.get('user_info').then(res => {
-        this.form = res
-      })
+      if (!this.id) {
+        console.log('no tengo id')
+        await this.$api.get('user_info').then(res => {
+          this.form = res
+        })
+      } else {
+        await this.$api.get('user_info/' + this.id).then(res => {
+          this.form = res
+        })
+      }
     },
     changeTipoCuenta () {
       this.tipoPlan = this.tipoPlan === 'Anual' ? 'Mensual' : 'Anual'
