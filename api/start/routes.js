@@ -92,6 +92,8 @@ addPrefixToGroup(
 
     // Insertar rutas con protección de autenticación aquí
 
+    Route.get('validar_plan', 'UserController.validarCambioPlan')
+
     /////////////Imagenes///////////////////
     //Route.post('subirImagenes', 'UploadController.uploadShopImage');
     ///////////////////////////////
