@@ -134,7 +134,8 @@ export default {
           priceco: 60000000,
           pricecl: 124000
         }
-      ]
+      ],
+      validacionPlan: false
     }
   },
   async mounted () {
@@ -187,50 +188,45 @@ export default {
       this.$q.loading.show()
       this.changeSelectPlan(plan.name)
       this.form.plan_id = plan.cual
-      console.log(this.form, 'form')
-      if (this.form.country === 'cl') {
-        await this.pagarFlow()
-        console.log(this.form.referencia, 'FLOWWWFFFFFFFFFFFFFFF TOKENNNNNNNNNNNNN')
-        openURL(this.redirectFlow)
-        this.$q.loading.hide()
-      } else if (this.form.country === 'co') {
-        await this.$api.post('pay_by_wompi', this.form).then(res => {
+      console.log(this.validacionPlan, 'validacion plan')
+      await this.validarPlan()
+      console.log(this.validacionPlan, 'validacion plan')
+      if (this.validacionPlan) {
+        console.log('entro')
+        if (this.form.country === 'cl') {
+          await this.pagarFlow()
+          console.log(this.form.referencia, 'FLOWWWFFFFFFFFFFFFFFF TOKENNNNNNNNNNNNN')
+          openURL(this.redirectFlow)
           this.$q.loading.hide()
-          if (res) {
-            const buttonWompi = document.getElementById('pagarWompi')
-            buttonWompi.click()
+        } else if (this.form.country === 'co') {
+          await this.$api.post('pay_by_wompi', this.form).then(res => {
+            this.$q.loading.hide()
+            if (res) {
+              const buttonWompi = document.getElementById('pagarWompi')
+              buttonWompi.click()
+            }
+          })
+        }
+      }
+      this.$q.loading.hide()
+    },
+    async validarPlan () {
+      if (this.id) {
+        this.validacionPlan = true
+      } else {
+        await this.$api.get('validar_plan').then(res => {
+          console.log(res, 'resss')
+          if (res.error) {
+            this.validacionPlan = false
+            this.$q.notify({
+              message: res.message,
+              color: 'negative'
+            })
+          } else {
+            this.validacionPlan = true
           }
         })
       }
-      /*
-      var formData = new FormData()
-      var files = []
-      files[0] = this.files[0]
-      files[1] = this.files[1]
-      formData.append('perfil', files[0])
-      formData.append('portada', files[1])
-      formData.append('dat', JSON.stringify(this.form))
-      await this.$api.post('registrar_proveedor', formData, {
-        headers: {
-          'Content-Type': undefined
-        }
-      }).then(res => {
-        this.$q.loading.hide()
-        if (res) {
-          console.log(res, 'ress')
-          if (this.form.country === 'co') {
-            const buttonWompi = document.getElementById('pagarWompi')
-            buttonWompi.click()
-          } else {
-            this.$q.loading.show()
-            openURL(this.redirectFlow)
-            this.$q.loading.hide()
-          }
-          // this.loguear()
-        } else {
-
-        }
-      }) */
     },
     async selectPrice (planID) {
       this.selectPlan = planID

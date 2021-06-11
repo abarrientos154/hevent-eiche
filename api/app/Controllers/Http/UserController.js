@@ -16,6 +16,7 @@ const Hash = use('Hash')
 var randomize = require('randomatic')
 const Env = use('Env')
 const Flow = require('flowcl-node-api-client')
+const moment = require('moment')
 
 var configFlow = {
   apiKey: Env.get('FLOW_APIKEY'),
@@ -40,15 +41,33 @@ var configFlow = {
  */
 class UserController {
 
+  async validarCambioPlan ({ params, auth, response }) {
+    const formUser = ((await auth.getUser()).toJSON())
+    const payment = (await Payment.query().where({
+      user_id: formUser._id, status: 1
+    }).fetch()).toJSON()
+    const menanual = payment[0].tipoPlan === 'Mensual' ? 'month' : 'year'
+    const endPlan = moment(payment[0].created_at).add(1, menanual)
+    const difDias = moment(endPlan).diff(moment(), 'days')
+    if (difDias > 15) {
+      response.send({
+        error: true,
+        message: 'aun le quedan ' + difDias + ' dias de su plan actual'
+      })
+    } else {
+      response.send({ ...payment, bonus: difDias > 0 ? difDias : 0})
+    }
+  }
+
   async userInfoById ({ response, params }) {
     const user = (await User.find(params.id)).toJSON()
     response.send(user)
   }
 
   async cambioPlanByWompi ({ response, params, request, auth }) {
-    let body = request.only(['referencia', '_id', 'email', 'plan_id', 'tipoPlan', 'country' ])
+    let body = request.only(['referencia', '_id', 'email', 'plan_id', 'tipoPlan', 'country', 'bonusDias' ])
     console.log(body, 'bodyd')
-    await Payment.create({ ref: body.referencia, user_id: body._id , email: body.email, plan_id: body.plan_id, tipoPlan: body.tipoPlan, country: body.country })
+    await Payment.create({ ref: body.referencia, user_id: body._id , email: body.email, plan_id: body.plan_id, tipoPlan: body.tipoPlan, country: body.country, status: 0, bonusDias: body.bonusDias })
     let user = await User.query().where('_id', body._id).update({ status: 2, referencia: body.referencia })
     response.send(user)
   }
@@ -89,7 +108,7 @@ class UserController {
       // Prepara url para redireccionar el browser del pagador
       var redirect = respon.url + '?token=' + respon.token
       console.log(`location: ${redirect}`)
-      await Payment.create({ ref: respon.token, user_id: idUser._id , email: idUser.email, plan_id: idUser.plan_id, tipoPlan: idUser.tipoPlan, country: idUser.country })
+      await Payment.create({ ref: respon.token, user_id: idUser._id , email: idUser.email, plan_id: idUser.plan_id, tipoPlan: idUser.tipoPlan, country: idUser.country, status: 0 })
       await User.query().where('_id', idUser._id).update({ status: 2, referencia: respon.token })
       response.send({redirect, token: respon.token})
     } catch (error) {
@@ -164,6 +183,7 @@ class UserController {
   async aprovedProvider({ response, params }) {
     console.log(params.ref, 'este es la referencia')
     let user = await User.query().where('referencia', params.ref).update({status: 1})
+    await Payment.query().where('ref', params.ref).update({status: 1})
     response.send(user)
   }
 
