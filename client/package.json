@@ -2,7 +2,7 @@
   "name": "HeventApp",
   "version": "0.1.1",
   "description": "A EICHE Project",
-  "productName": "hevent",
+  "productName": "HeventApp",
   "author": "maeep154@gmail.com",
   "private": true,
   "scripts": {

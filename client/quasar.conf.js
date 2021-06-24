@@ -124,8 +124,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'hevent',
-        short_name: 'hevent',
+        name: 'HeventApp',
+        short_name: 'HeventApp',
         description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
