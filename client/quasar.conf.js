@@ -125,8 +125,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'hevent',
-        short_name: 'hevent',
+        name: 'HeventApp',
+        short_name: 'HeventApp',
         description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
@@ -164,6 +164,7 @@ module.exports = function (/* ctx */) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
+      backButton: true
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
     },
 
@@ -192,7 +193,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'hevent'
+        appId: 'Hevent'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
