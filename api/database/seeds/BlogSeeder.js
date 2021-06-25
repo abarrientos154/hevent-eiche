@@ -21,8 +21,12 @@ const data = [
     subtitulo: 'Esto es un subtitulo lorem ipsu dolor',
     description: `
       Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi labore veniam ducimus id quam, adipisci eligendi consectetur quos deleniti eos et cumque inventore, nobis a corporis ex, vitae animi iste.
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti magni quod facilis corporis ducimus! Quidem in at voluptatum! Adipisci illum modi nobis tempore optio tempora earum animi error quod minima?
     `,
+    descriptionTwo: `
+      2Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi labore veniam ducimus id quam, adipisci eligendi consectetur quos deleniti eos et cumque inventore, nobis a corporis ex, vitae animi iste.
+      2Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti magni quod facilis corporis ducimus! Quidem in at voluptatum! Adipisci illum modi nobis tempore optio tempora earum animi error quod minima?
+    `,
+    imgs: ['example_5.jpg', 'example_5.jpg', 'example_5.jpg'],
     img: 'example_5.jpg',
     autor: 'Nombre Autor'
   }

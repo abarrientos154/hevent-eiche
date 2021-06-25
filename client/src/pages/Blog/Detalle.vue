@@ -10,9 +10,19 @@
       <div class="q-mt-md q-ml-xl column q-mr-xl">
         <div class="text-h6 text-primary">{{form.titulo}}</div>
         <div class="text-bold"> * {{form.categoria}} </div>
-        <div class="text-subtitle2 q-mt-sm"> {{form.subtitulo}} </div>
+        <div v-if="form.subtitulo" class="text-subtitle2 q-mt-sm"> {{form.subtitulo}} </div>
         <p class="text-grey-7 q-mt-sm">
           {{form.description}}
+        </p>
+        <q-scroll-area  style="height: 110px; width: 100%;">
+          <div class="row no-wrap">
+            <div v-for="(img, index) in form.imgs" :key="index" class="q-pa-sm" style="width:300px;height:100px">
+              <q-img :src="img" width="160px" height="100%" />
+            </div>
+          </div>
+        </q-scroll-area>
+        <p class="text-grey-7 q-mt-sm">
+          {{form.descriptionTwo}}
         </p>
       </div>
     </div>

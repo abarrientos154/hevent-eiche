@@ -94,7 +94,8 @@ export default {
       isPwd: false,
       loading: false,
       pass: null,
-      repeatPass: null
+      repeatPass: null,
+      proveedorId: ''
     }
   },
   validations () {
@@ -116,7 +117,12 @@ export default {
   },
   methods: {
     ...mapMutations('generals', ['login']),
-    backToPayPlan (id) {
+    async backToPayPlan (id) {
+      if (!id) {
+        var proveedor = await this.infoProviderByReference()
+        console.log(proveedor, 'proveedor')
+        id = proveedor._id
+      }
       this.$q.dialog({
         title: 'Eleccion de Plan!',
         message: 'Desea volver al modulo de eleccion de planes?'
@@ -138,8 +144,9 @@ export default {
           } else {
             this.$q.dialog({
               title: '¡Atención!',
-              message: 'Ha ocurrido un error al procesar su pago, por favor contacte con algun administrador'
+              message: 'Ha ocurrido un error al procesar su pago.'
             }).onOk(() => {
+              this.backToPayPlan()
             })
           }
         } else {
@@ -165,6 +172,17 @@ export default {
           })
         }
       })
+    },
+    async infoProviderByReference () {
+      this.$q.loading.show()
+      var res = null
+      if (this.$route.params.ref) {
+        res = await this.$api.get('get_provider_by_reference/' + this.$route.params.ref)
+      } else if (this.$router.params.reFlow) {
+        res = await this.$api.get('get_provider_by_reference/' + this.$route.params.reFlow)
+      }
+      this.$q.loading.hide()
+      return res
     },
     async pruebaWompi () {
       this.$q.loading.show({
@@ -193,6 +211,7 @@ export default {
               title: '¡Atención!',
               message: 'Su pago ha sido declinado. Por Favor contacte con algun administrador'
             }).onOk(() => {
+              this.backToPayPlan()
             })
           }
         } else {

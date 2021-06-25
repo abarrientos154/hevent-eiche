@@ -16,9 +16,9 @@
       ? baseu + 'file_proveedor/' + mostrarImg
       : user.images.length === 0
       ? 'portada_proveedor.png'
-      : 'portada_proveedor.png' " style="height:200px;z-index:-1;" class="absolute-top">
+      : 'portada_proveedor.png' " style="height:200px;z-index:-1;">
     </q-img>
-    <q-img v-else :src="'portada_proveedor.png' " style="height:200px;z-index:-1" class="absolute-top">
+    <q-img v-else :src="baseu + 'file_proveedor/portada/' + user._id " style="height:200px;z-index:-1">
     </q-img>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}
@@ -69,7 +69,7 @@
         <q-tab-panel name="Mapas">
           <div class="bg-grey-4 q-pa-md q-mb-md" style="height:75vh; border-radius:12px">
             <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
-            <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccion}} - {{user.ciudad}} </div>
+            <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize">{{user.direccionCad}} </div>
             <mapa :center="user.ubicacion" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="true" />
           </div>
         </q-tab-panel>
@@ -198,8 +198,14 @@ export default {
       console.log(this.id, 'idddddddd')
       await this.$api.get('info_proveedor/' + this.id).then(res => {
         if (res) {
+          console.log(res, 'res')
           this.user = res
-          this.mostrarImg = res.images[0]
+          if (res.images) {
+            this.mostrarImg = res.images[0]
+          } else {
+            this.mostrarImg = 'portada_proveedor.png'
+          }
+
           if (res.plan_id > 1) { this.basico = false }
           console.log(this.user, 'this user', this.basico, 'basico')
         }

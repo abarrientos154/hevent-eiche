@@ -65,7 +65,7 @@
         </q-input>
       </div>
       <div>
-        <p style="text-align:center">Al seleccionar aceptar y continuar, aceptas las condiciones de uso y la política de protección de datos de Hevent </p>
+        <p style="text-align:center"> Al seleccionar aceptar y continuar a continuación, aceptas las <a href="https://heventapp.com/terminos-y-condiciones/">Condiciones de uso</a> y <a href="https://heventapp.com/politica-de-privacidad/">la política de protección de datos de Hevent </a> </p>
       </div>
     </div>
     <div class="text-center q-ma-sm">

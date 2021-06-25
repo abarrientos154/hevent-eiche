@@ -28,7 +28,7 @@ class User extends Model {
   static get fillableProveedor () {
     return ['banco', 'celCode', 'celular', 'ciudad', 'descripcion', 'direccion', 'email', 'name', 'numCuenta', 'password',
       'personaContacto', 'plan_id', 'tipoPlan', 'telCode', 'telefono', 'tipoCuenta', 'username', 'ubicacion', 'country',
-      'referencia'
+      'referencia', 'direccionCad'
     ]
   }
   static fieldValidationRulesProveedor () {
@@ -47,6 +47,7 @@ class User extends Model {
       numCuenta: 'string',
       password: 'string|max:256|required',
       personaContacto: 'string',
+      direccionCad: 'string',
       plan_id: 'number',
       respuestas: 'array',
       telCode: 'string',

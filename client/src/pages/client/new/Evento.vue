@@ -275,6 +275,7 @@ export default {
     },
     getCotisations () {
       this.$api.get(`cotisations_by_event/${this.id}`).then(res => {
+        console.log(res, 'res')
         this.cotisaciones = res
         this.carrito = res
         console.log(this.carrito, 'carritoo')

@@ -4,6 +4,9 @@
 const Model = use('Model')
 
 class Payment extends Model {
+  user_info () {
+    return this.hasOne('App/Models/User', 'user_id', '_id')
+  }
 }
 
 module.exports = Payment

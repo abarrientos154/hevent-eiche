@@ -41,6 +41,12 @@ var configFlow = {
  */
 class UserController {
 
+  async getProviderByReference ({ response, params }) {
+    const payment = (await Payment.query().where('ref', params.ref).with('user_info').first()).toJSON()
+    console.log(payment, 'payment')
+    response.send(payment.user_info)
+  }
+
   async validarToken ({ response, auth }) {
     console.log(auth, 'auth')
     const user = ((await auth.getUser()).toJSON())

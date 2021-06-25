@@ -1,5 +1,6 @@
 <template>
   <div>
+    <q-btn color="white" icon="keyboard_arrow_left" flat round class="q-ma-xs" @click="$router.go(-1)" style="position:absolute" />
     <div class="background-tool" />
     <div class="text-primary text-h6 text-center"> * Datos de Pago * </div>
     <div class="column q-ma-md">
@@ -59,8 +60,10 @@ export default {
       if (this.carrito.length > 0) {
         for (const j of this.carrito) {
           for (const h of j.subitems) {
-            for (const i of h.productos) {
-              total = total + i.tot
+            for (const f of h.proveedores) {
+              for (const i of f.productos) {
+                total = total + i.tot
+              }
             }
           }
         }
@@ -129,10 +132,13 @@ export default {
         this.countries = res
       })
     },
-    getCotisations () {
-      this.$api.get(`cotisations_by_event/${this.id_event}`).then(res => {
+    async getCotisations () {
+      this.$q.loading.show()
+      await this.$api.get(`cotisations_by_event/${this.id_event}`).then(res => {
+        this.$q.loading.hide()
+        console.log(res, 'res')
         this.cotisaciones = res
-        this.carrito = res.carrito
+        this.carrito = res
       })
     }
   }

@@ -168,7 +168,7 @@
       <div :class="cuenta === 'Corriente' ? 'tipo-cuenta-on' : 'tipo-cuenta-off'" @click="changeTipoCuenta()" >Corriente</div>
     </div>
     <div class="q-ma-sm">
-      <p style="text-align:center"> Al seleccionar aceptar y continuar a continuación, aceptas las Condiciones de uso y la política de protección de datos de Hevent </p>
+      <p style="text-align:center"> Al seleccionar aceptar y continuar a continuación, aceptas las <a href="https://heventapp.com/terminos-y-condiciones/">Condiciones de uso</a> y la <a href="https://heventapp.com/politica-de-privacidad/">política de protección de datos de Hevent </a> </p>
     </div>
     <div class="row justify-center q-pa-sm">
       <q-btn class="button-border" style="height:45px; width:190px" color="primary" label="Aceptar y Continuar" @click="next()" />
@@ -282,8 +282,9 @@ export default {
       console.log(center, 'center')
     },
     handleNewPlace (place, coordinates) {
-      console.log('handleNewPlace', coordinates)
+      console.log('handleNewPlace', coordinates, 'PLACE', place)
       this.form.ubicacion = coordinates
+      this.form.direccionCad = place
       console.log(this.form, 'formmmmmmmmmmmmmmmmmmmmmmm')
     },
     test () {
