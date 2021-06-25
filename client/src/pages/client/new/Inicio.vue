@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="background-tool" style="height:150px">
-      <div class="text-bold text-white text-h6 text-center row justify-center items-center" style="height:85%">HEVENT</div>
+      <!--  <div class="text-bold text-white text-h6 text-center row justify-center items-center" style="height:85%">HEVENT</div> -->
     </div>
     <div>
       <div class="q-ml-lg row items-center">
@@ -26,7 +26,7 @@
                   {{event.name}}
                 </div>
                 <div style="height:50px; border-bottom-right-radius:12px; border-bottom-left-radius:12px">
-                  <img :src="event.img" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
+                  <img :src="event.img ? baseuEvent + event._id : 'evento.jpg'" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
                 </div>
               </div>
               <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-md bg-grey-5" style="height:110px;border-radius:12px;width:150px">
@@ -38,7 +38,7 @@
                   {{eventPay.name}}
                 </div>
                 <div style="height:50px; border-bottom-right-radius:12px; border-bottom-left-radius:12px">
-                  <img :src="eventPay.img" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
+                  <img :src="eventPay.img ? baseuEvent + event._id : 'evento.jpg'" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
                 </div>
               </div>
             </div>
@@ -116,6 +116,7 @@ export default {
   },
   data () {
     return {
+      baseuEvent: '',
       eventos: [],
       eventosPagados: [],
       baseu: '',
@@ -143,7 +144,7 @@ export default {
         { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png' },
         { title: 'Alimentos', id: 'alimentos', icon: 'icon_services/alimentos.png' },
         { title: 'Bebidas', id: 'bebidas', icon: 'icon_services/bebidas.png' },
-        { title: 'Fotógrafo', id: 'fotografo', icon: 'icon_services/fotografia.png' },
+        { title: 'Fotógrafo', id: 'fotografia', icon: 'icon_services/fotografia.png' },
         { title: 'Vídeo', id: 'video', icon: 'icon_services/video.png' },
         { title: 'Audio', id: 'audio', icon: 'icon_services/audio.png' },
         { title: 'Música', id: 'musica', icon: 'icon_services/musica.png' },
@@ -159,6 +160,7 @@ export default {
   },
   mounted () {
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
+    this.baseuEvent = env.apiUrl + 'file_event/'
     this.getEvents()
     this.getUser()
     this.misProveedoresFavoritos()
@@ -194,19 +196,16 @@ export default {
           this.data = res.map(v => {
             if (v.pay) {
               this.eventosPagados.push({
-                ...v,
-                img: 'example_4.jpg'
+                ...v
               })
             } else {
               this.eventos.push({
-                ...v,
-                img: 'example_4.jpg'
+                ...v
               })
             }
             return {
               _id: v._id,
-              name: v.name,
-              img: 'example_4.jpg'
+              name: v.name
             }
           })
           // this.data = res
@@ -231,7 +230,7 @@ export default {
 
 <style>
 .background-tool {
-  background-image: url("../../../../public/nubeazul1.png");
+  background-image: url("../../../../public/nubecliente.jpg");
   background-size: 100% 100%;
 }
 .skewed {

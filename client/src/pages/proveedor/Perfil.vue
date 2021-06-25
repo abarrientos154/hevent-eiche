@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import env from '../../env'
 import EditarDatos from '../../components/Proveedor/Perfil/EditarDatos'
 import EditarPerfil from '../../components/Proveedor/Perfil/PerfilEmpresa'
@@ -65,7 +66,7 @@ export default {
         { titulo: 'Tu Plan', url: '', dialog: true, ind: 3 },
         { titulo: 'Planes Disponibles', url: '/planes_disponibles', dialog: false, ind: 6 },
         { titulo: 'Notificaciones', dialog: true, ind: 4 },
-        { titulo: 'Cerrar Sesión', accion: 'logout', dialog: false, ind: 5 }
+        { titulo: 'Cerrar Sesión', accion: 'logoutM', dialog: false, ind: 5 }
       ]
     }
   },
@@ -75,6 +76,7 @@ export default {
     this.perfilImg = this.baseu + 'file_proveedor/perfil/' + this.user._id
   },
   methods: {
+    ...mapMutations('generals', ['logout']),
     async changePerfil () {
       if (this.perfil) {
         var formData = new FormData()
@@ -115,11 +117,12 @@ export default {
         }
       } else if (this.opciones[indOption].url) {
         this.$router.push(this.opciones[indOption].url)
-      } else if (this.opciones[indOption].accion === 'logout') {
-        this.logout()
+      } else if (this.opciones[indOption].accion === 'logoutM') {
+        this.logoutM()
       }
     },
-    logout () {
+    logoutM () {
+      this.logout()
       this.$router.push('/login_proveedor')
     }
   }

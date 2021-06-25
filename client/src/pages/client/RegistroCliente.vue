@@ -78,26 +78,27 @@
     </div>
     <q-separator class="q-mt-xs" size="2px" inset/>
     <div class="text-center text-subtitle2 q-mt-sm">Registrarse con</div>
-    <div class="row justify-between q-mr-xl q-ml-xl">
-      <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login-r shadow-3">
+    <div class="row justify-around q-mr-xl q-ml-xl">
+      <!--<GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login-r shadow-3">
         <img src="iconos2/Iconos_Redes.png" style="width: 25px; height: 25px"/>
-      </GoogleLogin>
+      </GoogleLogin> -->
       <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
         <img src="iconos2/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
+      <!--
       <q-btn class="q-ma-sm" round color="grey" style="width: 40px; height: 40px">
         <img src="iconos2/Iconos_Redes_2.png" style="width: 30px; height: 30px"/>
-      </q-btn>
+      </q-btn> -->
     </div>
   </div>
 </template>
 
 <script>
 import { required, minLength, maxLength, email, sameAs } from 'vuelidate/lib/validators'
-import GoogleLogin from 'vue-google-login'
+// import GoogleLogin from 'vue-google-login'
 export default {
   components: {
-    GoogleLogin
+    // GoogleLogin
   },
   data () {
     return {

@@ -62,8 +62,12 @@
         </div>
         <div class="q-mr-lg q-ml-lg q-mb-lg q-mt-xl row justify-center">
           <label class="text-h6 q-mb-xs">Restablecer contraseña</label>
-          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="pass" dense label="Introduzca su nueva contrasena" borderless/>
-          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="repeatPass" dense label="Repita su contrasena" borderless/>
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="pass" dense label="Introduzca su nueva contrasena" borderless
+            :error="$v.pass.$error"
+          />
+          <q-input class="input-border-new" style="width:240px" label-color="grey-14" type="password" v-model="repeatPass" dense label="Repita su contrasena" borderless
+            :error="$v.repeatPass.$error"
+          />
         </div>
         <div class="row justify-center items-center q-ma-lg">
           <q-btn label="Restablecer" color="primary" class="full-width" push @click="restablecerContra()" />
@@ -200,10 +204,13 @@ export default {
         }
       })
     },
-    restablecerContra () {
+    async restablecerContra () {
+      // alert(this.$route.params.code)
       this.$v.$touch()
       if (!this.$v.pass.$error && !this.$v.repeatPass.$error) {
-        this.$api.put('actualizar_pass/' + this.$route.params.code, { password: this.pass }).then(res => {
+        this.$q.loading.show()
+        await this.$api.put('actualizar_pass/' + this.$route.params.code, { password: this.pass }).then(res => {
+          this.$q.loading.hide()
           if (res) {
             this.modalRestablecer = false
             this.$q.notify({
@@ -214,8 +221,11 @@ export default {
         })
       }
     },
-    verificarCode () {
-      this.$api.get('code_verification/' + this.$route.params.code).then(res => {
+    async verificarCode () {
+      // alert(this.$route.params.code)
+      this.$q.loading.show()
+      await this.$api.get('code_verification/' + this.$route.params.code).then(res => {
+        this.$q.loading.hide()
         if (res) {
           this.modalRestablecer = true
         } else {
@@ -263,11 +273,11 @@ export default {
               })
             } else if (res.HEV_SESSION_INFO.status === 1) {
               this.login(res)
-              this.$router.push('inicio_proveedor')
+              this.$router.push('/inicio_proveedor')
             }
           } else {
             this.login(res)
-            this.$router.push('inicio_cliente')
+            this.$router.push('/inicio_cliente')
           }
         } else {
           console.log('error de ususario')

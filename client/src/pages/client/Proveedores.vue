@@ -180,9 +180,14 @@ export default {
       this.id = this.$route.params.id
       this.header = this.id.charAt(0).toUpperCase() + this.id.slice(1)
       this.getRecord()
+      this.actualizarSelectSer()
     }
   },
   methods: {
+    actualizarSelectSer () {
+      const ind = this.servicios.findIndex(v => v.id === this.id)
+      this.cambiarProveedor(this.id, ind)
+    },
     filtrarInput () {
       if (this.busqueda === '') {
         this.filtrar()
@@ -260,6 +265,7 @@ export default {
       this.$router.push('/proveedor/' + this.$route.params.id + '/' + id)
     },
     async cambiarProveedor (id, ind) {
+      console.log(id, ind, 'id ind')
       this.$router.push('/proveedores/' + id)
       this.id = id
       const indexSelect = this.servicios.findIndex(v => v.select)

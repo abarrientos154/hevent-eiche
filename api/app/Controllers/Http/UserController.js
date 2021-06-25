@@ -41,6 +41,17 @@ var configFlow = {
  */
 class UserController {
 
+  async validarToken ({ response, auth }) {
+    console.log(auth, 'auth')
+    const user = ((await auth.getUser()).toJSON())
+    console.log(user, 'user')
+    if (user) {
+      response.send(user)
+    } else {
+      response.unprocessableEntity('El token es invalido')
+    }
+  }
+
   async validarCambioPlan ({ params, auth, response }) {
     const formUser = ((await auth.getUser()).toJSON())
     const payment = (await Payment.query().where({
@@ -223,7 +234,7 @@ class UserController {
           <div>
             <button style="width:200px;height:45px;background:#009CFF;color:white;border-radius:12px;border:0px solid red"
             >
-            <a style="color:white" href="${Env.get('FRONT_URL', '')}login_cliente/${codigo}">CONFIRMAR</a>
+            <a style="color:white" href="https://app.recuperatepass.com/recuperate_pass?codigo=${codigo}">CONFIRMAR</a>
             </button>
           </div>
       `)
@@ -237,10 +248,12 @@ class UserController {
   }
 
   async actualizarPass({ request, response, params }) {
+    console.log(params.code, 'codeee')
     let user = await User.findBy('codigoRecuperacion', params.code)
     if (user) {
       let data = request.only(['password'])
       user.password = data.password
+      console.log(data, 'data', user.password, 'user')
       user.codigoRecuperacion = null
       await user.save()
       response.send(user)

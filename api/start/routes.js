@@ -51,6 +51,8 @@ addPrefixToGroup(
     Route.get("plans", "PlanController.index")
     Route.post("registrar_proveedor", "UserController.registrarProveedor")
 
+    Route.post("pasa_token", "PlanController.pasaToken")
+
     ////////////////////////PAISES////////////////////////////
     Route.get("countries", "CountryController.index")
     /////////////////////////////////////////////////////////
@@ -93,6 +95,9 @@ addPrefixToGroup(
     // Insertar rutas con protección de autenticación aquí
 
     Route.get('validar_plan', 'UserController.validarCambioPlan')
+
+    // Validar TOKEN
+    Route.get('isValid', 'UserController.validarToken')
 
     /////////////Imagenes///////////////////
     //Route.post('subirImagenes', 'UploadController.uploadShopImage');

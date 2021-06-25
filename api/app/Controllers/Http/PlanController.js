@@ -22,6 +22,12 @@ class PlanController {
     response.send(planes)
   }
 
+  async pasaToken ({ request, response, view }) {
+    const dt = request.only(['dt'])
+    console.log(dt)
+    response.send(dt)
+  }
+
   /**
    * Render a form to be used for creating a new plan.
    * GET plans/create

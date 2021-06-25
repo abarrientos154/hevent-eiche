@@ -102,14 +102,14 @@
      <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="Siguiente" @click="logearse()"/>
     </div>
     <div class=" text-center text-subtitle2 ">Iniciar Sesión con</div>
-    <div class="row justify-between q-mr-xl q-ml-xl q-mt-sm q-mb-sm">
-      <GoogleLogin :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login shadow-3">
+    <div class="row justify-around q-mr-xl q-ml-xl q-mt-sm q-mb-sm">
+      <GoogleLogin v-if="showgoogle" :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login shadow-3">
         <img src="iconos2/Iconos_Redes.png" style="width: 20px; height: 20px"/>
       </GoogleLogin>
       <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
         <img src="iconos2/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
-      <q-btn  round color="grey" style="width: 40px; height: 40px">
+      <q-btn v-if="showapple"  round color="grey" style="width: 40px; height: 40px">
         <img src="iconos2/Iconos_Redes_2.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <!--<q-btn  round color="primary" style="width: 40px; height: 40px" to="/verificacion_correo">
@@ -138,6 +138,8 @@ export default {
   },
   data () {
     return {
+      showgoogle: false,
+      showapple: false,
       params: {
         client_id: '884216182035-jv4iotpbk91ra4b4be7enrhpahgp4oco.apps.googleusercontent.com'
       },

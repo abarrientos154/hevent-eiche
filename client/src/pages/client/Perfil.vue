@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import env from '../../env'
 import EditarPerfil from '../../components/cliente/perfil/Datos'
 import EditarContra from '../../components/cliente/perfil/Pass'
@@ -78,12 +79,14 @@ export default {
     console.log(this.$router.currentRoute, 'asdas')
   },
   methods: {
+    ...mapMutations('generals', ['logout']),
     ejecutar (ind) {
       console.log(ind, 'asd')
       if (ind === 0) { this.dialogos.editarP = true }
       if (ind === 1) { this.dialogos.pass = true }
       if (ind === 2) { this.dialogos.notificaciones = true }
       if (ind === 3) {
+        this.logout()
         this.$router.push('/login_cliente')
       }
       if (ind === 4) {

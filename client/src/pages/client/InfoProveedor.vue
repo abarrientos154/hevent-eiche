@@ -4,7 +4,7 @@
       <q-btn icon="keyboard_arrow_left" color="white" flat round @click="$router.go(-1)" />
     </div>
     <div style="position:absolute;top:0px;right:0px;font-size:20px;z-index:2" class="text-white" v-if="!isAnuncioP" >
-      <q-btn :icon="favorito ? 'favorite' : 'favorite_border'" :color="favorito ? 'red': 'white'" flat round @click="addFavoritos()" />
+      <q-btn :icon="favorito ? 'favorite' : 'favorite_border'" :color="favorito ? 'primary': 'white'" flat round @click="addFavoritos()" />
     </div>
     <!-- <div class="fondo-para-nube-anuncio" style="width:100%;height:200px;z-index:1">
     </div> -->
