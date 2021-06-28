@@ -31,6 +31,24 @@ const ItemServicio = use("App/Models/ItemServicio")
 
 class CotisationController {
 
+  async cotizacionesPendientesLength ({ params, request, response, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let cotisations = (await Cotisation.where({
+      $or: [{ cliente_id: user._id }, { proveedor_id: user._id }],
+      status: { $gte: 1 }
+    }).with('datos_proveedor').with('datos_cliente').fetch()).toJSON()
+    for (let j of cotisations) {
+      j.rolAuth = user.roles[0]
+      for (let i in j.detallesServicios) {
+        j.detallesServicios[i].total = 0
+        for (let h in j.detallesServicios[i].list ) {
+          j.detallesServicios[i].total = j.detallesServicios[i].total + parseFloat(j.detallesServicios[i].list[h].valor)
+        }
+      }
+    }
+    response.send(cotisations.length)
+  }
+
   async eventosRealizados ({ response, auth }) {
     let eventos = (await Event.where({
       pay: true,

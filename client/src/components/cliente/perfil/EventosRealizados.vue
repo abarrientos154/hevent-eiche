@@ -9,7 +9,7 @@
       >
         <div class="text-center q-mt-sm text-white">Titulo Mas grande de lo normal asd</div>
         <div class="bordes-abajo bg-grey-5 no-border">
-          <q-img :src="item.img ? baseu + item._id : 'example_4.jpg'" class="no-box-shadow bordes-abajo no-border" style="height:80px;width:100%" />
+          <q-img :src="item.img ? baseu + item._id : 'evento.jpg'" class="no-box-shadow bordes-abajo no-border" style="height:80px;width:100%" />
         </div>
         <div class="column items-center text-white bg-grey-5 q-pt-sm" style="height:59px">
           <div class="text-black text-bold"> {{item.date}} </div>

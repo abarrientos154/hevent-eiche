@@ -97,7 +97,7 @@
                 {{blog.titulo}}
               </div>
               <div style="height:50px; border-bottom-right-radius:12px; border-bottom-left-radius:12px">
-                <img :src="blog.img" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
+                <img :src="baseu2 + blog._id + '/' + blog.img" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
               </div>
             </div>
           </div>
@@ -155,23 +155,25 @@ export default {
       showCreateEvent: false,
       user: {},
       favoritos: [],
-      perfilImg: 'noimg.png'
+      perfilImg: 'noimg.png',
+      baseuBlog: ''
     }
   },
-  mounted () {
+  async mounted () {
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
     this.baseuEvent = env.apiUrl + 'file_event/'
     this.getEvents()
     this.getUser()
     this.misProveedoresFavoritos()
-    this.getBlogs()
+    await this.getBlogs()
+    this.baseu2 = env.apiUrl + 'blogs_img/'
     if (this.$route.path === '/inicio_cliente/crear_evento') {
       this.showCreateEvent = true
     }
   },
   methods: {
     getBlogs () {
-      this.$api.get('blogs').then(res => {
+      this.$api.get('blogs_index').then(res => {
         this.blogs = res
       })
     },

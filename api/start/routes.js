@@ -87,6 +87,8 @@ addPrefixToGroup(
     Route.post("pay_by_wompi", "UserController.cambioPlanByWompi")
 
     Route.get("user_info/:id", "UserController.userInfoById")
+
+    Route.get("blogs_img/:id/:file", "BlogController.showImg")
   })
 );
 
@@ -145,6 +147,7 @@ addPrefixToGroup(
     Route.get("cotisations_by_event/:event_id", "CotisationController.cotisationsByEvent")
     Route.get("get_cotisacion_by_id/:id", "CotisationController.getCotisacionById")
     Route.get("eventos_terminados_por_fecha", "CotisationController.eventosRealizados")
+    Route.get("cotizacionesPendientesLength", "CotisationController.cotizacionesPendientesLength")
 
     ////////// EVENTOS ////////////////////
     Route.get("events", "CotisationController.getEvents")
@@ -187,6 +190,7 @@ addPrefixToGroup(
 
     ///////////////////////////-----BLOGS-----/////////////////////////////////////////////////////////////
     Route.get("blogs", "BlogController.index")
+    Route.get("blogs_index", "BlogController.indexAll")
     Route.get("blogs/:id", "BlogController.show")
 
 

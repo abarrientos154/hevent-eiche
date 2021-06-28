@@ -51,6 +51,15 @@
       <div class="q-ml-sm bg-grey q-pa-xs text-white text-bold" style="border-radius:6px">Faltan {{form.diasRestantes}} Dias </div>
     </div>
     <q-separator inset class="q-mt-sm" />
+    <div class="q-pa-md">
+      <div class="cot-pen row items-center q-px-md" @click="$router.push('/aprobacion_cotizacion')">
+        <div>Cotizaciones Pendientes</div>
+        <q-space />
+        <div>#{{cotizacionesPen}}</div>
+      </div>
+    </div>
+    <q-btn flat label="cotizaciones pendientes"  dense color="primary" class="q-ma-sm" />
+    <q-separator inset class="q-mt-sm" />
     <div class="text-bold text-grey row justify-center q-mt-md">
       Información del evento
     </div>
@@ -87,7 +96,6 @@
       </div>
     </div>
     <q-separator inset class="q-mt-md" />
-    <q-btn flat label="cotizaciones pendientes" @click="$router.push('/aprobacion_cotizacion')" dense color="primary" class="q-ma-sm" />
     <div class="column">
       <div class="text-grey text-bold text-center q-mt-sm">Cotización Aprobada</div>
       <div class="column q-mt-sm">
@@ -177,6 +185,7 @@ import env from '../../../env'
 export default {
   data () {
     return {
+      cotizacionesPen: 0,
       baseu: '',
       portadaImg: null,
       form: {},
@@ -229,8 +238,16 @@ export default {
     this.baseu = env.apiUrl + 'file_event/' + this.id
     this.getRecord()
     this.getCotisations()
+    this.getLengthCotPen()
   },
   methods: {
+    async getLengthCotPen () {
+      this.$q.loading.show()
+      await this.$api.get('cotizacionesPendientesLength').then(res => {
+        this.$q.loading.hide()
+        this.cotizacionesPen = res
+      })
+    },
     cambiarTag (ind) {
       const indSelect = this.tags.findIndex(v => v.select)
       this.tags[indSelect].select = false
@@ -289,6 +306,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
+.cot-pen {
+  width: 100%;
+  height:40px;
+  background-color: $primary;
+  color: white;
+  border-radius: 9px;
+}
+
 .fondo-para-nube-anuncio {
   background-image: url('../../../../public/nube-carousel.png');
   background-size: 100% 100%;

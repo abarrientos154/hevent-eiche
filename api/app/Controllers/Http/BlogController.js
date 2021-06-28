@@ -4,6 +4,7 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
+const Helpers = use('Helpers')
 const Blog = use('App/Models/Blog')
 
 /**
@@ -21,7 +22,32 @@ class BlogController {
    */
   async index ({ response }) {
     let blogs = (await Blog.query().where({}).fetch()).toJSON()
+    let blogsType = {
+      consejos: [],
+      ideas: [],
+      articulos: []
+    }
+    for (let j of blogs) {
+      if (j.tipo === 1) { // consejos
+        blogsType.consejos.push(j)
+      } else if (j.tipo === 2) { //ideas
+        blogsType.ideas.push(j)
+      } else if (j.tipo === 3) { //articulos
+        blogsType.articulos.push(j)
+      }
+    }
+    response.send(blogsType)
+  }
+
+  async indexAll ({ response }) {
+    let blogs = (await Blog.query().where({}).fetch()).toJSON()
     response.send(blogs)
+  }
+
+  async showImg ({ response, params }) {
+    const dir = params.file
+    console.log(dir,'here')
+    response.download(Helpers.appRoot('public/blogs/' + params.id) + `/${dir}`)
   }
 
   /**
