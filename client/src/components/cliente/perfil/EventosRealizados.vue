@@ -7,7 +7,7 @@
       <q-card v-for="(item, index) in data" :key="index" style="width:45%;min-width:150px;height:185px;border-radius:12px"
         class="bg-primary" @click="$router.push('/mi_evento/' + item._id)"
       >
-        <div class="text-center q-mt-sm text-white">Titulo Mas grande de lo normal asd</div>
+        <div class="text-center q-mt-sm text-white"> {{item.name}} </div>
         <div class="bordes-abajo bg-grey-5 no-border">
           <q-img :src="item.img ? baseu + item._id : 'evento.jpg'" class="no-box-shadow bordes-abajo no-border" style="height:80px;width:100%" />
         </div>

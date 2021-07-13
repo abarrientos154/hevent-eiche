@@ -18,33 +18,44 @@ class OpinionController {
     let enviar = {}
     /////////SACAR PUNTUACIONES Y PROMEDIO////////////////////////////////////////////////////////
     let opiniones = (await Opinion.query().where('proveedor_id', idUser).fetch()).toJSON()
-    let objP = {
-      calidadS: 0,
-      costoB: 0,
-      profesionalidad: 0,
-      respuesta: 0,
-      flexibilidad: 0
-    }
-    for (let j of opiniones) {
-      objP.calidadS = objP.calidadS + j.calidadS
-      objP.costoB = objP.costoB + j.costoB
-      objP.profesionalidad = objP.profesionalidad + j.profesionalidad
-      objP.respuesta = objP.respuesta + j.respuesta
-      objP.flexibilidad = objP.flexibilidad + j.flexibilidad
+    console.log(opiniones, 'opiniones')
+    if (opiniones.length > 0) {
+      let objP = {
+        calidadS: 0,
+        costoB: 0,
+        profesionalidad: 0,
+        respuesta: 0,
+        flexibilidad: 0
+      }
+      for (let j of opiniones) {
+        objP.calidadS = objP.calidadS + j.calidadS
+        objP.costoB = objP.costoB + j.costoB
+        objP.profesionalidad = objP.profesionalidad + j.profesionalidad
+        objP.respuesta = objP.respuesta + j.respuesta
+        objP.flexibilidad = objP.flexibilidad + j.flexibilidad
+      }
+
+      let objPT = {
+        calidadS: (objP.calidadS / opiniones.length),
+        costoB: (objP.costoB / opiniones.length),
+        profesionalidad: (objP.profesionalidad / opiniones.length),
+        respuesta: (objP.respuesta / opiniones.length),
+        flexibilidad: (objP.flexibilidad / opiniones.length),
+      }
+
+      let total = objPT.calidadS + objPT.costoB + objPT.profesionalidad + objPT.respuesta + objPT.flexibilidad
+      objPT.puntuacion = (total / 5)
+
+      enviar = objPT
+    }  else {
+      enviar.calidadS = 0
+      enviar.costoB = 0
+      enviar.profesionalidad = 0
+      enviar.respuesta = 0
+      enviar.flexibilidad = 0
+      enviar.puntuacion = 0
     }
 
-    let objPT = {
-      calidadS: (objP.calidadS / opiniones.length),
-      costoB: (objP.costoB / opiniones.length),
-      profesionalidad: (objP.profesionalidad / opiniones.length),
-      respuesta: (objP.respuesta / opiniones.length),
-      flexibilidad: (objP.flexibilidad / opiniones.length),
-    }
-
-    let total = objPT.calidadS + objPT.costoB + objPT.profesionalidad + objPT.respuesta + objPT.flexibilidad
-    objPT.puntuacion = (total / 5)
-
-    enviar = objPT
 
     /////////////////////////////////////////////////////////////////////////////////////////////
 

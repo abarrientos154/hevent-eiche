@@ -166,7 +166,7 @@ export default {
     },
     proveedoresPlanPremiun () {
       if (this.basico) {
-        this.$api.get('proveedores_premiun').then(res => {
+        this.$api.get('proveedores_premiun/' + this.$route.params.header).then(res => {
           this.otherProviders = res
           console.log(this.otherProviders, 'proveedores premiun')
         })

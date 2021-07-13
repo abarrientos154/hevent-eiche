@@ -106,7 +106,7 @@
       <GoogleLogin v-if="showgoogle" :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login shadow-3">
         <img src="iconos2/Iconos_Redes.png" style="width: 20px; height: 20px"/>
       </GoogleLogin>
-      <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook">
+      <q-btn  round color="indigo-10" style="width: 40px; height: 40px" @click="logInWithFacebook" v-if="showgoogle">
         <img src="iconos2/Iconos_Redes_1.png" style="width: 20px; height: 20px"/>
       </q-btn>
       <q-btn v-if="showapple"  round color="grey" style="width: 40px; height: 40px">

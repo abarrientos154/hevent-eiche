@@ -79,6 +79,21 @@ class CotisationController {
     body = {}
     body.cotizacion_id = (cotizacion._id).toString()
     await Chat.create(body)
+
+    let evento = (await Event.find(params.id_event)).toJSON()
+    await ChatMessage.create({
+      message: `
+        Titulo: ${evento.name},
+        Tipo de evento: ${evento.tipoEvento.title},
+        Invitados: #${evento.invitados},
+        Fecha: ${evento.date},
+        Hora: ${evento.time},
+        Direccion: ${evento.direccion}
+      `,
+      user_id: id_user,
+      cotisazion_id: body.cotizacion_id,
+      visto: false
+    })
     response.send(cotizacion)
   }
 
@@ -222,6 +237,7 @@ class CotisationController {
 
     const bodyT = request.only(['total', 'fullName', 'celular', 'email', 'celCode'])
     bodyT.event_id = params.event_id
+    bodyT.event = true
     await Payment.create(bodyT)
 
     let bodyE = {}

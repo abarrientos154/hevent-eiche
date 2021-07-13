@@ -108,7 +108,7 @@ addPrefixToGroup(
 
     ///////////PROVEEDORES/////////////////////
     Route.get('proveedores', 'ProveedorController.index')
-    Route.get('proveedores_premiun', 'ProveedorController.premiun')
+    Route.get('proveedores_premiun/:header', 'ProveedorController.premiun')
     Route.get('proveedores_perfil', 'ProveedorController.show')
     Route.post('proveedores', 'ProveedorController.store')
     Route.get('proveedores_servicios/:id_servicio', 'ServicioController.preguntasPorId')

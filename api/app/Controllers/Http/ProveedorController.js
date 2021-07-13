@@ -7,7 +7,7 @@ const User = require('../../Models/User')
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 const Proveedor = use("App/Models/Proveedor")
 const ProveedorDetalle = use("App/Models/ProveedorDetalle")
-const ProveedorServicio = use("App/Models/ProveedorServicio")
+const ServicioProveedor = use("App/Models/ServicioProveedor")
 const { validate } = use("Validator")
 const Cruds = use('App/Functions/Cruds')
 /**
@@ -15,10 +15,32 @@ const Cruds = use('App/Functions/Cruds')
  */
 class ProveedorController {
 
-  async premiun ({ response }) {
+  async premiun ({ response, params }) {
     let proveedores = (await User.query().where({ plan_id: 3 }).fetch()).toJSON()
-    console.log(proveedores, 'proveedores premiun')
-    response.send(proveedores)
+    let send = []
+    for (let j in proveedores) {
+      if (params.header === 'personas') {
+        console.log('entro1')
+        let buscar = [
+          { id: 'mesero' }, { id: 'acomodador' }, { id: 'aseo' }, { id: 'seguridad' }, { id: 'traductores' }, { id: 'animador' }, { id: 'heventPlaner' }
+        ]
+        var service = (await ServicioProveedor.where({ $or: buscar, id_proveedor: proveedores[j]._id }).fetch()).toJSON()
+      } else if (params.header === 'localizacion') {
+        console.log('entro2')
+        let buscar = [
+          { id: 'haciendas' }, { id: 'hoteles' }, { id: 'restaurantes' }, { id: 'clubs' }, { id: 'galeria' }, { id: 'salon' }, { id: 'auditorias' }
+        ]
+        var service = (await ServicioProveedor.where({ $or: buscar, id_proveedor: proveedores[j]._id }).fetch()).toJSON()
+      } else {
+        console.log('entro3')
+        var service = (await ServicioProveedor.where({id: params.header, id_proveedor: proveedores[j]._id}).fetch()).toJSON()
+      }
+      if (service.length > 0) {
+        send.push(proveedores[j])
+      }
+    }
+    console.log(proveedores, 'proveedores premiun', params, 'asd')
+    response.send(send)
   }
 
   async index ({ request, response, view }) {

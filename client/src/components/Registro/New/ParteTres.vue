@@ -15,10 +15,12 @@
           <div class="text-negative text-caption text-bold" v-if="!preguntas[index].pregunta[index2].qvalmin || !preguntas[index].pregunta[index2].qvalmax"> Campos Requeridos </div>
           <div class="row justify-start items-center">
             <!-- <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmin" type="number" style="width:100px; height:30px" class="input-border-new" prefix="$" /> -->
-            <currency-input v-model.number="preguntas[index].pregunta[index2].qvalmin" currency="USD" locale="de-DE" class="input-border-new" style="width:100px;height:30px" :precision="0" />
+            <currency-input v-model.number="preguntas[index].pregunta[index2].qvalmin" currency="USD" locale="en-US"
+              class="input-border-new" style="width:100px;height:30px" :precision="0" />
             <div class="text-grey-9 q-mb-md q-ml-sm">Minimo</div>
             <!-- <q-input borderless dense v-model.number="preguntas[index].pregunta[index2].qvalmax" type="number" style="width:100px; height:30px" class="input-border-new q-ml-sm" prefix="$" /> -->
-            <currency-input v-model.number="preguntas[index].pregunta[index2].qvalmax" currency="USD" locale="de-DE" class="q-ml-sm input-border-new" style="width:100px;height:30px" :precision="0" />
+            <currency-input v-model.number="preguntas[index].pregunta[index2].qvalmax" currency="USD" locale="en-US"
+              class="q-ml-sm input-border-new" style="width:100px;height:30px" :precision="0" />
             <div class="text-grey-9 q-mb-md q-ml-sm">Maximo</div>
           </div>
         </div>
@@ -51,7 +53,7 @@
     </div>
     <div>
       <div class="row justify-center q-pa-sm q-mt-md q-mb-md">
-        <q-btn class="button-border" style="height:45px; width:200px" color="primary" label="Aceptar y Continuar" @click="next()" />
+        <q-btn class="button-border" style="height:45px; width:200px" color="primary" label="Continuar" @click="next()" />
       </div>
     </div>
   </div>

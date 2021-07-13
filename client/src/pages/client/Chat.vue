@@ -25,7 +25,7 @@
         :label="date"
         />-->
         <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" :avatar="mens.perfil ? baseu + mens.id : proveedor ? baseu + mens.id : 'noimg.png'" :text="[mens.message]"
-          :stamp="mens.stamp" :sent="mens.send" :bg-color="mens.send ? 'primary' : 'grey-4'" :text-color="mens.send ? 'white' : 'black'" size="6"
+          :stamp="mens.stamp" :sent="mens.send" :bg-color="mens.send ? 'primary' : 'grey-4'" :text-color="mens.send ? 'white' : 'black'" size="100%"
         />
         <div id="fin"></div>
       </div>
