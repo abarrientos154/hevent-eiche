@@ -162,7 +162,7 @@ export default {
       showRangos: false,
       cotisations: [],
       showServicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'home', total: 0 },
+        { title: 'Locación', id: 'localizacion', icon: 'home', total: 0 },
         { title: 'Alimentos', id: 'alimentos', icon: 'fastfood', total: 0 },
         { title: 'Bebidas', id: 'bebidas', icon: 'local_bar', total: 0 },
         { title: 'Fotógrafo', id: 'fotografo', icon: 'camera_alt', total: 0 },

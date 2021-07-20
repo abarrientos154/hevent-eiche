@@ -131,20 +131,20 @@ export default {
       id: '',
       proveedores: [],
       servicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png', select: true },
+        { title: 'Locación', id: 'localizacion', icon: 'icon_services/locacion.png', select: true },
         { title: 'Alimentos', id: 'alimentos', icon: 'icon_services/alimentos.png', select: false },
         { title: 'Bebidas', id: 'bebidas', icon: 'icon_services/bebidas.png', select: false },
         { title: 'Fotógrafo', id: 'fotografia', icon: 'icon_services/fotografia.png', select: false },
         { title: 'Vídeo', id: 'video', icon: 'icon_services/video.png', select: false },
         { title: 'Audio', id: 'audio', icon: 'icon_services/audio.png', select: false },
         { title: 'Música', id: 'musica', icon: 'icon_services/musica.png', select: false },
-        { title: 'Iliminacion', id: 'iluminacion', icon: 'icon_services/iluminacion.png', select: false },
+        { title: 'Iluminación', id: 'iluminacion', icon: 'icon_services/iluminacion.png', select: false },
         { title: 'Invitación', id: 'invitacion', icon: 'icon_services/invitacion.png', select: false },
         { title: 'Recuerdos', id: 'recuerdos', icon: 'icon_services/recuerdos.png', select: false },
         { title: 'Decoración', id: 'decoracion', icon: 'icon_services/decoracion.png', select: false },
-        { title: 'Mobiliaria', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png', select: false },
+        { title: 'Mobiliario', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png', select: false },
         { title: 'Transporte', id: 'transporte', icon: 'icon_services/transporte.png', select: false },
-        { title: 'Personas', id: 'personas', icon: 'icon_services/personas.png', select: false }
+        { title: 'Personal', id: 'personas', icon: 'icon_services/personas.png', select: false }
       ],
       contentStyle: {
         backgroundColor: 'rgba(0,0,0,0.02)',

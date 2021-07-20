@@ -100,7 +100,7 @@ export default {
       id: '',
       guardados: '0 guardados',
       showServicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'home' },
+        { title: 'Locación', id: 'localizacion', icon: 'home' },
         { title: 'Alimentos', id: 'alimentos', icon: 'fastfood' },
         { title: 'Bebidas', id: 'bebidas', icon: 'local_bar' },
         { title: 'Fotógrafo', id: 'fotografo', icon: 'camera_alt' },

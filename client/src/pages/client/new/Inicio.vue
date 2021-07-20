@@ -141,7 +141,7 @@ export default {
         }
       ],
       servicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png' },
+        { title: 'Locación', id: 'localizacion', icon: 'icon_services/locacion.png' },
         { title: 'Alimentos', id: 'alimentos', icon: 'icon_services/alimentos.png' },
         { title: 'Bebidas', id: 'bebidas', icon: 'icon_services/bebidas.png' },
         { title: 'Fotógrafo', id: 'fotografia', icon: 'icon_services/fotografia.png' },

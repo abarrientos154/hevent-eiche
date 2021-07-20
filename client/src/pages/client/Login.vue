@@ -99,9 +99,15 @@
     </div>
     <div class="text-center text-caption q-ml-md q-mr-md">Te enviaremos un mensaje para confirmar tu número. Sujeto a las tarifas para mensajes y datos</div> -->
     <div class="row justify-center">
+      <div class="row items-center q-mr-md" @click="$router.push('registro_cliente')" >
+        <div class="circle-punto subrayado q-mr-xs"></div>
+        <div class="text-bold subrayado">Registrarse</div>
+        <div class="circle-punto q-ml-xs subrayado"></div>
+      </div>
      <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="Siguiente" @click="logearse()"/>
     </div>
-    <div class=" text-center text-subtitle2 ">Iniciar Sesión con</div>
+    <q-separator inset />
+    <!--<div class=" text-center text-subtitle2 ">Iniciar Sesión con</div>
     <div class="row justify-around q-mr-xl q-ml-xl q-mt-sm q-mb-sm">
       <GoogleLogin v-if="showgoogle" :params="params" :onSuccess="onSuccess" :onFailure="onFailure" class="google-login shadow-3">
         <img src="iconos2/Iconos_Redes.png" style="width: 20px; height: 20px"/>
@@ -112,29 +118,42 @@
       <q-btn v-if="showapple"  round color="grey" style="width: 40px; height: 40px">
         <img src="iconos2/Iconos_Redes_2.png" style="width: 20px; height: 20px"/>
       </q-btn>
-      <!--<q-btn  round color="primary" style="width: 40px; height: 40px" to="/verificacion_correo">
+      <q-btn  round color="primary" style="width: 40px; height: 40px" to="/verificacion_correo">
         <img src="iconos2/Iconos_Redes_3.png" style="width: 20px; height: 20px"/>
-      </q-btn> -->
+      </q-btn>
       <q-btn  round color="light-blue" style="width: 40px; height: 40px" to="/slider_proveedor">
         <img src="iconos2/Iconos_Redes_4.png" style="width: 20px; height: 20px"/>
       </q-btn>
+    </div>-->
+    <div class="column items-center">
+      <div class="text-center text-caption">Si eres un proveedor, ingresa al icono de la caja</div>
+      <q-btn color="primary" class="q-ma-sm button-border gradiente-buttom" style="width:160px;height:50px" to="/slider_proveedor" >
+        <template>
+          <div class="row items-center justify-start">
+            <div class="btn-proveedor shadow-3">
+              <img src="iconos2/Iconos_Redes_4.png" style="width: 22px; height: 22px"/>
+            </div>
+            <div class="q-pl-sm">Proveedor</div>
+          </div>
+        </template>
+      </q-btn>
     </div>
-    <div class="text-center text-caption">Si eres un proveedor, ingresa el icono de la caja</div>
-    <q-separator class="q-mt-xs" size="2px" inset/>
+    <!--
     <div class="column items-center">
       <div class="text-subtitle2 q-mt-sm">¿No tienes una cuenta?</div>
-      <q-btn color="primary" class="q-ma-sm button-border" style="width:150px" label="Registrarte" to="/registro_cliente"/>
+
     </div>
+    -->
   </div>
 </template>
 <script>
 
 import { mapMutations } from 'vuex'
-import GoogleLogin from 'vue-google-login'
+// import GoogleLogin from 'vue-google-login'
 import { required, sameAs, maxLength, minLength } from 'vuelidate/lib/validators'
 export default {
   components: {
-    GoogleLogin
+    // GoogleLogin
   },
   data () {
     return {
@@ -405,4 +424,25 @@ export default {
   background-color: #ffffff;
   border: 0px solid white;
 }
+.circle-punto {
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background-color: black;
+}
+
+.subrayado {
+  border-bottom: 1px solid rgb(184, 184, 184);
+  padding: 0 !important;
+}
+
+.btn-proveedor {
+  width:40px;
+  height:100%;
+  background-color:rgb(23, 213, 255);
+  border-radius:100%;
+  padding:3px;
+  padding-top:4px;
+}
+
 </style>

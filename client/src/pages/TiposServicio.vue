@@ -36,20 +36,20 @@ export default {
   data () {
     return {
       servicios: [
-        { title: 'Localización', id: 'localizacion', icon: 'icon_services/locacion.png' },
+        { title: 'Locación', id: 'localizacion', icon: 'icon_services/locacion.png' },
         { title: 'Alimentos', id: 'alimentos', icon: 'icon_services/alimentos.png' },
         { title: 'Bebidas', id: 'bebidas', icon: 'icon_services/bebidas.png' },
         { title: 'Fotógrafo', id: 'fotografia', icon: 'icon_services/fotografia.png' },
         { title: 'Vídeo', id: 'video', icon: 'icon_services/video.png' },
         { title: 'Audio', id: 'audio', icon: 'icon_services/audio.png' },
         { title: 'Música', id: 'musica', icon: 'icon_services/musica.png' },
-        { title: 'Iliminacion', id: 'iluminacion', icon: 'icon_services/iluminacion.png' },
+        { title: 'Iluminación', id: 'iluminacion', icon: 'icon_services/iluminacion.png' },
         { title: 'Invitación', id: 'invitacion', icon: 'icon_services/invitacion.png' },
         { title: 'Recuerdos', id: 'recuerdos', icon: 'icon_services/recuerdos.png' },
         { title: 'Decoración', id: 'decoracion', icon: 'icon_services/decoracion.png' },
-        { title: 'Mobiliaria', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png' },
+        { title: 'Mobiliario', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png' },
         { title: 'Transporte', id: 'transporte', icon: 'icon_services/transporte.png' },
-        { title: 'Personas', id: 'personas', icon: 'icon_services/personas.png' }
+        { title: 'Personal', id: 'personas', icon: 'icon_services/personas.png' }
       ]
     }
   }
