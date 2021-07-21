@@ -94,7 +94,7 @@ export default {
           tipo: 'Mensual',
           select: false,
           cual: 1,
-          priceco: 1500000,
+          priceco: 1000000,
           pricecl: 3100
         },
         {
