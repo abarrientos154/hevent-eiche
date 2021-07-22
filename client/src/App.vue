@@ -61,7 +61,7 @@ export default {
         await universalLinks.subscribe('ul_pagos', function (eventData) {
           vm.eventos = true
           if (eventData.params.pagoEvento && eventData.params.wompi) {
-            vm.$router.push('pagar/' + eventData.params.event_id + '?pay=1&ref=' + eventData.params.referencia + '&wompi=1')
+            vm.$router.push('pagar/' + eventData.params.event_id + '?pay=1&ref=' + eventData.params.ref + '&wompi=1')
           } else if (eventData.params.pagoEvento && eventData.params.flow) {
             vm.$router.push('pagar/' + eventData.params.event_id + '?pay=1&flow=1&status=' + eventData.params.status)
           }

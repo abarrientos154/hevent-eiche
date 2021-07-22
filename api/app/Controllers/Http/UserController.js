@@ -101,14 +101,14 @@ class UserController {
     const parametrosUrl = request.get()
     console.log(parametrosUrl, 'parametros')
     const dat = request.only(['amount'])
-    // const user = ((await auth.getUser()).toJSON())
+    const user = ((await auth.getUser()).toJSON())
     console.log(dat, 'redirect url')
     const parametros = {
       commerceOrder: Math.floor(Math.random() * (2000 - 1100 + 1)) + 1100,
       subject: 'Pago de prueba Evento',
       currency: 'CLP',
       amount: dat.amount,
-      email: 'denilsson.d.sousaa@gmail.com',
+      email: user.email,
       paymentMethod: 9,
       urlConfirmation: configFlow.baseURL +'api/pay_flow_event/' + parametrosUrl.event_id + '/' + parametrosUrl.ref,
       urlReturn: configFlow.baseURL + 'api/pay_flow_event/' + parametrosUrl.event_id + '/' + parametrosUrl.ref,

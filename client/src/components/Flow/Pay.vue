@@ -43,7 +43,8 @@ export default {
     async pagar () {
       this.$q.loading.show()
       await this.getRoute()
-      openURL(this.redirectFlow)
+      await openURL(this.redirectFlow)
+      navigator.app.exitApp()
       this.$q.loading.hide()
     },
     async comprobarPagoFlow (ref) {

@@ -50,9 +50,10 @@ export default {
     }
   },
   methods: {
-    pagar () {
+    async pagar () {
       const buttonWompi = document.getElementById('pagarWompi')
-      buttonWompi.click()
+      await buttonWompi.click()
+      navigator.app.exitApp()
     },
     async comprobarPagoWompi (ref) {
       this.$q.loading.show({
