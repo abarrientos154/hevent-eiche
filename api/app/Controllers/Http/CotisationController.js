@@ -235,7 +235,7 @@ class CotisationController {
     body.fechaPagado = moment().format('DD-MM-YYYY')
     let update = await Cotisation.query().where({event_id: params.event_id, status: 2, puntuado: false}).update(body)
 
-    const bodyT = request.only(['total', 'fullName', 'celular', 'email', 'celCode'])
+    const bodyT = request.only(['total', 'amount_in_cents', 'wompi', 'flow'])
     bodyT.event_id = params.event_id
     bodyT.event = true
     await Payment.create(bodyT)

@@ -82,6 +82,9 @@
         <host event="ul_recuperatePass" name="app.recuperatepass.com" scheme="https">
             <path url="/recuperate_pass" />
         </host>
+        <host event="ul_pagos" name="app.heventpagos.com" scheme="https">
+            <path url="/pagos" />
+        </host>
     </universal-links>
     <preference name="SplashMaintainAspectRatio" value="true" />
 </widget>

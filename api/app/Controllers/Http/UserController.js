@@ -1,11 +1,14 @@
 "use strict";
 
+const View = use('View')
 const User = use("App/Models/User")
 const Notificacion = use("App/Models/Notificacion")
 const Role = use("App/Models/Role")
 const RespuestaProveedor = use("App/Models/RespuestaProveedor")
 const ServicioProveedor = use("App/Models/ServicioProveedor")
 const Payment = use("App/Models/Payment")
+const Cotisation = use("App/Models/Cotisation")
+const Event = use("App/Models/Event")
 const Email = use('App/Functions/Email')
 const Cruds = use('App/Functions/Cruds')
 const fs = require('fs')
@@ -40,6 +43,94 @@ var configFlow = {
  * Resourceful controller for interacting with users
  */
 class UserController {
+
+  async payFlowRedirectEvent ({ response, params, request, view }) {
+    console.log(request.post(), params)
+    let dat = params.ref
+    const paramss = {
+      token: (request.post()).token
+    }
+    const serviceName = 'payment/getStatus'
+    console.log(dat,'floww')
+      try {
+        //console.log(Flow)
+        // Instancia la clase FlowApi
+        const flowApi = new Flow.default(configFlow)
+        // Ejecuta el servicio
+        var respon = await flowApi.send(serviceName, paramss, 'get')
+
+        console.log(`location: ${respon}`)
+        console.log(respon, 'respon')
+        if (respon.status === 2) {
+          // cuando el pago se procesa correctamente
+          const save = {
+            wompi: false,
+            flow: true,
+            total: respon.amount,
+            amount_in_cents: respon.amount + '00'
+          }
+          const body = {}
+          body.status = 4 //Cotizacion Pagada y a la espera por finalizar el evento
+          body.fechaPagado = moment().format('DD-MM-YYYY')
+          await Cotisation.query().where({event_id: params.event_id, status: 2, puntuado: false}).update(body)
+
+          const bodyT = save
+          bodyT.event_id = params.event_id
+          bodyT.event = true
+          await Payment.create(bodyT)
+
+          let bodyE = {}
+          bodyE.pay = true
+          bodyE.fechaPagado = moment().format('DD-MM-YYYY')
+          await Event.query().where({_id: params.event_id}).update(bodyE)
+
+        }
+        View.global('ruta', function () {
+          console.log('entro')
+          return `https://app.heventpagos.com/pagos?pay=1&flow=1&status=${respon.status}&event_id=${params.event_id}&pagoEvento=1`
+        })
+        return view.render('flow-pay-redirect-event')
+        //response.send({flow: respon, status: respon.status})
+      } catch (error) {
+        console.log(error)
+        response.unprocessableEntity(error.message)
+      }
+  }
+
+  async payFlowNew ({ response, params, request, auth }) {
+    const parametrosUrl = request.get()
+    console.log(parametrosUrl, 'parametros')
+    const dat = request.only(['amount'])
+    // const user = ((await auth.getUser()).toJSON())
+    console.log(dat, 'redirect url')
+    const parametros = {
+      commerceOrder: Math.floor(Math.random() * (2000 - 1100 + 1)) + 1100,
+      subject: 'Pago de prueba Evento',
+      currency: 'CLP',
+      amount: dat.amount,
+      email: 'denilsson.d.sousaa@gmail.com',
+      paymentMethod: 9,
+      urlConfirmation: configFlow.baseURL +'api/pay_flow_event/' + parametrosUrl.event_id + '/' + parametrosUrl.ref,
+      urlReturn: configFlow.baseURL + 'api/pay_flow_event/' + parametrosUrl.event_id + '/' + parametrosUrl.ref,
+    }
+
+    const serviceName = 'payment/create'
+
+    try {
+      //console.log(Flow)
+      // Instancia la clase FlowApi
+      const flowApi = new Flow.default(configFlow)
+      // Ejecuta el servicio
+      var respon = await flowApi.send(serviceName, parametros, 'POST')
+      // Prepara url para redireccionar el browser del pagador
+      var redirect = respon.url + '?token=' + respon.token
+      console.log(`location: ${redirect}`)
+      response.send({redirect, token: respon.token})
+    } catch (error) {
+      console.log(error)
+      response.unprocessableEntity(error.message)
+    }
+  }
 
   async getProviderByReference ({ response, params }) {
     const payment = (await Payment.query().where('ref', params.ref).with('user_info').first()).toJSON()

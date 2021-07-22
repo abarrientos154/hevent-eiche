@@ -38,7 +38,7 @@
                   {{eventPay.name}}
                 </div>
                 <div style="height:50px; border-bottom-right-radius:12px; border-bottom-left-radius:12px">
-                  <img :src="eventPay.img ? baseuEvent + event._id : 'evento.jpg'" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
+                  <img :src="eventPay.img ? baseuEvent + eventPay._id : 'evento.jpg'" class="img-event" style="border-bottom-right-radius:12px; border-bottom-left-radius:12px" />
                 </div>
               </div>
             </div>
@@ -160,20 +160,22 @@ export default {
     }
   },
   async mounted () {
-    this.baseu = env.apiUrl + 'file_proveedor/portada/'
-    this.baseuEvent = env.apiUrl + 'file_event/'
     this.getEvents()
     this.getUser()
     this.misProveedoresFavoritos()
-    await this.getBlogs()
     this.baseu2 = env.apiUrl + 'blogs_img/'
+    await this.getBlogs()
+    this.baseu = env.apiUrl + 'file_proveedor/portada/'
+    this.baseuEvent = env.apiUrl + 'file_event/'
     if (this.$route.path === '/inicio_cliente/crear_evento') {
       this.showCreateEvent = true
     }
   },
   methods: {
-    getBlogs () {
-      this.$api.get('blogs_index').then(res => {
+    async getBlogs () {
+      this.$q.loading.show()
+      await this.$api.get('blogs_index').then(res => {
+        this.$q.loading.hide()
         this.blogs = res
       })
     },
@@ -185,17 +187,22 @@ export default {
         console.log(res, 'res impresiones')
       })
     },
-    misProveedoresFavoritos () {
-      this.$api.get('favoritos').then(res => {
+    async misProveedoresFavoritos () {
+      this.$q.loading.show()
+      await this.$api.get('favoritos').then(res => {
+        this.$q.loading.hide()
         if (res) {
           this.favoritos = res
         }
       })
     },
-    getEvents () {
-      this.$api.get('events_by_user').then(res => {
+    async getEvents () {
+      this.$q.loading.show()
+      await this.$api.get('events_by_user').then(res => {
+        this.$q.loading.hide()
         if (res) {
           this.data = res.map(v => {
+            console.log(res, 'ssssss')
             if (v.pay) {
               this.eventosPagados.push({
                 ...v
@@ -210,12 +217,15 @@ export default {
               name: v.name
             }
           })
+          console.log(this.eventosPagados, this.eventos, 'eventos')
           // this.data = res
         }
       })
     },
-    getUser () {
-      this.$api.get('users_perfil').then(res => {
+    async getUser () {
+      this.$q.loading.show()
+      await this.$api.get('users_perfil').then(res => {
+        this.$q.loading.hide()
         if (res) {
           this.user = res
           this.perfilImg = env.apiUrl + 'file_proveedor/perfil/' + this.user._id

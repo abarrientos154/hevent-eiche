@@ -70,6 +70,7 @@ export default {
     },
     almacenarPP (files) {
       this.files = files
+      console.log(this.files, 'asd')
     }
   }
 }

@@ -7,7 +7,7 @@
       <q-input v-model="form.fullName" style="height:50px; padding-top: 18px" class="input-border-new" borderless label="Nombre Completo" error-message="ingrese su nombre completo" :error="$v.form.fullName.$error" @blur="$v.form.fullName.$touch()" />
       <div class="row">
           <q-select borderless class="input-border-new q-pa-sm q-pt-sm" v-model="form.celCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
-            emit-value map-options option-value="name" option-label="name"
+            emit-value map-options option-value="name" option-label="name" readonly
           >
             <template v-slot:no-option>
               <q-item>
@@ -33,15 +33,23 @@
         <div class="q-pt-none q-mt-none">iva incluido</div>
       </div>
     </div>
-    <div class="row justify-center q-mt-md q-mb-md">
+    <!--  <div class="row justify-center q-mt-md q-mb-md">
       <q-btn label="Pagar" color="primary" style="border-radius:6px;width:150px;height:50px" push @click="pagar()" />
-    </div>
+    </div>-->
+    <pay-wompi v-if="userCountry === 'co'" class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'pagos?wompi=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
+    <pay-flow v-else class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'?flow=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
   </div>
 </template>
 
 <script>
 import { required, email } from 'vuelidate/lib/validators'
+import PayWompi from '../../components/wompi/Pay.vue'
+import PayFlow from '../../components/Flow/Pay.vue'
+// import env from '../../env'
 export default {
+  components: {
+    PayWompi, PayFlow
+  },
   data () {
     return {
       calificarD: true,
@@ -51,7 +59,8 @@ export default {
       id_event: this.$route.params.id_event,
       cel: null,
       carrito: [],
-      cotisaciones: []
+      cotisaciones: [],
+      userCountry: null
     }
   },
   computed: {
@@ -78,10 +87,12 @@ export default {
       fullName: { required }
     }
   },
-  mounted () {
-    this.getCountries()
-    this.form.celCode = 'Chile'
-    this.getCotisations()
+  async mounted () {
+    // this.getCountries()
+    // this.form.celCode = 'Chile'
+    await this.getCotisations()
+    this.userCountry = (await this.$api.get('user_info')).country
+    console.log(this.userCountry, this.totalCarrito, 'usuario logueado')
   },
   methods: {
     pagar () {
@@ -101,10 +112,17 @@ export default {
         })
       }
     },
-    confirmarPago () {
+    confirmarPago (form) {
       this.form.total = this.totalCarrito
       console.log(this.form, 'form')
-      this.$api.put('pay_quotes/' + this.id_event, this.form).then(res => {
+      const data = {
+        wompi: this.$route.query.wompi === '1',
+        flow: this.$route.query.flow === '1',
+        total: this.totalCarrito,
+        amount_in_cents: this.$route.query.wompi === '1' ? form.amount_in_cents : this.totalCarrito + '00'
+      }
+      console.log(data, 'data enviar pagar')
+      this.$api.put('pay_quotes/' + this.id_event, data).then(res => {
         if (res) {
           this.$q.notify({
             message: 'Pago Realizado Exitosamente',
@@ -126,12 +144,12 @@ export default {
         this.countries = this.countriesOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
       })
     },
-    getCountries () {
+    /* getCountries () {
       this.$api.get('countries').then(res => {
         this.countriesOptions = res
         this.countries = res
       })
-    },
+    }, */
     async getCotisations () {
       this.$q.loading.show()
       await this.$api.get(`cotisations_by_event/${this.id_event}`).then(res => {

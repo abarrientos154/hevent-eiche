@@ -20,6 +20,8 @@ export default async ({ store, Vue }) => {
 
   Vue.prototype.$WKPriv = env.wompiKeyPriv
   Vue.prototype.$WKPub = env.wompiKeyPub
+  Vue.prototype.$appUrl = env.appUrl
+  Vue.prototype.$appUrlT = 'https://app.heventpagos.com/'
 
   axiosInstance.interceptors.response.use(function (response) {
     // console.log('axiosResponse', response)

@@ -86,7 +86,7 @@ export default {
   background-size: 100% 100%;
 }
 .slider-2 {
-  background: url('../../../public/SliderProveedor/Mesa de trabajo 2.png');
+  background: url('../../../public/SliderProveedor/SliderProveedor2.png');
   height: 100vh;
   background-size: 100% 100%;
 }

@@ -44,6 +44,10 @@ const addPrefixToGroup = group => {
 addPrefixToGroup(
   Route.group(() => {
     // Insertar rutas sin protección de autenticación aquí
+
+    Route.post("pay-flow-event-response-token", "UserController.payFlowNew");
+    Route.post("pay_flow_event/:event_id/:ref", "UserController.payFlowRedirectEvent");
+
     Route.post("login", "UserController.login");
     Route.post("register", "UserController.register")
     Route.post("registrar_cliente", "UserController.registrarCliente")

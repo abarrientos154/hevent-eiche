@@ -81,6 +81,9 @@ export default {
       } else {
         this.rutaActual = to.path
       }
+      if (to.path === '/inicio_cliente') {
+        console.log('estoy en cliente')
+      }
     }
   },
   methods: {
@@ -89,9 +92,11 @@ export default {
     },
     async obtenerEventosRealizados () {
       const user = JSON.parse(localStorage.getItem('HEV_SESSION_INFO'))
+      console.log(user.roles[0], 'EVENTOS REALIZADOS')
       if (user.roles[0] === 2) {
         await this.$api.get('eventos_terminados_por_fecha').then(res => {
           if (res) {
+            console.log(res, 'resssss')
             this.proveedores = res
             if (this.proveedores.length > 0) { this.calificarD = true }
           }
