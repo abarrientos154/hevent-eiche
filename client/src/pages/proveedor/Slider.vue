@@ -13,7 +13,7 @@
       </q-tab-panel>
       <q-tab-panel name="two" style="padding:0px;margin:0px">
         <div class="slider-2" @click="next"/>
-        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8" style="font-size:16px; text-align:center">
+        <div class="column items-center justify-center fixed-bottom vertical-bottom q-mb-lg text-grey-8 q-pl-lg q-pr-lg" style="font-size:16px; text-align:center">
           <div class="row justify-between q-mt-md">
             <q-btn color="primary" label="Registrarse" to="/registro_proveedor" />
             <q-space />
@@ -79,7 +79,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .slider-1 {
   background: url('../../../public/SliderProveedor/Mesa de trabajo 1.png');
   height: 100vh;

@@ -127,7 +127,7 @@
     </div>-->
     <div class="column items-center">
       <div class="text-center text-caption">Si eres un proveedor, ingresa al icono de la caja</div>
-      <q-btn color="primary" class="q-ma-sm button-border gradiente-buttom" style="width:160px;height:50px" to="/slider_proveedor" >
+      <!-- <q-btn color="primary" class="q-ma-sm button-border gradiente-buttom" style="width:200px;height:55px" to="/slider_proveedor" >
         <template>
           <div class="row items-center justify-start">
             <div class="btn-proveedor shadow-3">
@@ -137,6 +137,8 @@
           </div>
         </template>
       </q-btn>
+      -->
+      <q-img width="150px" height="36px" src="btn_proveedor.png" class="q-mt-sm" @click="$router.push('/slider_proveedor')" />
     </div>
     <!--
     <div class="column items-center">

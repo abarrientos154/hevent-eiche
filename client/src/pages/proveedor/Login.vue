@@ -30,6 +30,13 @@
             Cargando...
         </template>
       </q-btn>
+    <!--
+      <q-btn color="primary" class="q-mr-sm button-border q-mt-lg" style="width:200px" :loading="loading" @click="pruebaWompi()" label="Prueba Wompo">
+        <template v-slot:loading>
+          <q-spinner-hourglass class="on-left" />
+            Cargando...
+        </template>
+      </q-btn> -->
     </div>
     <q-dialog v-model="modal" style="width:100%">
       <q-card style="border-radius:35px" class="nube">
@@ -193,11 +200,17 @@ export default {
           Authorization: 'Bearer ' + this.$WKPriv
         }
       }
+      // const ref = '5k6CpuWhqCgjuojSi9kS'
       await this.$axios.get(env.wompiUrl + `transactions?reference=${this.$route.params.ref}`, config).then(res => {
         this.$q.loading.hide()
-        console.log(res, 'ress')
+        console.log(res.data.data[0].status, 'ress')
+        /* this.$q.dialog({
+          title: 'RESPUESTA DE WOMPI',
+          message: `REFERENCIA: ${this.$route.params.ref}, RESPUESTA: ${JSON.stringify(res)}`
+        }).onOk(() => {
+        }) */
         if (res.data.data.length > 0) {
-          console.log(res.data.data[0], 'ressssss')
+          // console.log(res.data.data[0], 'ressssss')
           if (res.data.data[0].status === 'ERROR') {
             this.$q.dialog({
               title: '¡Atención!',
@@ -217,7 +230,7 @@ export default {
         } else {
           this.$q.dialog({
             title: '¡Atención!',
-            message: 'Referencia Invalida o No Encontrada. Por Favor contacte con algun administrador'
+            message: `Referencia ${this.$route.params.ref} Invalida o No Encontrada. Por Favor contacte con algun administrador`
           }).onOk(() => {
           })
         }
