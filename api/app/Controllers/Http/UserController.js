@@ -449,29 +449,43 @@ class UserController {
       const profilePic = request.file('perfil', {
         size: '100mb'
       })
-      if (Helpers.appRoot('storage/uploads/register')) {
-        await profilePic.move(Helpers.appRoot('storage/uploads/register'), {
-          name: 'perfil' + user._id.toString(),
-          overwrite: true
-        })
+      console.log(profilePic, 'asd')
+      if (profilePic) {
+        if (Helpers.appRoot('storage/uploads/register')) {
+          await profilePic.move(Helpers.appRoot('storage/uploads/register'), {
+            name: 'perfil' + user._id.toString(),
+            overwrite: true
+          })
+        } else {
+          mkdirp.sync(`${__dirname}/storage/Excel`)
+        }
+        if (!profilePic.moved()) {
+          await User.query().where({ _id: user._id.toString() }).update({ perfil: false })
+        }
       } else {
-        mkdirp.sync(`${__dirname}/storage/Excel`)
-      }
-      if (!profilePic.moved()) {
-        return profilePic.error()
+        await User.query().where({ _id: user._id.toString() }).update({ perfil: false })
       }
 
       const profilePic2 = request.file('portada', {
         size: '100mb'
       })
-      if (Helpers.appRoot('storage/uploads/register')) {
-        await profilePic2.move(Helpers.appRoot('storage/uploads/register'), {
-          name: 'portada' + user._id.toString(),
-          overwrite: true
-        })
+
+      if (profilePic2) {
+        if (Helpers.appRoot('storage/uploads/register')) {
+          await profilePic2.move(Helpers.appRoot('storage/uploads/register'), {
+            name: 'portada' + user._id.toString(),
+            overwrite: true
+          })
+        } else {
+          mkdirp.sync(`${__dirname}/storage/Excel`)
+        }
+        if (!profilePic2.moved()) {
+          await User.query().where({ _id: user._id.toString() }).update({ portada: false })
+        }
       } else {
-        mkdirp.sync(`${__dirname}/storage/Excel`)
+        await User.query().where({ _id: user._id.toString() }).update({ portada: false })
       }
+
       // const user = body
       // Email.sendMail(body.email, 'Bienvenido a hevent', 'A partir de Ahora Formas Parte De Nuestra Plataforma')
       // const user = body

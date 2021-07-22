@@ -37,5 +37,7 @@
 
 .gradiente-buttom {
   background: linear-gradient(to right, $primary, $secondary);
-  color: white
+  color: white;
+  box-shadow: 0px 5px 0px $primary;
+  transition: All 250ms ease;
 }
