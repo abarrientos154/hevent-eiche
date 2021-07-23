@@ -1,6 +1,6 @@
 <template>
   <q-card style="border-radius:35px" class="nube">
-    <div v-if="!data.length > 0">
+    <div v-if="data.length > 0">
       <div class="row justify-end">
         <q-btn color="grey" round dense icon="highlight_off" flat outline v-close-popup />
       </div>
