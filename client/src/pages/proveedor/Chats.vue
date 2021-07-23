@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!chatsOption.length > 0">
+  <div v-if="chatsOption.length > 0">
     <div class="fondo-toolbar">
       <div>
         <div class="text-center text-bold text-white text-h6" style="position:absolute;top:10px;left:40%">Mensajes</div>

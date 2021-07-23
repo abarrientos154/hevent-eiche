@@ -312,21 +312,14 @@ class UserController {
       await User.query().where({email: params.email}).update({codigoRecuperacion: codigo})
       let user = (await User.query().where({email: params.email}).first()).toJSON()
       console.log(user, 'user')
-      let mail = await Email.sendMail(params.email, 'Recuperacion de Correo', `
+      let mail = await Email.sendMail(params.email, 'Recuperación de Correo', `
           <h1 style="text-align:left">
-            Tu Contrasena
+            Tu Contraseña
           </h1>
           <p>
             Hola ${user.name ? user.name : user.full_name}
-            Quieres cambiar tu contrasena vinculada a esta cuenta? si es asi
-            confirmar la sociedad. Este enlace es temporal y caduca a las 24 horas
-          </p>
-          <p>
-            Si no tienes intencion de cambiar tu contrasena, ignorar este email. No
-            te preocupes. Tu cuenta esta segura.
-          </p>
-          <p>
-            Un saludo de parte del equipo de Hevent.
+            Quieres cambiar tu contraseña vinculada a esta cuenta? si es asi
+            confirmar la sociedad. Este enlace es temporal y caduca a las 24 horas.
           </p>
           <div>
             <button style="width:200px;height:45px;background:#009CFF;color:white;border-radius:12px;border:0px solid red"
@@ -334,6 +327,13 @@ class UserController {
             <a style="color:white" href="https://app.recuperatepass.com/recuperate_pass?codigo=${codigo}">CONFIRMAR</a>
             </button>
           </div>
+          <p>
+            Si no tienes intencion de cambiar tu contraseña, ignorar este email. No
+            te preocupes. Tu cuenta esta segura.
+          </p>
+          <p>
+            Un saludo de parte del equipo de Hevent.
+          </p>
       `)
       console.log(mail)
       response.send(user)
