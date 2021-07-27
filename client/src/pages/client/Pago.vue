@@ -4,27 +4,39 @@
     <div class="background-tool" />
     <div class="text-primary text-h6 text-center"> * Datos de Pago * </div>
     <div class="column q-ma-md">
-      <q-input v-model="form.fullName" style="height:50px; padding-top: 18px" class="input-border-new" borderless label="Nombre Completo" error-message="ingrese su nombre completo" :error="$v.form.fullName.$error" @blur="$v.form.fullName.$touch()" />
-      <div class="row">
-          <q-select borderless class="input-border-new q-pa-sm q-pt-sm" v-model="form.celCode" use-input input-debounce="0" :options="countries" @filter="filterFn" style="width: 80px"
-            emit-value map-options option-value="name" option-label="name" readonly
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey">
-                  Sin Resultados
-                </q-item-section>
-              </q-item>
-            </template>
-            <template v-slot:selected-item="scope">
-              <div class="text-bold q-mt-sm" style="margin-top:12px">{{ scope.opt.dialCode }}</div>
-            </template>
-          </q-select>
-          <q-input v-model="form.celular" class="input-border-new q-pa-sm q-ml-sm" style="width:200px" label="Celular" dense borderless
-            error-message="ingrese un celular valido" :error="$v.form.celular.$error" @blur="$v.form.celular.$touch()"
-          />
+      <q-input disable readonly v-model="form.full_name" style="height:50px; padding-top: 18px" class="input-border-new" borderless label="Nombre Completo" error-message="ingrese su nombre completo" :error="$v.form.fullName.$error" @blur="$v.form.fullName.$touch()" />
+      <div class="row items-center justify-center">
+        <q-select disable readonly borderless v-model="telCode" :options="countries" option-value="name" option-label="name" emit-value map-options
+          style="width:120px" class="input-border-new-re"
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+              <q-item-section avatar>
+                <q-img :src="scope.opt.name !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg' " />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-html="scope.opt.name" />
+                <q-item-label caption>{{ scope.opt.dialCode }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+           <template v-slot:selected-item="scope" class="row" >
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+              <q-item-section avatar>
+                <q-img :src="telCode !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg'" style="width:30px;height:20px" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ scope.opt.dialCode }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+        <q-input disable readonly v-model="form.phone" class="input-border-new q-pa-sm q-ml-sm" style="width:150px" label="Telefono" dense borderless
+        />
       </div>
-      <q-input v-model="form.email" style="height:50px; padding-top: 18px" class="input-border-new" borderless label="Email" type="email" error-message="ingrese un email valido" :error="$v.form.email.$error" @blur="$v.form.email.$touch()" />
+      <q-input v-model="form.email" style="height:50px; padding-top: 18px" class="input-border-new" borderless label="Email" type="email"
+        disable readonly
+      />
     </div>
     <div class="row justify-around text-primary q-mt-sm items-center">
       <div class="text-bold text-h6">Total</div>
@@ -36,7 +48,7 @@
     <!--  <div class="row justify-center q-mt-md q-mb-md">
       <q-btn label="Pagar" color="primary" style="border-radius:6px;width:150px;height:50px" push @click="pagar()" />
     </div>-->
-    <pay-wompi v-if="userCountry === 'co'" class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'pagos?wompi=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
+    <pay-wompi v-if="userCountry === 'Colombia'" class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'pagos?wompi=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
     <pay-flow v-else class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'?flow=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
   </div>
 </template>
@@ -55,12 +67,24 @@ export default {
       calificarD: true,
       form: {},
       countriesOptions: [],
-      countries: [],
       id_event: this.$route.params.id_event,
       cel: null,
       carrito: [],
       cotisaciones: [],
-      userCountry: null
+      userCountry: null,
+      countries: [
+        {
+          name: 'Chile',
+          dialCode: '+56',
+          code: 'CL'
+        },
+        {
+          name: 'Colombia',
+          dialCode: '+57',
+          code: 'CO'
+        }
+      ],
+      telCode: 'Colombia'
     }
   },
   computed: {
@@ -83,7 +107,7 @@ export default {
   validations: {
     form: {
       email: { email, required },
-      celular: { required },
+      phone: { required },
       fullName: { required }
     }
   },
@@ -91,7 +115,9 @@ export default {
     // this.getCountries()
     // this.form.celCode = 'Chile'
     await this.getCotisations()
-    this.userCountry = (await this.$api.get('user_info')).country
+    const infoUser = await this.$api.get('user_info')
+    this.userCountry = infoUser.telCode
+    this.form = infoUser
     console.log(this.userCountry, this.totalCarrito, 'usuario logueado')
   },
   methods: {
@@ -112,7 +138,7 @@ export default {
         })
       }
     },
-    confirmarPago (form) {
+    async confirmarPago (form) {
       this.form.total = this.totalCarrito
       console.log(this.form, 'form')
       const data = {
@@ -122,7 +148,9 @@ export default {
         amount_in_cents: this.$route.query.wompi === '1' ? form.amount_in_cents : this.totalCarrito + '00'
       }
       console.log(data, 'data enviar pagar')
-      this.$api.put('pay_quotes/' + this.id_event, data).then(res => {
+      this.$q.loading.show()
+      await this.$api.put('pay_quotes/' + this.id_event, data).then(res => {
+        this.$q.loading.hide()
         if (res) {
           this.$q.notify({
             message: 'Pago Realizado Exitosamente',
@@ -163,11 +191,21 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .background-tool {
   background-image: url('../../../public/nube1.png');
   width:100%;
   height: 150px;
   background-size: 100% 250px;
+}
+
+.input-border-new-re {
+  background: #e1f5ff;
+  border: 0px solid #bbbbbb;
+  box-sizing: border-box;
+  border-radius: 5px;
+  height: 40px;
+  margin-bottom: 20px;
+  padding-left: 0px;
 }
 </style>

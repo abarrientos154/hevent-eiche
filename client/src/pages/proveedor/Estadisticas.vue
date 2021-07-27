@@ -96,7 +96,7 @@
         </div>
       </q-card>
 
-      <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
+      <!-- <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md">
         <div class="row">
           <div class="row items-center">
             <div class="q-ml-md text-subtitle1 text-grey-7 text-bold">Tiempo de Respuesta</div>
@@ -105,7 +105,7 @@
             {{form.tiempoR}}
           </div>
         </div>
-      </q-card>
+      </q-card> -->
 
       <q-card class="estilo-card-est q-pa-md no-shadow q-mt-md" style="height:360px">
         <div class="column">
@@ -204,8 +204,8 @@ export default {
     this.getEst()
   },
   methods: {
-    getEst () {
-      this.$api.get('estadisticas').then(res => {
+    async getEst () {
+      await this.$api.get('estadisticas').then(res => {
         if (res) {
           this.form = res
           this.chartData.datasets[0].data = res.dataChar

@@ -106,7 +106,7 @@ import Imagenes from '../../components/anuncio/Imagenes'
 import Videos from '../../components/anuncio/Videos'
 import env from '../../env'
 import Opiniones from '../../components/anuncio/Opiniones'
-import Mapa from '../../components/GoogleMap'
+import Mapa from '../../components/GoogleMapView'
 export default {
   components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones, Mapa, ModalEventos },
   data () {

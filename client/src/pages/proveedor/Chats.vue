@@ -21,7 +21,7 @@
           <q-item class="q-mt-sm" v-ripple clickable @click="entrar(chat._id)">
             <q-item-section avatar>
               <q-avatar size="75px">
-                <q-img :src="baseu + chat.id_usuario" />
+                <q-img :src="chat.perfil ? baseu + chat.id_usuario : 'noimg.png'" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -76,8 +76,10 @@ export default {
     entrar (id) {
       this.$router.push('/chat/' + id)
     },
-    getRecords () {
-      this.$api.get('get_chats').then(res => {
+    async getRecords () {
+      this.$q.loading.show()
+      await this.$api.get('get_chats').then(res => {
+        this.$q.loading.hide()
         if (res) {
           console.log('chat', res)
           this.chats = res

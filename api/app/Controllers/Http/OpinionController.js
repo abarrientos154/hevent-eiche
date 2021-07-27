@@ -145,7 +145,6 @@ class OpinionController {
       if (mes === 'noviembre') { meses.noviembre += 1 }
       if (mes === 'diciembre') { meses.diciembre += 1 }
     }
-
     let dataCharImpression = [ meses.enero, meses.febrero, meses.marzo, meses.abril, meses.mayo, meses.junio, meses.julio, meses.agosto, meses.septiembre, meses.octubre, meses.noviembre, meses.diciembre ]
     enviar.dataCharImpression = dataCharImpression
     enviar.totalImpressions = impresiones.length

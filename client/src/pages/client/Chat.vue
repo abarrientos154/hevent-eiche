@@ -24,7 +24,7 @@
         <!--<q-chat-message
         :label="date"
         />-->
-        <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" :avatar="mens.perfil ? baseu + mens.id : proveedor ? baseu + mens.id : 'noimg.png'" :text="[mens.message]"
+        <q-chat-message v-for="mens in this.data.messages" :key="mens.id" :name="mens.full_name" :avatar="mens.img ? baseu + mens.id : 'noimg.png'" :text="[mens.message]"
           :stamp="mens.stamp" :sent="mens.send" :bg-color="mens.send ? 'primary' : 'grey-4'" :text-color="mens.send ? 'white' : 'black'" size="100%"
         />
         <div id="fin"></div>
@@ -156,7 +156,7 @@ export default {
           } else {
             this.usuario = this.data.datos_proveedor.name
             this.id_img = this.data.datos_proveedor._id
-            this.imgConcatenado = this.baseu + this.id_img
+            this.imgConcatenado = this.data.datos_proveedor.perfil ? this.baseu + this.id_img : 'noimg.png'
             this.proveedor = true
           }
         }
@@ -165,10 +165,12 @@ export default {
     ruta () {
       this.$router.go(-1)
     },
-    sendChat () {
+    async sendChat () {
       if (this.text !== '') {
         console.log(this.text)
-        this.$api.post('send_message/' + this.cotizacion_id, { message: this.text }).then(v => {
+        this.$q.loading.show()
+        await this.$api.post('send_message/' + this.cotizacion_id, { message: this.text }).then(v => {
+          this.$q.loading.hide()
           this.text = ''
           this.$api.get('show_all_info_cotization/' + this.cotizacion_id).then(v => {
             if (v) {

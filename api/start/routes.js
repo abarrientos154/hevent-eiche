@@ -102,6 +102,7 @@ addPrefixToGroup(
     // Insertar rutas con protección de autenticación aquí
 
     Route.get('validar_plan', 'UserController.validarCambioPlan')
+    Route.get('tu_plan', 'UserController.tuPlan')
 
     // Validar TOKEN
     Route.get('isValid', 'UserController.validarToken')
@@ -145,7 +146,7 @@ addPrefixToGroup(
     Route.get("show_detail_service_by_id/:id_cotisation/:id_service", "CotisationController.showDetailServiceById") //agrega los detalles del servicio a la cotizacion
     Route.get("get_cotisation_in_status", "CotisationController.getCotisationInStatus")
     Route.put("approve_quote/:id", "CotisationController.approveQuote")
-    Route.put("desapprove_quote/:id", "CotisationController.desapproveQuote")
+    Route.put("desapprove_quote/:id", "CotisationController.disapproveQuote")
     Route.put("pay_quotes/:event_id", "CotisationController.payQuotes")
     Route.get("quotes_by_status_approve", "CotisationController.quotesByStatusApprove")
     Route.get("cotisations_by_event/:event_id", "CotisationController.cotisationsByEvent")

@@ -1,0 +1,35 @@
+<div style="width:100%;height: 200px;">
+  <img src="../../public/toolbar_mail.jpg" alt="nube_principal" style="width:100%;height: 170px;">
+</div>
+<div style="background-color: #ffffff;border-bottom-left-radius: 60px;border-bottom-right-radius: 60px;position: relative; padding: 30px;">
+  <h3 style="text-align:left;color:#242424;font-weight:lighter;margin-top: 30px; padding-left: 20px; padding-right: 20px;">
+  * Tu Contraseña *
+  </h3>
+  <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+    Hola ${user.name ? user.name : user.full_name}
+  </p>
+
+  <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+    Quieres cambiar tu contraseña vinculada a esta cuenta? si es asi dar click a cambiar contraseña. Este enlace es temporal y caduca a las 24 horas.
+  </p>
+  <center>
+    <div>
+      <button style="width:200px;height:40px;background:#009CFF;color:white;border-radius:12px;border:0px solid red">
+        <a style="color:white;font-size: 18px;text-decoration: none;" href="https://app.recuperatepass.com/recuperate_pass?codigo=${codigo}">Cambiar Contraseña </a>
+      </button>
+    </div>
+  </center>
+  <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+    Si no tienes intencion de cambiar tu contraseña ignora este email. No
+    te preocupes. Tu cuenta esta segura.
+  </p>
+  <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+    Un saludo por parte del equipo de Hevent.
+  </p>
+  <u style="font-weight: bolder;color:#838383;padding-left: 20px; padding-right: 20px">
+    "Nota: Por Favor, NO responda a este mensaje, es un envio automatico."
+  </u>
+</div>
+<div style="width:100%;height: 100px;margin-top: -20px;z-index: 2;">
+  <img src="../../public/footer_mail.jpg" alt="footer" style="width:100%;height: 100px;">
+</div>

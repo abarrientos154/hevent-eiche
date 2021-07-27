@@ -67,8 +67,10 @@ class ServicioController {
     response.send(preguntas)
   }
 
-  async preguntasPorId ({ response, params }) {
+  async preguntasPorId ({ response, params, auth }) {
     console.log(params.id_servicio, 'ID SERVICIO')
+    const searchByPais = (((await auth.getUser()).toJSON()).telCode) === 'Colombia' ? 'co' : 'cl'
+    console.log(searchByPais, 'search pais')
     if (params.id_servicio === 'personas') {
       console.log('entro1')
       let buscar = [
@@ -96,7 +98,9 @@ class ServicioController {
       }
     }
 
-    response.send(newArray)
+    let filtroPais = newArray.filter(v => v.datos_proveedor.country === searchByPais)
+
+    response.send(filtroPais)
   }
 
   async serviciosPorProveedor ({ response, auth }) {

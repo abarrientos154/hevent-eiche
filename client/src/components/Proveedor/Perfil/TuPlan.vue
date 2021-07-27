@@ -38,14 +38,36 @@
 
     <div class="text-subtitle1 text-bold"> Pago </div>
     <q-separator/>
+    <div class="text-grey">
+      <div> Fecha Suscripcion: {{fechaS}} </div>
+      <div> Fecha Vencimiento: {{fechaV}} </div>
+    </div>
   </q-card>
 </template>
 
 <script>
 export default {
   props: ['user'],
+  data () {
+    return {
+      fechaS: '',
+      fechaV: ''
+    }
+  },
   mounted () {
     console.log(this.user, 'userrrrrrr')
+    this.consultarPlan()
+  },
+  methods: {
+    async consultarPlan () {
+      this.$q.loading.show()
+      const res = await this.$api.get('tu_plan')
+      this.$q.loading.hide()
+      if (res) {
+        this.fechaS = res.fechaS
+        this.fechaV = res.fechaV
+      }
+    }
   }
 }
 </script>

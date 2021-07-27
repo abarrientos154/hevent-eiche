@@ -39,8 +39,8 @@
         </div>
       </div>
       <div class="row justify-between q-mt-md">
-        <q-btn label="negar" color="negative" push glossy style="width:150px;height:45px" @click="ejecutar('negar')" v-if="status === 1 && esCliente" />
-        <q-btn label="aprobar" color="positive" push glossy style="width:150px;height:45px" @click="ejecutar('aprobar')" v-if="status === 1 && esCliente" />
+        <q-btn label="negar" color="negative" push dense glossy style="width:40%;height:35px" @click="ejecutar('negar')" v-if="status === 1 && esCliente" />
+        <q-btn label="aprobar" color="positive" push dense glossy style="width:40%;height:35px" @click="ejecutar('aprobar')" v-if="status === 1 && esCliente" />
       </div>
     </q-card-section>
   </q-card>

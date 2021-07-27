@@ -100,10 +100,11 @@ export default {
         autocomplete.addListener('place_changed', function () {
           const placeAutocomplete = autocomplete.getPlace()
           const latLng = { lat: placeAutocomplete.geometry.location.lat(), lng: placeAutocomplete.geometry.location.lng() }
-          console.log(latLng, 'asd')
+          console.log(latLng, 'asd 123')
           map.setCenter(latLng)
           vm.marker.setPosition(latLng)
           vm.place = placeAutocomplete.formatted_address
+          vm.$emit('newPlace', vm.place, latLng, vm.bounds)
           map.setZoom(10)
         })
       })

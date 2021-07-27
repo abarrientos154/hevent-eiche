@@ -340,6 +340,11 @@ class UploadController {
       if (!profilePic.moved()) {
         return profilePic.error()
       }
+      let data = {
+        perfil: params.carpeta === 'perfil' ? true : false,
+        portada: params.carpeta === 'portada' ? true : false
+      }
+      await User.query().where({_id: user._id}).update(data)
     }
     response.send(profilePic)
   }

@@ -44,6 +44,17 @@ var configFlow = {
  */
 class UserController {
 
+  async tuPlan ({response, auth}) {
+    const user = (await auth.getUser()).toJSON()
+    const payment = (await  Payment.query().where({ ref: user.referencia }).fetch()).toJSON()
+    const fechaV = moment(payment.created_at).add(1, payment.tipoPlan === 'Mensual' ? 'M' : 'Y').format('DD/MM/YYYY')
+    const send = {
+      fechaS: moment(payment.created_at).format('DD/MM/YYYY'),
+      fechaV: fechaV
+    }
+    response.send(send)
+  }
+
   async payFlowRedirectEvent ({ response, params, request, view }) {
     console.log(request.post(), params)
     let dat = params.ref
@@ -313,27 +324,42 @@ class UserController {
       let user = (await User.query().where({email: params.email}).first()).toJSON()
       console.log(user, 'user')
       let mail = await Email.sendMail(params.email, 'Recuperación de Correo', `
-          <h1 style="text-align:left">
-            Tu Contraseña
-          </h1>
-          <p>
+        <div style="width:100%;height: 200px;">
+          <img src="https://app.heventapp.com/toolbar_mail.jpg" alt="nube_principal" style="width:100%;height: 170px;">
+        </div>
+        <div style="background-color: #ffffff;border-bottom-left-radius: 60px;border-bottom-right-radius: 60px;position: relative; padding: 30px;">
+          <h3 style="text-align:left;color:#242424;font-weight:lighter;margin-top: 30px; padding-left: 20px; padding-right: 20px;">
+          * Tu Contraseña *
+          </h3>
+          <p style="color:#838383;padding-left: 20px; padding-right: 20px">
             Hola ${user.name ? user.name : user.full_name}
-            Quieres cambiar tu contraseña vinculada a esta cuenta? si es asi
-            confirmar la sociedad. Este enlace es temporal y caduca a las 24 horas.
           </p>
-          <div>
-            <button style="width:200px;height:45px;background:#009CFF;color:white;border-radius:12px;border:0px solid red"
-            >
-            <a style="color:white" href="https://app.recuperatepass.com/recuperate_pass?codigo=${codigo}">CONFIRMAR</a>
-            </button>
-          </div>
-          <p>
-            Si no tienes intencion de cambiar tu contraseña, ignorar este email. No
+
+          <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+            Quieres cambiar tu contraseña vinculada a esta cuenta? si es asi dar click a cambiar contraseña. Este enlace es temporal y caduca a las 24 horas.
+          </p>
+          <center>
+            <div>
+              <button style="width:200px;height:40px;background:#009CFF;color:white;border-radius:12px;border:0px solid red">
+                <a style="color:white;font-size: 18px;text-decoration: none;" href="https://app.recuperatepass.com/recuperate_pass?codigo=${codigo}">Cambiar Contraseña </a>
+              </button>
+            </div>
+          </center>
+          <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+            Si no tienes intencion de cambiar tu contraseña ignora este email. No
             te preocupes. Tu cuenta esta segura.
           </p>
-          <p>
-            Un saludo de parte del equipo de Hevent.
+          <p style="color:#838383;padding-left: 20px; padding-right: 20px">
+            Un saludo por parte del equipo de Hevent.
           </p>
+          <u style="font-weight: bolder;color:#838383;padding-left: 20px; padding-right: 20px">
+            "Nota: Por Favor, NO responda a este mensaje, es un envio automatico."
+          </u>
+        </div>
+        <div style="width:100%;height: 100px;margin-top: -20px;z-index: 2;">
+          <img src="https://app.heventapp.com/footer_mail.jpg" alt="footer" style="width:100%;height: 100px;">
+        </div>
+
       `)
       console.log(mail)
       response.send(user)

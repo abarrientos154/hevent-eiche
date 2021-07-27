@@ -57,7 +57,7 @@
             <q-radio v-model="filterRB" val="menorp" label="Menor Precio" />
           </div>
         </div>
-        <q-separator inset class="q-ma-sm" />
+        <!--<q-separator inset class="q-ma-sm" />
         <div class="column">
           <div class="text-h6">Ubicacion:</div>
           <div>
@@ -65,10 +65,10 @@
               @input="filterCheck = []"
             />
           </div>
-          <div class="row q-gutter-x-md" v-if="country">
+            <div class="row q-gutter-x-md" v-if="country">
             <q-checkbox v-model="filterCheck" v-for="(item, index) in optionsCities" :key="index" :label="item.label" :val="item.value" />
           </div>
-        </div>
+        </div>-->
         <q-card-actions>
           <q-btn label="Cancelar" flat color="negative" style="width:45%" v-close-popup />
           <q-btn label="Filtrar" push color="primary" style="width:45%" @click="filtrar()" v-close-popup />
@@ -174,12 +174,13 @@ export default {
       }
     }
   },
-  mounted () {
+  async mounted () {
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
     if (this.$route.params.id) {
       this.id = this.$route.params.id
       this.header = this.id.charAt(0).toUpperCase() + this.id.slice(1)
-      this.getRecord()
+      await this.getRecord()
+      this.filtrar()
       this.actualizarSelectSer()
     }
   },

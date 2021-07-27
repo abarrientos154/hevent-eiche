@@ -170,13 +170,15 @@ export default {
         this.countries = this.countriesOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
       })
     },
-    agregar () {
+    async agregar () {
       console.log(this.form, 'aaaaaaaaaaaaaaaaaaaaaaaaa')
       this.$v.$touch()
       if (!this.$v.form.$error && !this.$v.password.$error && !this.$v.repeatPassword.$error) {
         this.form.password = this.password
         this.form.telCode = this.telCode
-        this.$api.post('registrar_cliente', this.form).then(res => {
+        this.$q.loading.show()
+        await this.$api.post('registrar_cliente', this.form).then(res => {
+          this.$q.loading.hide()
           if (res) {
             this.$q.notify({
               message: 'Registrado Correctamente, ya puedes iniciar sesion',

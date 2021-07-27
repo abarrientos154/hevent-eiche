@@ -133,6 +133,7 @@ class CotisationController {
       return {
         send: id_user === v.user_id ? true : false,
         perfil: id_user === v.user_id ? true : v.datos_user.perfil ? true : false,
+        img: v.datos_user.perfil,
         id: v.datos_user._id,
         message: v.message,
         stamp: moment(v.created_at).lang('es').calendar(),
@@ -158,11 +159,12 @@ class CotisationController {
     }
     let format_cotisations = cotisations.map(v => {
       if (messages) {
-        console.log(messages, 'aaaa')
+        console.log(messages.toJSON(), 'aaaa')
         return {
           _id: v._id,
-          id_usuario: user.roles[0] === 2 ? v.datos_proveedor._id : v.datos_cliente._id,
-          full_name: user.roles[0] === 2 ? v.datos_cliente.full_name : v.datos_proveedor.full_name,
+          id_usuario: user.roles[0] == 2 ? v.datos_proveedor._id : v.datos_cliente._id,
+          full_name: user.roles[0] !== 2 ? v.datos_cliente.full_name : v.datos_proveedor.name,
+          perfil: user.roles[0] !== 2 ? v.datos_cliente.perfil : v.datos_proveedor.perfil,
           last_message: v.last_message,
           created_at_message: moment(v.created_at_message).lang('es').calendar(),
           visto: v.visto,
@@ -173,7 +175,7 @@ class CotisationController {
         return {
           _id: v._id,
           id_usuario: user.roles[0] === 2 ? v.datos_proveedor._id : v.datos_cliente._id,
-          full_name: user.roles[0] === 3 ? v.datos_cliente.full_name : v.datos_proveedor.full_name,
+          full_name: user.roles[0] === 3 ? v.datos_cliente.full_name : v.datos_proveedor.name,
           last_message: 'Escribe un mensaje',
           created_at_message: moment().format('DD/MM/YYYY'),
           visto: true,

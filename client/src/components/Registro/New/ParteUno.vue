@@ -235,6 +235,11 @@ export default {
           label: 'Bogota',
           value: 5,
           paisCode: 'co'
+        },
+        {
+          label: 'Medellin',
+          value: 6,
+          paisCode: 'co'
         }
       ],
       tel: null,
