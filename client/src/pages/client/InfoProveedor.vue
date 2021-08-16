@@ -74,9 +74,14 @@
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="Imagenes" class="bg-grey-4">
+        <!--<q-tab-panel name="Imagenes" class="bg-grey-4">
           <div class="text-h6 text-grey-9">Imagenes</div>
           <imagenes @cambiarImg="cambiarImg" :id_proveedor="id" />
+        </q-tab-panel> -->
+
+        <q-tab-panel name="Servicios" class="bg-grey-4">
+          <div class="text-h6 text-grey-9">Servicios</div>
+          <servicios :id_proveedor="id" />
         </q-tab-panel>
 
         <q-tab-panel name="Videos" class="bg-grey-4">
@@ -102,13 +107,14 @@
 <script>
 import ModalEventos from '../../components/ModalEventos'
 import PreguntasFrecuentes from '../../components/anuncio/Preguntas'
-import Imagenes from '../../components/anuncio/Imagenes'
+// import Imagenes from '../../components/anuncio/Imagenes'
+import Servicios from '../../components/anuncio/Servicios'
 import Videos from '../../components/anuncio/Videos'
 import env from '../../env'
 import Opiniones from '../../components/anuncio/Opiniones'
 import Mapa from '../../components/GoogleMapView'
 export default {
-  components: { PreguntasFrecuentes, Imagenes, Videos, Opiniones, Mapa, ModalEventos },
+  components: { PreguntasFrecuentes, Videos, Opiniones, Mapa, ModalEventos, Servicios },
   data () {
     return {
       baseu: env.apiUrl,
@@ -141,7 +147,7 @@ export default {
       user: {},
       chips: [
         { name: 'Descripcion', select: true }, { name: 'Preguntas', select: false }, { name: 'Mapas', select: false },
-        { name: 'Imagenes', select: false }, { name: 'Videos', select: false }, { name: 'Opiniones', select: false }
+        { name: 'Servicios', select: false }, { name: 'Videos', select: false }, { name: 'Opiniones', select: false }
       ]
     }
   },

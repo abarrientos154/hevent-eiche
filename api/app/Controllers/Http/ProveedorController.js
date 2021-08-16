@@ -16,7 +16,7 @@ const Cruds = use('App/Functions/Cruds')
 class ProveedorController {
 
   async premiun ({ response, params }) {
-    let proveedores = (await User.query().where({ plan_id: 3 }).fetch()).toJSON()
+    let proveedores = (await User.query().where({ $or: [{ plan_id: 3 }, { plan_id: 2 }] }).fetch()).toJSON()
     let send = []
     for (let j in proveedores) {
       if (params.header === 'personas') {

@@ -68,19 +68,22 @@ class OpinionController {
 
     //Aprobadas
     let ca = (await Cotisation.query().where({
-      $or: [{ status: 2 }, { status: 4 }, { status: 5 }]
+      $or: [{ status: 2 }, { status: 4 }, { status: 5 }],
+      proveedor_id: idUser
     }).fetch()).toJSON()
     enviar.ca = ca.length
 
     //Rechazadas
     let cr = (await Cotisation.query().where({
-      status: 3
+      status: 3,
+      proveedor_id: idUser
     }).fetch()).toJSON()
     enviar.cr = cr.length
 
     //Pagadas
     let cp = (await Cotisation.query().where({
-      $or: [{ status: 4 }, { status: 5 }]
+      $or: [{ status: 4 }, { status: 5 }],
+      proveedor_id: idUser
     }).fetch()).toJSON()
     enviar.cp = cp.length
     /////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,7 +100,8 @@ class OpinionController {
       deportivo: 0
     }
     let cotisaciones = (await Cotisation.query().where({
-      $or: [{ status: 4 }, { status: 5 }]
+      $or: [{ status: 4 }, { status: 5 }],
+      proveedor_id: idUser
     }).with('evento').fetch()).toJSON()
     for (let j of cotisaciones) {
       if (j.evento.tipoEvento.id === 'celebracion') { tipo.celebracion += 1 }

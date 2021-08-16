@@ -15,6 +15,7 @@ const Event = use("App/Models/Event")
 const Payment = use("App/Models/Payment")
 const moment = require('moment')
 const ItemServicio = use("App/Models/ItemServicio")
+const Email = use('App/Functions/Email')
 
 /*
   //////////////////////Leyenda del campo status para las cotizaciones///////////
@@ -29,7 +30,211 @@ const ItemServicio = use("App/Models/ItemServicio")
   5 = Evento Finalizado
 */
 
+async function armarCorreo (params, user) {
+  let cotisations = (await Cotisation.where({
+    event_id: params.event_id,
+    $or: [{ status: 2 }, { status: 4 }],
+  }).with('datos_proveedor').with('datos_cliente').fetch()).toJSON()
+  console.log(cotisations.length, 'cotisations funcion armar correo')
+  let parteOne = `
+    <div style="width:100%;height: 200px;">
+      <img src="https://app.heventapp.com/exitoso_mail.jpg" alt="nube_principal" style="width:100%;height: 170px;">
+    </div>
+    <div style="background-color: #ffffff;border-bottom-left-radius: 60px;border-bottom-right-radius: 60px;position: relative; padding: 30px;">
+      <center>
+        <h2 style="text-align:center;color:#00a713;font-weight:lighter;margin-top: 30px; padding-left: 20px; padding-right: 20px;">
+        * Felicidades, Transaccion Exitosa *
+        </h2>
+
+        <p style="color:#000000;padding-left: 20px; padding-right: 20px">
+          ¡Hola ${user.name ? user.name : user.full_name} gracias por pagar en Hevent!
+        </p>
+      </center>
+
+      <h3 style="text-align:left;color:#212121;font-weight:lighter;margin-top: 30px; padding-left: 20px; padding-right: 20px;">
+        * Informacion del Pago *
+      </h3>
+
+      <div class="box">
+        <div class="left">
+          <div class="content-left">
+            Fecha y Hora:
+          </div>
+          <br>
+          <div class="content-left">
+            Proveedores de Servicios:
+          </div>
+        </div>
+        <div class="right">
+          <div class="content-right">
+            ${moment().locale('es').format('MMMM Do YYYY, h:mm:ss a')}
+          </div>
+          <br>
+          <div class="content-right">
+            Valor
+          </div>
+        </div>
+      </div>
+      `
+    let parteProviders = ''
+    let subtotal = 0
+    for (let j of cotisations) {
+      let total = totalCarrito(j.carrito)
+      let pais = j.datos_proveedor.country === 'co' ? 'Colombia' : 'Chile'
+      let ciudad = j.datos_proveedor.ciudad.label
+      let proveedor = j.datos_proveedor.name
+      subtotal = subtotal + total
+      console.log(proveedor, pais, ciudad, total, 'total')
+
+
+      parteProviders = parteProviders + `
+      <div class="box">
+        <div class="left-providers">
+          <div class="content-left">
+            ${proveedor}, ${pais}, ${ciudad}
+          </div>
+        </div>
+        <div class="right-providers">
+          <div class="content-right">
+            ${total}
+          </div>
+        </div>
+      </div>
+      `
+
+
+    }
+    let iva = ((19 * subtotal) / 100)
+    let totTot = iva + subtotal
+    let parteTotales = `
+      <div class="box">
+        <div class="left">
+          <div class="content-left">
+            SubTotal
+          </div>
+          <div class="content-left">
+            IVA 19%
+          </div>
+          <div class="content-left">
+            TOTAL
+          </div>
+        </div>
+        <div class="right">
+          <div class="content-right">
+            ${subtotal}
+          </div>
+          <div class="content-right">
+            ${iva}
+          </div>
+          <div class="content-right">
+            ${totTot}
+          </div>
+        </div>
+      </div>
+      <br>
+        <center>
+          <u style="font-weight: bolder;color:#838383;padding-left: 20px; padding-right: 20px">
+            "Nota: Por Favor, NO responda a este mensaje, es un envio automatico."
+          </u>
+        </center>
+      </div>
+      <div style="width:100%;height: 100px;margin-top: -20px;z-index: 2;">
+        <img src="https://app.heventapp.com/footer_mail.jpg" alt="footer" style="width:100%;height: 100px;">
+      </div>
+
+      <style>
+      .box {
+        overflow: hidden;
+      }
+      .content-right {
+        font-size: 15px;
+        line-height: 20px;
+        padding: 0 20px;
+        text-align: right;
+      }
+
+      .content-left {
+        font-size: 15px;
+        line-height: 20px;
+        padding: 0 20px;
+        text-align: left;
+      }
+
+      .left {
+        float: left;
+        width: 50%;
+      }
+
+
+      .right {
+        float: right;
+        width: 50%;
+      }
+
+      .left-providers {
+        float: left;
+        width: 70%;
+      }
+
+
+      .right-providers {
+        float: right;
+        width: 30%;
+      }
+
+
+      </style>
+    `
+    console.log(iva, 'iva', subtotal, 'subtotal')
+  return parteOne + parteProviders + parteTotales
+}
+
+  function totalCarrito (carrito) {
+    let total = 0
+    if (carrito.length > 0) {
+      for (const j of carrito) {
+        for (const h of j.subitems) {
+          for (const i of h.productos) {
+            total = total + i.tot
+          }
+        }
+      }
+    }
+    return total
+  }
+
 class CotisationController {
+
+  async pruebaC ({ params, request, response, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    let htmlMail = await armarCorreo(params, user)
+    let mail = await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
+    response.send(mail)
+  }
+
+  async payQuotes ({params, response, auth, request}) {
+    const user = (await auth.getUser()).toJSON()
+    let htmlMail = await armarCorreo(params, user)
+    const body = {}
+    body.status = 4 //Cotizacion Pagada y a la espera por finalizar el evento
+    body.fechaPagado = moment().format('DD-MM-YYYY')
+    let update = await Cotisation.query().where({event_id: params.event_id, status: 2, puntuado: false}).update(body)
+
+    const bodyT = request.only(['total', 'amount_in_cents', 'wompi', 'flow'])
+    bodyT.event_id = params.event_id
+    bodyT.event = true
+    await Payment.create(bodyT)
+
+    let bodyE = {}
+    bodyE.pay = true
+    bodyE.fechaPagado = moment().format('DD-MM-YYYY')
+    update = await Event.query().where({_id: params.event_id}).update(bodyE)
+
+    await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
+    // await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
+
+    response.send(update)
+  }
 
   async cotizacionesPendientesLength ({ params, request, response, auth }) {
     const user = (await auth.getUser()).toJSON()
@@ -231,25 +436,6 @@ class CotisationController {
     response.send(update)
   }
 
-  async payQuotes ({params, response, auth, request}) {
-    const body = {}
-    body.status = 4 //Cotizacion Pagada y a la espera por finalizar el evento
-    body.fechaPagado = moment().format('DD-MM-YYYY')
-    let update = await Cotisation.query().where({event_id: params.event_id, status: 2, puntuado: false}).update(body)
-
-    const bodyT = request.only(['total', 'amount_in_cents', 'wompi', 'flow'])
-    bodyT.event_id = params.event_id
-    bodyT.event = true
-    await Payment.create(bodyT)
-
-    let bodyE = {}
-    bodyE.pay = true
-    bodyE.fechaPagado = moment().format('DD-MM-YYYY')
-    update = await Event.query().where({_id: params.event_id}).update(bodyE)
-
-    response.send(update)
-  }
-
   async getEvents ({params, response, auth, request}) {
     const user = (await auth.getUser()).toJSON()
     let eventos = (await Event.where({
@@ -418,7 +604,6 @@ class CotisationController {
     }
     response.send(enviar)
   }
-
 }
 
 module.exports = CotisationController

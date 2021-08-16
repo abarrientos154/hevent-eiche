@@ -216,7 +216,8 @@ export default {
       var filtradoRB = []
       if (this.country && this.filterCheck.length > 0) {
         if (this.filterRB === 'mayorp') {
-          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmax + b.pyr.pyr[0].qvalmax))
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin > b.pyr.pyr[0].qvalmin) ? -1 : 0)
+          console.log('MAYORRR PPPPPPPPP')
         } else if (this.filterRB === 'menorp') {
           filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin - b.pyr.pyr[0].qvalmin))
         } else if (this.filterRB === 're') {
@@ -232,7 +233,8 @@ export default {
       } else if (this.country) {
         console.log('else country')
         if (this.filterRB === 'mayorp') {
-          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmax + b.pyr.pyr[0].qvalmax))
+          console.log('MAYORRR PPPPPPPPP2')
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin > b.pyr.pyr[0].qvalmin) ? -1 : 0)
         } else if (this.filterRB === 'menorp') {
           filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin - b.pyr.pyr[0].qvalmin))
         } else if (this.filterRB === 're') {
@@ -246,7 +248,8 @@ export default {
         this.proveedores = newFilter
       } else {
         if (this.filterRB === 'mayorp') {
-          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmax + b.pyr.pyr[0].qvalmax))
+          console.log('MAYORRR PPPPPPPPP3')
+          filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin > b.pyr.pyr[0].qvalmin) ? -1 : 0)
         } else if (this.filterRB === 'menorp') {
           filtradoRB = this.proveedores.sort((a, b) => (a.pyr.pyr[0].qvalmin - b.pyr.pyr[0].qvalmin))
         } else if (this.filterRB === 're') {

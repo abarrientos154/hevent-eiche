@@ -34,6 +34,20 @@ class ServicioController {
     response.send(format)
   }
 
+  async obtenerCheckServiciosAnuncio ({ request, response, params }) {
+    let checks = (await ServicioProveedor.query().where({id_proveedor: params.id_proveedor}).with('data_servicio').fetch()).toJSON()
+    console.log(checks, 'checkes anuncio')
+    let format = checks.map(j => {
+      return {
+        id: j.id,
+        servicio_id: j.data_servicio.servicio_id,
+        title: j.data_servicio.name
+      }
+    })
+
+    response.send(format)
+  }
+
   async preguntasPorCheck ({ request, response, view }) {
     let body = request.only(['checks'])
     let preguntas = []
@@ -69,7 +83,7 @@ class ServicioController {
 
   async preguntasPorId ({ response, params, auth }) {
     console.log(params.id_servicio, 'ID SERVICIO')
-    const searchByPais = (((await auth.getUser()).toJSON()).telCode) === 'Colombia' ? 'co' : 'cl'
+    const searchByPais = ((await auth.getUser()).toJSON()).country
     console.log(searchByPais, 'search pais')
     if (params.id_servicio === 'personas') {
       console.log('entro1')

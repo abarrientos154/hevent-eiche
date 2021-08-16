@@ -16,7 +16,7 @@
     <div class="text-center text-primary text-h5 text-bold"> * Perfil * </div>
     <div class="column items-center justify-start q-mb-lg">
       <div v-for="(item, index) in opciones" :key="index" class="cursor-pointer q-mt-md column" style="font-size:18px" @click="ejecutar(item.ind, index)">
-        <div class="text-grey-8">{{item.titulo}}</div>
+        <div class="text-grey-8" v-if="!item.noVisible">{{item.titulo}}</div>
         <q-separator />
       </div>
     </div>
@@ -65,7 +65,7 @@ export default {
         { titulo: 'Preguntas Frecuentes', dialog: true, ind: 2 },
         { titulo: 'Tu Plan', url: '', dialog: true, ind: 3 },
         { titulo: 'Planes Disponibles', url: '/planes_disponibles', dialog: false, ind: 6 },
-        { titulo: 'Notificaciones', dialog: true, ind: 4 },
+        { titulo: 'Notificaciones', dialog: true, ind: 4, noVisible: true },
         { titulo: 'Cerrar Sesión', accion: 'logoutM', dialog: false, ind: 5 }
       ]
     }

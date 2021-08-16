@@ -93,6 +93,8 @@ addPrefixToGroup(
     Route.get("user_info/:id", "UserController.userInfoById")
 
     Route.get("blogs_img/:id/:file", "BlogController.showImg")
+
+    Route.get("pruebaC/:event_id", "CotisationController.pruebaC")
   })
 );
 
@@ -121,6 +123,7 @@ addPrefixToGroup(
     Route.get('servicios_proveedor', 'ServicioController.preguntasPorProveedor')
     Route.get('servicios_proveedor/:id_proveedor', 'ServicioController.preguntasPorProveedorId')
     Route.get('obtener_check_servicios_perfil/:id_proveedor', 'ServicioController.obtenerCheckServiciosPerfil')
+    Route.get('obtener_check_servicios_anuncio/:id_proveedor', 'ServicioController.obtenerCheckServiciosAnuncio')
     Route.put('modificar_servicios_preguntas', 'ServicioController.modificarServiciosPreguntas')
     ///////////PROVEEDORES/////////////////////
 

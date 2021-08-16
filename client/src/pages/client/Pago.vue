@@ -38,18 +38,24 @@
         disable readonly
       />
     </div>
-    <div class="row justify-around text-primary q-mt-sm items-center">
-      <div class="text-bold text-h6">Total</div>
-      <div class="column">
+    <div class="column text-primary q-mt-sm q-px-xl">
+      <div class="row justify-between">
+        <div class="text-bold text-h6">Sub-Total</div>
         <div class="text-bold text-h6">$ {{totalCarrito}}</div>
-        <div class="q-pt-none q-mt-none">iva incluido</div>
+      </div>
+      <div class="row justify-between items-center">
+        <div class="text-bold text-h6">Total</div>
+        <div class="column">
+          <div class="text-bold text-h6">$ {{totalIva}}</div>
+          <div>iva incluido</div>
+        </div>
       </div>
     </div>
     <!--  <div class="row justify-center q-mt-md q-mb-md">
       <q-btn label="Pagar" color="primary" style="border-radius:6px;width:150px;height:50px" push @click="pagar()" />
     </div>-->
-    <pay-wompi v-if="userCountry === 'Colombia'" class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'pagos?wompi=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
-    <pay-flow v-else class="q-mt-md" :montoTotal="totalCarrito" :routeRedirect="'?flow=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
+    <pay-wompi v-if="userCountry === 'co'" class="q-mt-md" :montoTotal="totalIva" :routeRedirect="'pagos?wompi=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
+    <pay-flow v-else class="q-mt-md" :montoTotal="totalIva" :routeRedirect="'?flow=1&event_id=' + id_event + '&pagoEvento=1'" @confirmarPago="confirmarPago" />
   </div>
 </template>
 
@@ -102,6 +108,10 @@ export default {
         }
       }
       return total
+    },
+    totalIva () {
+      const total = ((19 * this.totalCarrito) / 100) + this.totalCarrito
+      return total
     }
   },
   validations: {
@@ -116,7 +126,7 @@ export default {
     // this.form.celCode = 'Chile'
     await this.getCotisations()
     const infoUser = await this.$api.get('user_info')
-    this.userCountry = infoUser.telCode
+    this.userCountry = infoUser.country
     this.form = infoUser
     console.log(this.userCountry, this.totalCarrito, 'usuario logueado')
   },

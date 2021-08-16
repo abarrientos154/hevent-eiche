@@ -63,10 +63,10 @@
           <div class="bg-grey-4 q-pa-md q-mb-md" style="height:75vh; border-radius:12px">
             <div class="text-h6 text-grey-9">Mapa de Ubicación</div>
             <div class="text-subtitle2 q-ma-md text-grey-9 text-capitalize"> {{user.direccionCad}} </div>
-            <mapa :center="user.ubicacion" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="false" />
+            <mapa :center="user.ubicacion" :zoom="10" @getBounds="getBounds" @newPlace="handleNewPlace" :withoutDirection="true" />
           </div>
           <div class="row justify-center q-mb-xl">
-            <q-btn label="Contactame" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" />
+            <q-btn label="Guardar" class="gradiente-buttom" push style="border-radius:12px; width:300px; height:50px" />
           </div>
         </q-tab-panel>
 

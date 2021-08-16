@@ -12,6 +12,33 @@
         />
       </div>
       <div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <q-select v-model="pais" class="input-border-new q-pa-sm" label="Pais" style="height:45px" dense borderless :options="countriesP"
+          error-message="el pais es requerido" :error="$v.form.country.$error" @blur="$v.form.country.$touch()" @input="form.country = pais"
+          emit-value map-options
+        >
+          <template v-slot:option="scope">
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" >
+              <q-item-section avatar>
+                <q-img :src="scope.opt.label !== 'Chile' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg' " />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label v-html="scope.opt.label" />
+              </q-item-section>
+            </q-item>
+          </template>
+          <template v-slot:selected-item="scope" >
+            <q-item v-bind="scope.itemProps" v-on="scope.itemEvents" style="position:absolute;top:5px;left:0px;padding-bottom:10px" >
+              <q-item-section avatar>
+                <q-img :src="pais !== 'cl' ? 'banderas_paises/col.jpeg' : 'banderas_paises/ch.jpeg'" style="width:30px;height:20px" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ scope.opt.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
+      </div>
       <div class="row items-center justify-center">
         <q-select borderless v-model="telCode" :options="countries" option-value="name" option-label="name" emit-value map-options
           style="width:120px" class="input-border-new-re" @input="test()"
@@ -105,11 +132,13 @@ export default {
       params: {
         client_id: '884216182035-jv4iotpbk91ra4b4be7enrhpahgp4oco.apps.googleusercontent.com'
       },
+      pais: null,
       renderParams: {
         width: 250,
         height: 50,
         longtitle: true
       },
+      countriesP: [{ label: 'Chile', value: 'cl' }, { label: 'Colombia', value: 'co' }],
       form: {},
       telCode: '',
       obj: {},
@@ -135,7 +164,8 @@ export default {
     form: {
       full_name: { required, minLength: minLength(3), maxLength: maxLength(50) },
       phone: { required },
-      email: { required, email }
+      email: { required, email },
+      country: { required }
     },
     repeatPassword: { sameAsPassword: sameAs('password') },
     password: { required, maxLength: maxLength(256), minLength: minLength(6) }

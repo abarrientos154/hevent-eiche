@@ -1,0 +1,135 @@
+<div style="width:100%;height: 200px;">
+  <img src="../../../public/toolbar_mail.jpg" alt="nube_principal" style="width:100%;height: 170px;">
+</div>
+<div style="background-color: #ffffff;border-bottom-left-radius: 60px;border-bottom-right-radius: 60px;position: relative; padding: 30px;">
+  <center>
+    <h2 style="text-align:center;color:#00a713;font-weight:lighter;margin-top: 30px; padding-left: 20px; padding-right: 20px;">
+    * Felicidades, Transaccion Exitosa *
+    </h2>
+
+    <p style="color:#000000;padding-left: 20px; padding-right: 20px">
+      ¡Hola ${user.name ? user.name : user.full_name} gracias por pagar en Hevent!
+    </p>
+  </center>
+
+  <h3 style="text-align:left;color:#212121;font-weight:lighter;margin-top: 30px; padding-left: 20px; padding-right: 20px;">
+    * Informacion del Pago *
+  </h3>
+
+  <div class="box">
+    <div class="left">
+      <div class="content-left">
+        Fecha y Hora:
+      </div>
+      <br>
+      <div class="content-left">
+        Proveedores de Servicios:
+      </div>
+    </div>
+    <div class="right">
+      <div class="content-right">
+        03/03/2021, 10:40 AM
+      </div>
+      <br>
+      <div class="content-right">
+        Valor
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="left-providers">
+      <div class="content-left">
+        Nombre Proveedor, Pais, Ciudad
+      </div>
+      <div class="content-left">
+        Nombre Proveedor, Pais, Ciudad
+      </div>
+    </div>
+    <div class="right-providers">
+      <div class="content-right">
+        $500.000
+      </div>
+      <div class="content-right">
+        $50.000
+      </div>
+    </div>
+  </div>
+
+  <div class="box">
+    <div class="left">
+      <div class="content-left">
+        SubTotal
+      </div>
+      <div class="content-left">
+        IVA 19%
+      </div>
+      <div class="content-left">
+        TOTAL
+      </div>
+    </div>
+    <div class="right">
+      <div class="content-right">
+        ${{subtotal}}
+      </div>
+      <div class="content-right">
+        ${{iva}}
+      </div>
+      <div class="content-right">
+        ${{total}}
+      </div>
+    </div>
+  </div>
+  <br>
+  <center>
+    <u style="font-weight: bolder;color:#838383;padding-left: 20px; padding-right: 20px">
+      "Nota: Por Favor, NO responda a este mensaje, es un envio automatico."
+    </u>
+  </center>
+</div>
+<div style="width:100%;height: 100px;margin-top: -20px;z-index: 2;">
+  <img src="../../../public/footer_mail.jpg" alt="footer" style="width:100%;height: 100px;">
+</div>
+
+<style>
+.box {
+  overflow: hidden;
+}
+.content-right {
+  font-size: 15px;
+  line-height: 20px;
+  padding: 0 20px;
+  text-align: right;
+}
+
+.content-left {
+  font-size: 15px;
+  line-height: 20px;
+  padding: 0 20px;
+  text-align: left;
+}
+
+.left {
+  float: left;
+  width: 50%;
+}
+
+
+.right {
+  float: right;
+  width: 50%;
+}
+
+.left-providers {
+  float: left;
+  width: 70%;
+}
+
+
+.right-providers {
+  float: right;
+  width: 30%;
+}
+
+
+</style>

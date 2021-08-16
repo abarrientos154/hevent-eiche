@@ -51,15 +51,15 @@
       <div class="q-ml-sm bg-grey q-pa-xs text-white text-bold" style="border-radius:6px">Faltan {{form.diasRestantes}} Dias </div>
     </div>
     <q-separator inset class="q-mt-sm" />
-    <div class="q-pa-md">
+    <div class="q-pa-md" v-if="!form.pay">
       <div class="cot-pen row items-center q-px-md" @click="$router.push('/aprobacion_cotizacion')">
         <div>Cotizaciones Pendientes</div>
         <q-space />
         <div>#{{cotizacionesPen}}</div>
       </div>
+      <q-separator class="q-mt-md" />
     </div>
-    <q-btn flat label="cotizaciones pendientes"  dense color="primary" class="q-ma-sm" />
-    <q-separator inset class="q-mt-sm" />
+
     <div class="text-bold text-grey row justify-center q-mt-md">
       Información del evento
     </div>
@@ -164,13 +164,20 @@
       </div>
     </div>
     <q-separator inset class="q-mt-md" /> -->
-    <div class="row justify-around text-primary q-mt-sm items-center q-mb-md">
-      <div class="text-bold text-h6">Total</div>
-      <div class="column">
+    <div class="column text-primary q-mt-sm q-px-xl">
+      <div class="row justify-between">
+        <div class="text-bold text-h6">Sub-Total</div>
         <div class="text-bold text-h6">$ {{totalCarrito}}</div>
-        <div class="q-pt-none q-mt-none">iva incluido</div>
+      </div>
+      <div class="row justify-between items-center">
+        <div class="text-bold text-h6">Total</div>
+        <div class="column">
+          <div class="text-bold text-h6">$ {{((19 * totalCarrito) / 100) + totalCarrito}}</div>
+          <div>iva incluido</div>
+        </div>
       </div>
     </div>
+
     <div class="row justify-center q-mt-lg q-mb-lg" v-if="!form.pay">
       <q-btn label="Pagar" style="height: 45px; width:200px; border-radius:12px" color="primary" @click="$router.push('/pagar/' + id)" />
     </div>

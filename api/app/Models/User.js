@@ -60,7 +60,7 @@ class User extends Model {
     return rulesUser
   }
   static get fillableCliente () {
-    return ['full_name', 'phone', 'email', 'password', 'telCode']
+    return ['full_name', 'phone', 'email', 'password', 'telCode', 'country']
   }
   static fieldValidationRulesCliente () {
     const rulesUser = {
@@ -68,6 +68,7 @@ class User extends Model {
       phone: 'string',
       email: 'email',
       telCode: 'string',
+      country: 'required|string',
       password: 'string|max:256|required',
     }
     return rulesUser
