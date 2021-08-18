@@ -39,7 +39,7 @@ export default {
     }
   },
   async mounted () {
-    this.totalP = this.montoTotal + '00' // wompi recibe el monto pero con dos ceros demas
+    this.totalP = (this.montoTotal * 100) // wompi recibe el monto pero con dos ceros demas
     this.redireccion = this.$appUrlT + this.routeRedirect + '&ref=' + this.referencia // aqui concateno la ruta appUrlT actualmente en el archivo axios.js y ademas la ruta con sus parametros concatenando tambien la referencia generada
     console.log(this.referencia, 'key referencia', this.$appUrlT, this.totalP, this.$route.query)
     const params = this.$route.query

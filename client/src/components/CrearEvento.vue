@@ -52,7 +52,7 @@
           <div class="q-ml-md text-subtitle2 text-grey"># de invitados</div>
         </div>
         <div class="row justify-center">
-          <q-input v-model="form.direccion" label="Direccion" style="width:250px" class="q-mt-md input-border" dense borderless label-color="grey-14" outlined />
+          <q-input v-model="form.ciudad" label="Ciudad" style="width:250px" class="q-mt-md input-border" dense borderless label-color="grey-14" outlined />
         </div>
       </div>
     </q-card-section>

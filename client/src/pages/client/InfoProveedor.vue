@@ -20,6 +20,9 @@
     </q-img>
     <q-img v-else :src="baseu + 'file_proveedor/portada/' + user._id " style="height:200px;z-index:-1">
     </q-img>
+    <div v-if="isAnuncioP" class="q-mt-sm q-ma-sm row justify-end">
+      <q-btn label="editar anuncio" dense class="gradiente-buttom q-pa-xs" size="sm" push @click="$router.go(-1)" />
+    </div>
     <div class="q-ml-xl q-mr-xl q-mt-lg text-grey-7 text-bold">
       {{user.name}}
     </div>

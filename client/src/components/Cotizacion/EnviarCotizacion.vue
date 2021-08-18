@@ -61,7 +61,7 @@
         <div class="text-h6 text-primary">Total</div>
         <div class="column text-primary">
           <div class="text-h6">$ {{totalCarrito}}</div>
-          <div style="font-size:10px">iva incluido</div>
+          <div style="font-size:10px">sin iva</div>
         </div>
       </div>
       <div class="row justify-center q-mt-md">

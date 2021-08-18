@@ -166,14 +166,17 @@
     <q-separator inset class="q-mt-md" /> -->
     <div class="column text-primary q-mt-sm q-px-xl">
       <div class="row justify-between">
-        <div class="text-bold text-h6">Sub-Total</div>
-        <div class="text-bold text-h6">$ {{totalCarrito}}</div>
+        <div class="text-h6">Sub-Total</div>
+        <div class="text-h6">$ {{totalCarrito}}</div>
+      </div>
+      <div class="row justify-between">
+        <div class="text-h6">Iva</div>
+        <div class="text-h6">$ {{((19 * totalCarrito) / 100)}}</div>
       </div>
       <div class="row justify-between items-center">
         <div class="text-bold text-h6">Total</div>
         <div class="column">
           <div class="text-bold text-h6">$ {{((19 * totalCarrito) / 100) + totalCarrito}}</div>
-          <div>iva incluido</div>
         </div>
       </div>
     </div>

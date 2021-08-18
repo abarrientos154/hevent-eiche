@@ -27,8 +27,8 @@ export default {
         { title: 'Audio', id: 'audio', icon: 'icon_services/audio.png' },
         { title: 'Música', id: 'musica', icon: 'icon_services/musica.png' },
         { title: 'Iluminación', id: 'iluminacion', icon: 'icon_services/iluminacion.png' },
-        { title: 'Invitación', id: 'invitacion', icon: 'icon_services/invitacion.png' },
-        { title: 'Recuerdos', id: 'recuerdos', icon: 'icon_services/recuerdos.png' },
+        { title: 'Invitación', id: 'invitaciones', icon: 'icon_services/invitacion.png' },
+        { title: 'Recuerdos', id: 'recordatorios', icon: 'icon_services/recuerdos.png' },
         { title: 'Decoración', id: 'decoracion', icon: 'icon_services/decoracion.png' },
         { title: 'Mobiliario', id: 'mobiliaria', icon: 'icon_services/mobiliaria.png' },
         { title: 'Transporte', id: 'transporte', icon: 'icon_services/transporte.png' },
@@ -57,7 +57,7 @@ export default {
       } else {
         find = this.servicios.find(v => v.id === serv.id)
       }
-      console.log(find, 'find')
+      // console.log(find, 'find')
       return find.icon
     }
   }

@@ -6,7 +6,7 @@
     <q-btn icon="keyboard_arrow_left" flat round color="white" style="position:absolute;top:10px;left:10px" @click="$router.go(-1)" />
     <div class="row justify-center q-ma-sm">
       <div class="col-xs-11 col-sm-6 col-md-6 col-lg-6 q-pr-sm" v-for="(item, index) in data" :key="index" style="border-radius:8px;margin-top:8px;margin-bottom:8px">
-        <q-item class="q-mt-xs q-mb-xs q-ma-sm">
+        <q-item class="q-mt-xs q-mb-xs q-ma-sm" clickable v-ripple @click="showDialogInfo = true, indexSelect = index, cotisacion_id = item._id, esCliente = item.rolAuth === 2 ? true : false">
           <q-item-section avatar>
             <q-avatar size="75px">
               <q-img :src="item.rolAuth === 2 ? baseu + item.datos_proveedor._id : baseu + item.datos_cliente._id " />
@@ -14,10 +14,10 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{item.rolAuth === 2 ? item.datos_proveedor.name : item.datos_cliente.full_name}}</q-item-label>
-            <q-item-label caption> {{item.status}} </q-item-label>
+            <q-item-label caption> {{item.status}} {{item._id}} {{item.event_id}} </q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="info" flat color="secondary" round @click="showDialogInfo = true, indexSelect = index, cotisacion_id = item._id, esCliente = item.rolAuth === 2 ? true : false"/>
+            <q-btn icon="info" flat color="secondary" round/>
           </q-item-section>
         </q-item>
         <q-separator inset />

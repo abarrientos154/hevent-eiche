@@ -55,22 +55,22 @@ async function armarCorreo (params, user) {
         * Informacion del Pago *
       </h3>
 
-      <div class="box">
-        <div class="left">
-          <div class="content-left">
+      <div style="overflow: hidden;">
+        <div style="float: left;width:50%">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             Fecha y Hora:
           </div>
           <br>
-          <div class="content-left">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             Proveedores de Servicios:
           </div>
         </div>
-        <div class="right">
-          <div class="content-right">
+        <div style="float:right; width:50%">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
             ${moment().locale('es').format('MMMM Do YYYY, h:mm:ss a')}
           </div>
           <br>
-          <div class="content-right">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right; ">
             Valor
           </div>
         </div>
@@ -88,45 +88,43 @@ async function armarCorreo (params, user) {
 
 
       parteProviders = parteProviders + `
-      <div class="box">
-        <div class="left-providers">
-          <div class="content-left">
+      <div style="overflow: hidden;">
+        <div style="float: left;width: 30%;">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             ${proveedor}, ${pais}, ${ciudad}
           </div>
         </div>
-        <div class="right-providers">
-          <div class="content-right">
+        <div style="float: right;width: 70%;">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
             ${total}
           </div>
         </div>
       </div>
       `
-
-
     }
     let iva = ((19 * subtotal) / 100)
     let totTot = iva + subtotal
     let parteTotales = `
-      <div class="box">
-        <div class="left">
-          <div class="content-left">
+      <div style="overflow: hidden;">
+        <div style="float: left; width: 50%;">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             SubTotal
           </div>
-          <div class="content-left">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             IVA 19%
           </div>
-          <div class="content-left">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             TOTAL
           </div>
         </div>
-        <div class="right">
-          <div class="content-right">
+        <div style="float:right; width:50%">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
             ${subtotal}
           </div>
-          <div class="content-right">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
             ${iva}
           </div>
-          <div class="content-right">
+          <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
             ${totTot}
           </div>
         </div>
@@ -143,43 +141,11 @@ async function armarCorreo (params, user) {
       </div>
 
       <style>
-      .box {
-        overflow: hidden;
-      }
-      .content-right {
-        font-size: 15px;
-        line-height: 20px;
-        padding: 0 20px;
-        text-align: right;
-      }
-
-      .content-left {
-        font-size: 15px;
-        line-height: 20px;
-        padding: 0 20px;
-        text-align: left;
-      }
-
-      .left {
-        float: left;
-        width: 50%;
-      }
 
 
       .right {
         float: right;
         width: 50%;
-      }
-
-      .left-providers {
-        float: left;
-        width: 70%;
-      }
-
-
-      .right-providers {
-        float: right;
-        width: 30%;
       }
 
 
@@ -218,7 +184,7 @@ class CotisationController {
     const body = {}
     body.status = 4 //Cotizacion Pagada y a la espera por finalizar el evento
     body.fechaPagado = moment().format('DD-MM-YYYY')
-    let update = await Cotisation.query().where({event_id: params.event_id, status: 2, puntuado: false}).update(body)
+    let update = await Cotisation.query().where({event_id: params.event_id, status: 2}).update(body)
 
     const bodyT = request.only(['total', 'amount_in_cents', 'wompi', 'flow'])
     bodyT.event_id = params.event_id
@@ -230,8 +196,8 @@ class CotisationController {
     bodyE.fechaPagado = moment().format('DD-MM-YYYY')
     update = await Event.query().where({_id: params.event_id}).update(bodyE)
 
-    await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
-    // await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
+    await Email.sendMail('pagos@heventapp.com', 'Transaccion Exitosa', htmlMail)
+    await Email.sendMail(user.email, 'Transaccion Exitosa', htmlMail)
 
     response.send(update)
   }
