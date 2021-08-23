@@ -68,8 +68,8 @@
                   <div v-if="item.evento">{{item.evento.name}}</div>
                 </div>
                 <div class="row justify-between">
-                  <div class="text-bold">Direccion:</div>
-                  <div v-if="item.evento">{{item.evento.direccion}}</div>
+                  <div class="text-bold">Fecha y Hora:</div>
+                  <div v-if="item.evento">{{item.evento.date}} {{item.evento.time}}</div>
                 </div>
                 <div class="q-mt-sm row">
                   <q-img src="example_5.jpg" style="border-radius:12px" />
@@ -100,8 +100,8 @@
                     <div v-if="item.evento">{{item.evento.name}}</div>
                   </div>
                   <div class="row justify-between">
-                    <div class="text-bold">Direccion:</div>
-                    <div v-if="item.evento">{{item.evento.direccion}}</div>
+                    <div class="text-bold">Fecha y Hora:</div>
+                    <div v-if="item.evento">{{item.evento.date}} - {{item.evento.time}}</div>
                   </div>
                   <div class="q-mt-sm row">
                     <q-img src="example_5.jpg" style="border-radius:12px" />

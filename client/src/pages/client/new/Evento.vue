@@ -170,7 +170,7 @@
         <div class="text-h6">$ {{totalCarrito}}</div>
       </div>
       <div class="row justify-between">
-        <div class="text-h6">Iva</div>
+        <div class="text-h6">IVA 19%</div>
         <div class="text-h6">$ {{((19 * totalCarrito) / 100)}}</div>
       </div>
       <div class="row justify-between items-center">

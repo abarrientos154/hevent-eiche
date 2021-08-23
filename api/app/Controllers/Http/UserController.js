@@ -46,7 +46,8 @@ class UserController {
 
   async tuPlan ({response, auth}) {
     const user = (await auth.getUser()).toJSON()
-    const payment = (await  Payment.query().where({ ref: user.referencia }).fetch()).toJSON()
+    const payment = (await  Payment.query().where({ ref: user.referencia }).first()).toJSON()
+    console.log(payment.tipoPlan, 'payment')
     const fechaV = moment(payment.created_at).add(1, payment.tipoPlan === 'Mensual' ? 'M' : 'Y').format('DD/MM/YYYY')
     const send = {
       fechaS: moment(payment.created_at).format('DD/MM/YYYY'),

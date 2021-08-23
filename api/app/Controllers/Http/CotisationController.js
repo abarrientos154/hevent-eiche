@@ -259,7 +259,7 @@ class CotisationController {
         Invitados: #${evento.invitados},
         Fecha: ${evento.date},
         Hora: ${evento.time},
-        Direccion: ${evento.direccion}
+        Ciudad: ${evento.ciudad}
       `,
       user_id: id_user,
       cotisazion_id: body.cotizacion_id,

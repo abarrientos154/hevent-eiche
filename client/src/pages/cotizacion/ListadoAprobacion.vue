@@ -14,7 +14,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{item.rolAuth === 2 ? item.datos_proveedor.name : item.datos_cliente.full_name}}</q-item-label>
-            <q-item-label caption> {{item.status}} {{item._id}} {{item.event_id}} </q-item-label>
+            <q-item-label caption> {{item.status}} </q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn icon="info" flat color="secondary" round/>
