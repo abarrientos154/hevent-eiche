@@ -30,7 +30,7 @@ const Email = use('App/Functions/Email')
   5 = Evento Finalizado
 */
 
-async function armarCorreo (params, user) {
+async function armarCorreo (params, user, admin) {
   let cotisations = (await Cotisation.where({
     event_id: params.event_id,
     $or: [{ status: 2 }, { status: 4 }],
@@ -77,30 +77,92 @@ async function armarCorreo (params, user) {
       </div>
       `
     let parteProviders = ''
+    let parteServicios = ''
     let subtotal = 0
     for (let j of cotisations) {
       let total = totalCarrito(j.carrito)
       let pais = j.datos_proveedor.country === 'co' ? 'Colombia' : 'Chile'
       let ciudad = j.datos_proveedor.ciudad.label
       let proveedor = j.datos_proveedor.name
+      console.log(total, 'totallllllll por cotisation')
       subtotal = subtotal + total
       console.log(proveedor, pais, ciudad, total, 'total')
 
 
       parteProviders = parteProviders + `
       <div style="overflow: hidden;">
-        <div style="float: left;width: 30%;">
+        <div style="float: left;width: 40%;">
           <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
             ${proveedor}, ${pais}, ${ciudad}
           </div>
         </div>
-        <div style="float: right;width: 70%;">
+        <div style="float: right;width: 60%;">
           <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
             ${total}
           </div>
         </div>
       </div>
       `
+      if (admin) {
+        parteProviders = parteProviders + `
+          <div style="overflow: hidden;">
+            <div style="float: left;width: 100%;">
+              <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
+                ${j.datos_proveedor.banco}, ${j.datos_proveedor.numCuenta}, ${j.datos_proveedor.tipoCuenta}
+              </div>
+            </div>
+          </div>
+        `
+      }
+
+      for (let i of j.carrito) {
+        for (let h of i.subitems) {
+          parteServicios = parteServicios + `
+          <div style="overflow: hidden;">
+            <div style="float: left;width: 100%;">
+              <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
+                ${h.name}:
+              </div>
+            </div>
+          </div>
+          `
+
+          for (let d of h.productos) {
+            parteServicios = parteServicios + `
+              <div style="overflow: hidden;">
+                <div style="float: left;width: 30%;">
+                  <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
+                    ${d.cant} ${d.prod}, ${d.prec}
+                  </div>
+                </div>
+                <div style="float: right;width: 70%;">
+                  <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
+                    ${d.tot}
+                  </div>
+                </div>
+              </div>
+            `
+          }
+        }
+
+        /* parteServicios = parteServicios + `
+          <div style="overflow: hidden;">
+            <div style="float: left;width: 30%;">
+              <div style="font-size: 15px; line-height: 20px; padding: 0 20px;text-align: left;">
+                ${proveedor}, ${pais}, ${ciudad}
+              </div>
+            </div>
+            <div style="float: right;width: 70%;">
+              <div style="font-size: 15px; line-height: 20px; padding: 0 20px; text-align: right;">
+                ${total}
+              </div> s
+            </div>
+          </div>
+          ` */
+      }
+      parteProviders = parteProviders + parteServicios
+      parteServicios = ''
+
     }
     let iva = ((19 * subtotal) / 100)
     let totTot = iva + subtotal
@@ -173,9 +235,9 @@ class CotisationController {
 
   async pruebaC ({ params, request, response, auth }) {
     const user = (await auth.getUser()).toJSON()
-    let htmlMail = await armarCorreo(params, user)
+    let htmlMail = await armarCorreo(params, user, true)
     let mail = await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
-    response.send(mail)
+    response.send(htmlMail)
   }
 
   async payQuotes ({params, response, auth, request}) {
@@ -196,7 +258,7 @@ class CotisationController {
     bodyE.fechaPagado = moment().format('DD-MM-YYYY')
     update = await Event.query().where({_id: params.event_id}).update(bodyE)
 
-    await Email.sendMail('pagos@heventapp.com', 'Transaccion Exitosa', htmlMail)
+    await Email.sendMail('pagos@heventapp.com', 'Transaccion Exitosa', htmlMail, true)
     await Email.sendMail(user.email, 'Transaccion Exitosa', htmlMail)
 
     response.send(update)

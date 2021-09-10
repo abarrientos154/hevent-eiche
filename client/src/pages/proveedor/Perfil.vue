@@ -30,7 +30,7 @@
       <editar-preguntas class="q-mt-xl" />
     </q-dialog>
     <q-dialog v-model="dialogos.tuplan" :maximized="true" transition-show="slide-up" transition-hide="slide-down">
-      <tu-plan :user="user" style="margin-top:40%" />
+      <tu-plan :user="user" />
     </q-dialog>
   </div>
 </template>
