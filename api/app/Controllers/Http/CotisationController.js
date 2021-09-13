@@ -236,7 +236,8 @@ class CotisationController {
   async pruebaC ({ params, request, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     let htmlMail = await armarCorreo(params, user, true)
-    await Email.sendMail('maeep154@gmail.com', 'Transaccion Exitosa', htmlMail)
+    await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
+    htmlMail = await armarCorreo(params, user)
     await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
     response.send(htmlMail)
   }
@@ -285,18 +286,21 @@ class CotisationController {
   }
 
   async eventosRealizados ({ response, auth }) {
+    const user = (await auth.getUser()).toJSON()
+    console.log(user._id, 'user id')
     let eventos = (await Event.where({
       pay: true,
-      date: { $lte: moment().format('YYYY/MM/DD') }
+      date: { $lte: moment().format('YYYY/MM/DD') },
+      user_id: user._id
     }).with('user_info').fetch()).toJSON()
-    console.log(eventos.length, 'eventos encontrados')
+    console.log(eventos.length, 'eventos encontradosd')
     let send = []
     for (let j of eventos) {
-      console.log(j._id, 'evento id')
+      console.log(j._id, 'evento idd')
       let cotisaciones = (await Cotisation.query().where({ event_id: j._id, status: { $lte: 4 } }).with('datos_proveedor').fetch()).toJSON()
       if (cotisaciones.length > 0) {
         for (let i of cotisaciones) {
-          console.log(i._id, 'cotisation ID')
+          console.log(i._id, 'cotisation IDd')
           send.push(i)
         }
       }

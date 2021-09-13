@@ -1,39 +1,41 @@
 <template>
   <div>
-    <div v-if="imagenes.length > 0" style="height:100px;border-radius:12px;width:100%" class="row justify-between">
-      <q-card class="q-ml-sm q-mr-sm q-mt-sm" style="height:100px;border-radius:12px;width:140px">
-        <q-img :src="baseu + 'file_proveedor/' + 'portada/' + userId" style="height:100px;border-radius:12px;width:140px" >
-        </q-img>
-        <div class="full-width row justify-center" style="position:absolute;bottom:2px;right:0px">
-        <q-btn label="portada" dense color="primary" push style="width:80%"  />
+    <q-scroll-area style="height: calc(100vh - 510px); width:100%;" class="">
+      <div v-if="imagenes.length > 0" style="height:100px;border-radius:12px;width:100%" class="row justify-between">
+        <q-card class="q-ml-sm q-mr-sm q-mt-sm" style="height:100px;border-radius:12px;width:140px">
+          <q-img :src="baseu + 'file_proveedor/' + 'portada/' + userId" style="height:100px;border-radius:12px;width:140px" >
+          </q-img>
+          <div class="full-width row justify-center" style="position:absolute;bottom:2px;right:0px">
+          <q-btn label="portada" dense color="primary" push style="width:80%"  />
+          </div>
+        </q-card>
+        <q-card class="q-ml-sm q-mr-sm q-mt-sm" v-for="(item, index) in imagenes" :key="index" style="height:100px;border-radius:12px;width:140px">
+          <q-img :src="baseu + 'file_proveedor/' + item" style="height:100px;border-radius:12px;width:140px" @click="cambiarPortada(item)" >
+            <q-btn @click="confirmEliminar(item)" flat class="absolute all-pointer-events" size="15px" dense icon="delete" color="negative" style="top: 0px; left: 0px" rounded />
+          </q-img>
+        </q-card>
+        <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-grey-5" style="height:100px;border-radius:12px;width:140px">
+          <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Imagen</div>
+          <q-avatar size="50px">
+            <div style="z-index:1">
+              <q-file multiple borderless v-model="img" class="button-camera" @input="addImg()" accept=".jpg, image/*">
+                <q-icon name="add" class="absolute-center" size="20px" color="white" />
+              </q-file>
+            </div>
+          </q-avatar>
         </div>
-      </q-card>
-      <q-card class="q-ml-sm q-mr-sm q-mt-sm" v-for="(item, index) in imagenes" :key="index" style="height:100px;border-radius:12px;width:140px">
-        <q-img :src="baseu + 'file_proveedor/' + item" style="height:100px;border-radius:12px;width:140px" @click="cambiarPortada(item)" >
-          <q-btn @click="confirmEliminar(item)" flat class="absolute all-pointer-events" size="15px" dense icon="delete" color="negative" style="top: 0px; left: 0px" rounded />
-        </q-img>
-      </q-card>
-      <div class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-grey-5" style="height:100px;border-radius:12px;width:140px">
+      </div>
+      <div v-if="imagenes.length === 0" class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-grey-5" style="height:100px;border-radius:12px;width:120px">
         <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Imagen</div>
         <q-avatar size="50px">
           <div style="z-index:1">
-            <q-file borderless v-model="img" class="button-camera" @input="addImg()" accept=".jpg, image/*">
+            <q-file multiple borderless v-model="img" class="button-camera" @input="addImg()" accept=".jpg, image/*">
               <q-icon name="add" class="absolute-center" size="20px" color="white" />
             </q-file>
           </div>
         </q-avatar>
       </div>
-    </div>
-    <div v-if="imagenes.length === 0" class="column shadow-3 justify-center items-center q-ma-sm q-ml-sm bg-grey-5" style="height:100px;border-radius:12px;width:120px">
-      <div class="text-center text-primary q-mb-sm" style="text-decoration: underline">Agregar Imagen</div>
-      <q-avatar size="50px">
-        <div style="z-index:1">
-          <q-file borderless v-model="img" class="button-camera" @input="addImg()" accept=".jpg, image/*">
-            <q-icon name="add" class="absolute-center" size="20px" color="white" />
-          </q-file>
-        </div>
-      </q-avatar>
-    </div>
+    </q-scroll-area>
   </div>
 </template>
 
@@ -71,26 +73,30 @@ export default {
     },
     async addImg () {
       console.log('add img', this.img)
-      if (this.img) {
-        var formData = new FormData()
-        var files = []
-        files[0] = this.img
-        formData.append('files', files[0])
-        await this.$api.post('subir_archivo_proveedor', formData, {
-          headers: {
-            'Content-Type': undefined
-          }
-        }).then((res) => {
-          if (res.error) {
-            this.$q.notify({
-              color: 'negative',
-              message: res.message
-            })
-          } else if (res) {
-            console.log(res, 'respuesta')
-            this.imagenes = res.images
-          }
-        })
+      if (this.img && this.img.length > 0) {
+        for (const img of this.img) {
+          var formData = new FormData()
+          var files = []
+          files[0] = img
+          formData.append('files', files[0])
+          this.$q.loading.show()
+          await this.$api.post('subir_archivo_proveedor', formData, {
+            headers: {
+              'Content-Type': undefined
+            }
+          }).then((res) => {
+            this.$q.loading.hide()
+            if (res.error) {
+              this.$q.notify({
+                color: 'negative',
+                message: res.message
+              })
+            } else if (res) {
+              console.log(res, 'respuesta')
+              this.imagenes = res.images
+            }
+          })
+        }
       }
     },
     eliminarImg (nameFile) {

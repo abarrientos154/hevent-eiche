@@ -8,9 +8,9 @@
     <q-list class="q-mt-sm q-mb-lg">
       <div v-for="(item, index) in data" :key="index">
         <q-item class="q-mt-md" v-ripple clickable @click="dialog = true, form = item">
-          <q-item-section center avatar>
-            <q-avatar >
-              <q-img :src="baseu + item.usuario._id" />
+          <q-item-section center avatar v-if="baseu">
+            <q-avatar>
+              <q-img :src="item.usuario.perfil ? baseu + item.usuario._id : 'noimg.png'" />
             </q-avatar>
           </q-item-section>
 
@@ -43,9 +43,9 @@
         <q-btn icon="highlight_off" flat color="grey" size="lg" v-close-popup round />
       </div>
       <div class="row justify-center" style="margin-top:30%">
-        <q-item>
+        <q-item v-if="baseu">
           <q-item-section avatar>
-            <q-img :src="baseu + form.usuario._id" style="border-radius:100%; width:70px;height:70px" />
+            <q-img :src="form.usuario.perfil ? baseu + form.usuario._id : 'noimg.png'" style="border-radius:100%; width:70px;height:70px" />
           </q-item-section>
 
           <q-item-section class="text-primary text-subtitle1">
@@ -132,17 +132,19 @@ export default {
     return {
       data: [],
       form: {},
-      baseu: '',
+      baseu: null,
       dialog: false
     }
   },
-  mounted () {
-    this.consultar()
+  async mounted () {
+    await this.consultar()
     this.baseu = env.apiUrl + 'file_proveedor/perfil/'
   },
   methods: {
-    consultar () {
-      this.$api.get('opiniones').then(res => {
+    async consultar () {
+      this.$q.loading.show()
+      await this.$api.get('opiniones').then(res => {
+        this.$q.loading.hide()
         this.data = res
         this.data = res.map(v => {
           return {

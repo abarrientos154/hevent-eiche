@@ -96,7 +96,7 @@ export default {
       if (user.roles[0] === 2) {
         await this.$api.get('eventos_terminados_por_fecha').then(res => {
           if (res) {
-            console.log(res, 'resssss')
+            console.log(res, 'resssss eventos terminados')
             this.proveedores = res
             if (this.proveedores.length > 0) { this.calificarD = true }
           }
