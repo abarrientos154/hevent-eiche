@@ -236,13 +236,13 @@ class CotisationController {
   async pruebaC ({ params, request, response, auth }) {
     const user = (await auth.getUser()).toJSON()
     let htmlMail = await armarCorreo(params, user, true)
-    let mail = await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
+    await Email.sendMail('maeep154@gmail.com', 'Transaccion Exitosa', htmlMail)
+    await Email.sendMail('denilsson.d.sousa@gmail.com', 'Transaccion Exitosa', htmlMail)
     response.send(htmlMail)
   }
 
   async payQuotes ({params, response, auth, request}) {
     const user = (await auth.getUser()).toJSON()
-    let htmlMail = await armarCorreo(params, user)
     const body = {}
     body.status = 4 //Cotizacion Pagada y a la espera por finalizar el evento
     body.fechaPagado = moment().format('DD-MM-YYYY')
@@ -258,7 +258,9 @@ class CotisationController {
     bodyE.fechaPagado = moment().format('DD-MM-YYYY')
     update = await Event.query().where({_id: params.event_id}).update(bodyE)
 
-    await Email.sendMail('pagos@heventapp.com', 'Transaccion Exitosa', htmlMail, true)
+    let htmlMail = await armarCorreo(params, user, true) // funcion que arma el html para mostrarse en el correo como en el diseno para el admin, condicianado que muestre los datos del banco: numero de cuenta, tipo cuenta y nombre banco
+    await Email.sendMail('pagos@heventapp.com', 'Transaccion Exitosa', htmlMail)
+    htmlMail = await armarCorreo(params, user) // funcion que arma el html para mostrarse en el correo como en el diseno
     await Email.sendMail(user.email, 'Transaccion Exitosa', htmlMail)
 
     response.send(update)
@@ -287,11 +289,14 @@ class CotisationController {
       pay: true,
       date: { $lte: moment().format('YYYY/MM/DD') }
     }).with('user_info').fetch()).toJSON()
+    console.log(eventos.length, 'eventos encontrados')
     let send = []
     for (let j of eventos) {
-      let cotisaciones = (await Cotisation.query().where({ event_id: j._id, status: { $lte: 4 }, puntuado: false }).with('datos_proveedor').fetch()).toJSON()
+      console.log(j._id, 'evento id')
+      let cotisaciones = (await Cotisation.query().where({ event_id: j._id, status: { $lte: 4 } }).with('datos_proveedor').fetch()).toJSON()
       if (cotisaciones.length > 0) {
         for (let i of cotisaciones) {
+          console.log(i._id, 'cotisation ID')
           send.push(i)
         }
       }
