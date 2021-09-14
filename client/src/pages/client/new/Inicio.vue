@@ -104,18 +104,23 @@
         </q-scroll-area>
       </div>
     </div>
+    <q-dialog v-model="calificarD">
+      <calificar :proveedores="proveedores" />
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import CrearEvento from '../../../components/CrearEvento'
 import env from '../../../env'
+import Calificar from '../../../components/cliente/Calificar'
 export default {
   components: {
-    CrearEvento
+    CrearEvento, Calificar
   },
   data () {
     return {
+      calificarD: false,
       baseuEvent: '',
       eventos: [],
       eventosPagados: [],
@@ -156,13 +161,15 @@ export default {
       user: {},
       favoritos: [],
       perfilImg: 'noimg.png',
-      baseuBlog: ''
+      baseuBlog: '',
+      proveedores: []
     }
   },
   async mounted () {
     this.getEvents()
     this.getUser()
     this.misProveedoresFavoritos()
+    await this.obtenerEventosRealizados()
     this.baseu2 = env.apiUrl + 'blogs_img/'
     await this.getBlogs()
     this.baseu = env.apiUrl + 'file_proveedor/portada/'
@@ -172,6 +179,19 @@ export default {
     }
   },
   methods: {
+    async obtenerEventosRealizados () {
+      const user = JSON.parse(localStorage.getItem('HEV_SESSION_INFO'))
+      console.log(user.roles[0], 'EVENTOS REALIZADOS')
+      if (user.roles[0] === 2) {
+        await this.$api.get('eventos_terminados_por_fecha').then(res => {
+          if (res) {
+            console.log(res, 'resssss eventos terminados')
+            this.proveedores = res
+            if (this.proveedores.length > 0) { this.calificarD = true }
+          }
+        })
+      }
+    },
     async getBlogs () {
       this.$q.loading.show()
       await this.$api.get('blogs_index').then(res => {

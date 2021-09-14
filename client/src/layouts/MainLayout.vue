@@ -89,23 +89,7 @@ export default {
   methods: {
     irRuta (to) {
       this.rutaActual = to
-    },
-    async obtenerEventosRealizados () {
-      const user = JSON.parse(localStorage.getItem('HEV_SESSION_INFO'))
-      console.log(user.roles[0], 'EVENTOS REALIZADOS')
-      if (user.roles[0] === 2) {
-        await this.$api.get('eventos_terminados_por_fecha').then(res => {
-          if (res) {
-            console.log(res, 'resssss eventos terminados')
-            this.proveedores = res
-            if (this.proveedores.length > 0) { this.calificarD = true }
-          }
-        })
-      }
     }
-  },
-  async mounted () {
-    await this.obtenerEventosRealizados()
   }
 }
 </script>
