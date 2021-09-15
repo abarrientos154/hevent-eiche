@@ -33,6 +33,7 @@ var configFlow = {
   0 = A LA ESPERA POR PAGAR REGISTRO
   1 = ACTIVO
   2 = EN PROCESO POR PAGAR CAMBIO DE PLAN
+  3 = PLAN VENCIDO
 */
 
 /** @typedef {import('@adonisjs/framework/src/Request')} Request */
@@ -42,17 +43,40 @@ var configFlow = {
 /**
  * Resourceful controller for interacting with users
  */
+// funcion que verifica el plan del proveedor y retorna fecha de vencimiento y suscripcion,
+async function verificarPlanProvider (user) {
+  const payments = (await Payment.query().where({ user_id: user._id }).fetch()).toJSON()
+  const payment = payments[payment.length - 1]
+  console.log(payment, 'payment')
+  const annioActual = moment().format('YYYY')
+  const retorno = {}
+  retorno.fechaS = moment(payment.created_at).format('DD/MM/YYYY')
+  let aux = ''
+  if (annioActual === '2021') {
+    const fechaV = moment(payment.created_at).add(1, payment.tipoPlan === 'Mensual' ? 'M' : 'Y')
+    aux = moment(fechaV).add(3, 'M')
+    retorno.fechaV = moment(fechaV).add(3, 'M').format('DD/MM/YYYY')
+  } else {
+    aux = moment(payment.created_at).add(1, payment.tipoPlan === 'Mensual' ? 'M' : 'Y')
+    retorno.fechaV = moment(payment.created_at).add(1, payment.tipoPlan === 'Mensual' ? 'M' : 'Y').format('DD/MM/YYYY')
+  }
+  const fechaActual = moment()
+  const difDias = aux.diff(fechaActual, 'days')
+  console.log(difDias,'diferencia dias')
+  if (difDias <= 0) {
+    retorno.activo = false
+    await User.query().where('_id', user._id).update({status: 3})
+  } else {
+    retorno.activo = true
+  }
+  return retorno
+}
+
 class UserController {
 
   async tuPlan ({response, auth}) {
     const user = (await auth.getUser()).toJSON()
-    const payment = (await  Payment.query().where({ ref: user.referencia }).first()).toJSON()
-    console.log(payment.tipoPlan, 'payment')
-    const fechaV = moment(payment.created_at).add(1, payment.tipoPlan === 'Mensual' ? 'M' : 'Y').format('DD/MM/YYYY')
-    const send = {
-      fechaS: moment(payment.created_at).format('DD/MM/YYYY'),
-      fechaV: fechaV
-    }
+    const send = await verificarPlanProvider(user)
     response.send(send)
   }
 

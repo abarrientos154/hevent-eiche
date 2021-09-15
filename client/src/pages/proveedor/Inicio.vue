@@ -46,6 +46,7 @@
 </template>
 <script>
 import env from '../../env'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -65,6 +66,7 @@ export default {
     }
   },
   async mounted () {
+    await this.updatePlan()
     this.getRecord()
     await this.getUser()
     this.baseu = env.apiUrl
@@ -73,6 +75,13 @@ export default {
     console.log(this.portadaImg, 'portada img mounted')
   },
   methods: {
+    ...mapMutations('generals', ['logout']),
+    async updatePlan () {
+      this.$q.loading.show()
+      await this.$api.get('tu_plan').then(res => {
+        this.$q.loading.hide()
+      })
+    },
     async getRecord () {
       await this.$api.get('proveedores_perfil').then(res => {
         if (res) {
@@ -98,6 +107,10 @@ export default {
       await this.$api.get('users_perfil').then(res => {
         if (res) {
           this.user = res
+          if (this.user.status === 3) {
+            this.logout()
+            this.$router.push('/login_cliente')
+          }
           console.log(this.user, 'this user')
         }
       })

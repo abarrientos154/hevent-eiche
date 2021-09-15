@@ -306,6 +306,13 @@ export default {
             } else if (res.HEV_SESSION_INFO.status === 1) {
               this.login(res)
               this.$router.push('/inicio_proveedor')
+            } else if (res.HEV_SESSION_INFO.status === 3) {
+              this.$q.dialog({
+                title: '¡Atención!',
+                message: 'Su plan se ha vencido!'
+              }).onOk(() => {
+                this.backToPayPlan(res.HEV_SESSION_INFO.user_id)
+              })
             }
           } else {
             this.login(res)
