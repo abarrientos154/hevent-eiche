@@ -46,7 +46,9 @@ var configFlow = {
 // funcion que verifica el plan del proveedor y retorna fecha de vencimiento y suscripcion,
 async function verificarPlanProvider (user) {
   const payments = (await Payment.query().where({ user_id: user._id }).fetch()).toJSON()
-  const payment = payments[payment.length - 1]
+  const pos = payments.length - 1
+  console.log(pos, 'pos')
+  const payment = payments[pos]
   console.log(payment, 'payment')
   const annioActual = moment().format('YYYY')
   const retorno = {}
