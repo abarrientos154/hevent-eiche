@@ -41,7 +41,7 @@ export default {
         await universalLinks.subscribe('ul_myExampleEvent', function (eventData) {
           vm.eventos = true
           // do some work
-          // alert('Did launch application from the link: ' + eventData.url)
+          // alert('Did launch application from the link: ' + eventData.url);
           vm.deepLink = eventData.path
           vm.$router.push(eventData.path)
         })
